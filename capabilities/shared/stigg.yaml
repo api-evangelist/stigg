@@ -1,0 +1,295 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: Stigg GraphQL API
+  description: >-
+    Stigg pricing and packaging platform API providing customer provisioning,
+    subscription management, entitlement checking, and usage-based billing via GraphQL.
+  tags:
+    - FinOps
+    - Pricing
+    - Billing
+    - Entitlements
+    - Usage-Based Billing
+    - SaaS
+  created: "2026-05-02"
+  modified: "2026-05-02"
+
+binds:
+  - namespace: env
+    keys:
+      STIGG_API_KEY: STIGG_API_KEY
+
+capability:
+  consumes:
+    - type: http
+      namespace: stigg
+      baseUri: https://api.stigg.io
+      description: Stigg GraphQL API for entitlement and subscription management.
+      authentication:
+        type: apikey
+        key: X-API-KEY
+        value: "{{STIGG_API_KEY}}"
+        placement: header
+      resources:
+        - name: graphql
+          path: /graphql
+          description: Stigg GraphQL endpoint for all operations.
+          operations:
+            - name: provision-customer
+              method: POST
+              description: Provision a new customer with optional billing info and initial subscription.
+              body:
+                type: json
+                data:
+                  query: "mutation ProvisionCustomer($input: ProvisionCustomerInput!) { provisionCustomer(input: $input) { customer { id name email } } }"
+                  variables:
+                    input:
+                      customerId: "{{tools.customerId}}"
+                      name: "{{tools.name}}"
+                      email: "{{tools.email}}"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$.data.provisionCustomer"
+
+            - name: get-customer
+              method: POST
+              description: Retrieve customer details, active subscriptions, and entitlements.
+              body:
+                type: json
+                data:
+                  query: "query GetCustomer($customerId: String!) { customer(id: $customerId) { id name email subscriptions { id status plan { id name } } } }"
+                  variables:
+                    customerId: "{{tools.customerId}}"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$.data.customer"
+
+            - name: create-subscription
+              method: POST
+              description: Create a subscription linking a customer to a pricing plan.
+              body:
+                type: json
+                data:
+                  query: "mutation CreateSubscription($input: CreateSubscriptionInput!) { createSubscription(input: $input) { id status plan { id name } } }"
+                  variables:
+                    input:
+                      customerId: "{{tools.customerId}}"
+                      planId: "{{tools.planId}}"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$.data.createSubscription"
+
+            - name: cancel-subscription
+              method: POST
+              description: Cancel an active subscription.
+              body:
+                type: json
+                data:
+                  query: "mutation CancelSubscription($input: CancelSubscriptionInput!) { cancelSubscription(input: $input) { id status } }"
+                  variables:
+                    input:
+                      subscriptionId: "{{tools.subscriptionId}}"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$.data.cancelSubscription"
+
+            - name: check-entitlement
+              method: POST
+              description: Check if a customer has access to a specific feature.
+              body:
+                type: json
+                data:
+                  query: "query CheckEntitlement($customerId: String!, $featureId: String!) { customerEntitlement(customerId: $customerId, featureId: $featureId) { isGranted usageLimit currentUsage resetPeriod } }"
+                  variables:
+                    customerId: "{{tools.customerId}}"
+                    featureId: "{{tools.featureId}}"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$.data.customerEntitlement"
+
+            - name: get-entitlements
+              method: POST
+              description: Get all feature entitlements for a customer.
+              body:
+                type: json
+                data:
+                  query: "query GetEntitlements($customerId: String!) { customerEntitlements(customerId: $customerId) { featureId isGranted usageLimit currentUsage } }"
+                  variables:
+                    customerId: "{{tools.customerId}}"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$.data.customerEntitlements"
+
+            - name: report-usage
+              method: POST
+              description: Report calculated usage measurements for metered features.
+              body:
+                type: json
+                data:
+                  query: "mutation ReportUsage($input: ReportUsageInput!) { reportUsage(input: $input) { id } }"
+                  variables:
+                    input:
+                      customerId: "{{tools.customerId}}"
+                      featureId: "{{tools.featureId}}"
+                      value: "{{tools.value}}"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$.data.reportUsage"
+
+  exposes:
+    - type: rest
+      port: 8100
+      namespace: stigg-rest
+      resources:
+        - path: /v1/customers
+          name: customers
+          description: Customer management.
+          operations:
+            - method: POST
+              name: provision-customer
+              description: Provision a new Stigg customer.
+              call: "stigg.provision-customer"
+              with:
+                customerId: "rest.customerId"
+                name: "rest.name"
+                email: "rest.email"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/customers/{customerId}
+          name: customer
+          description: Individual customer operations.
+          operations:
+            - method: GET
+              name: get-customer
+              description: Get customer details and subscriptions.
+              call: "stigg.get-customer"
+              with:
+                customerId: "rest.customerId"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/entitlements
+          name: entitlements
+          description: Feature entitlement checks.
+          operations:
+            - method: GET
+              name: check-entitlement
+              description: Check feature access for a customer.
+              call: "stigg.check-entitlement"
+              with:
+                customerId: "rest.customerId"
+                featureId: "rest.featureId"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9100
+      namespace: stigg-mcp
+      transport: http
+      tools:
+        - name: provision-customer
+          description: Provision a new customer in Stigg with optional plan enrollment.
+          hints:
+            readOnly: false
+          call: "stigg.provision-customer"
+          with:
+            customerId: "tools.customerId"
+            name: "tools.name"
+            email: "tools.email"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: get-customer
+          description: Get customer details, subscriptions, and entitlements.
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "stigg.get-customer"
+          with:
+            customerId: "tools.customerId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: create-subscription
+          description: Create a subscription for a customer to a pricing plan.
+          hints:
+            readOnly: false
+          call: "stigg.create-subscription"
+          with:
+            customerId: "tools.customerId"
+            planId: "tools.planId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: cancel-subscription
+          description: Cancel an active subscription.
+          hints:
+            readOnly: false
+            destructive: true
+            idempotent: true
+          call: "stigg.cancel-subscription"
+          with:
+            subscriptionId: "tools.subscriptionId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: check-entitlement
+          description: Check if a customer has access to a specific feature.
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "stigg.check-entitlement"
+          with:
+            customerId: "tools.customerId"
+            featureId: "tools.featureId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: get-entitlements
+          description: Get all feature entitlements for a customer.
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "stigg.get-entitlements"
+          with:
+            customerId: "tools.customerId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: report-usage
+          description: Report feature usage for metered billing.
+          hints:
+            readOnly: false
+          call: "stigg.report-usage"
+          with:
+            customerId: "tools.customerId"
+            featureId: "tools.featureId"
+            value: "tools.value"
+          outputParameters:
+            - type: object
+              mapping: "$."

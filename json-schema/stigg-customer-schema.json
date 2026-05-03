@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.stigg.io/schema/customer",
+  "title": "Stigg Customer",
+  "description": "A Stigg customer representing a tenant or end-user organization.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique customer identifier.",
+      "examples": ["customer-acme-corp"]
+    },
+    "name": {
+      "type": "string",
+      "description": "Customer display name.",
+      "examples": ["Acme Corp"]
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "Customer primary email address.",
+      "examples": ["admin@acme.com"]
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Customer creation timestamp."
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last update timestamp."
+    },
+    "subscriptions": {
+      "type": "array",
+      "description": "Active subscriptions for this customer.",
+      "items": {
+        "$ref": "#/definitions/Subscription"
+      }
+    }
+  },
+  "required": ["id"],
+  "definitions": {
+    "Subscription": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "status": {
+          "type": "string",
+          "enum": ["ACTIVE", "CANCELED", "TRIAL", "PAUSED"]
+        },
+        "plan": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "string" },
+            "name": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}

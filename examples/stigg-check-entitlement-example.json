@@ -1,0 +1,30 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://api.stigg.io/graphql",
+    "headers": {
+      "X-API-KEY": "YOUR_STIGG_API_KEY",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "query": "query CheckEntitlement($customerId: String!, $featureId: String!) { customerEntitlement(customerId: $customerId, featureId: $featureId) { isGranted usageLimit currentUsage resetPeriod } }",
+      "variables": {
+        "customerId": "customer-acme-corp",
+        "featureId": "feature-api-calls"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "customerEntitlement": {
+          "isGranted": true,
+          "usageLimit": 10000,
+          "currentUsage": 3247,
+          "resetPeriod": "MONTHLY"
+        }
+      }
+    }
+  }
+}

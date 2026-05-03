@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.stigg.io/schema/entitlement",
+  "title": "Stigg Entitlement",
+  "description": "A customer's entitlement to access a specific feature, including usage limits and current consumption.",
+  "type": "object",
+  "properties": {
+    "featureId": {
+      "type": "string",
+      "description": "Identifier of the feature being checked.",
+      "examples": ["feature-api-calls", "feature-export"]
+    },
+    "isGranted": {
+      "type": "boolean",
+      "description": "Whether the customer has access to this feature.",
+      "examples": [true, false]
+    },
+    "usageLimit": {
+      "type": ["integer", "null"],
+      "description": "Maximum allowed usage within a reset period. Null means unlimited.",
+      "examples": [1000, null]
+    },
+    "currentUsage": {
+      "type": ["integer", "null"],
+      "description": "Current usage count within the active reset period.",
+      "examples": [247]
+    },
+    "resetPeriod": {
+      "type": ["string", "null"],
+      "description": "Period when usage resets.",
+      "enum": ["MONTHLY", "WEEKLY", "DAILY", "HOURLY", null],
+      "examples": ["MONTHLY"]
+    }
+  },
+  "required": ["featureId", "isGranted"]
+}

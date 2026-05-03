@@ -1,0 +1,28 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "stigg": "https://api.stigg.io/vocab#",
+
+    "customerId": "stigg:customerId",
+    "featureId": "stigg:featureId",
+    "planId": "stigg:planId",
+    "subscriptionId": "stigg:subscriptionId",
+    "isGranted": "stigg:isGranted",
+    "usageLimit": "stigg:usageLimit",
+    "currentUsage": "stigg:currentUsage",
+    "resetPeriod": "stigg:resetPeriod",
+
+    "Customer": "stigg:Customer",
+    "Subscription": "stigg:Subscription",
+    "Plan": "stigg:Plan",
+    "Entitlement": "stigg:Entitlement",
+    "Feature": "stigg:Feature",
+
+    "name": "name",
+    "email": "email",
+    "createdAt": "dateCreated",
+    "updatedAt": "dateModified",
+    "status": "stigg:status",
+    "description": "description"
+  }
+}

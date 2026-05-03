@@ -1,0 +1,101 @@
+vocabulary:
+  title: Stigg Vocabulary
+  description: >-
+    Domain vocabulary for the Stigg pricing and packaging platform covering
+    entitlements, subscriptions, metering, and usage-based billing concepts.
+  version: "1.0"
+  created: "2026-05-02"
+  modified: "2026-05-02"
+  source: https://docs.stigg.io/
+
+terms:
+  - term: Customer
+    definition: >-
+      A tenant, organization, or individual end-user enrolled in the Stigg
+      platform. Customers are provisioned once and linked to pricing plans
+      through subscriptions.
+    tags: [Core, Identity]
+
+  - term: Plan
+    definition: >-
+      A pricing tier or package that defines which features are available and
+      at what quantities or limits. Examples: Free, Starter, Professional, Enterprise.
+    aliases: [pricing plan, tier]
+    tags: [Pricing, Billing]
+
+  - term: Subscription
+    definition: >-
+      The active association between a customer and a pricing plan. Subscriptions
+      have lifecycle statuses: ACTIVE, TRIAL, PAUSED, CANCELED.
+    tags: [Billing, Lifecycle]
+
+  - term: Entitlement
+    definition: >-
+      A customer's right to access a specific feature, including whether access
+      is granted, any usage limits, and current consumption within the reset period.
+    aliases: [feature entitlement, access right]
+    tags: [Core, Access Control]
+
+  - term: Feature
+    definition: >-
+      A discrete unit of product functionality that can be gated by a pricing
+      plan. Features may be boolean (on/off access) or metered (usage-limited).
+    tags: [Core, Product]
+
+  - term: Metered Feature
+    definition: >-
+      A feature where access is limited by a numerical usage quota that resets
+      on a defined cadence (daily, weekly, monthly). Usage is tracked and reported
+      via the Stigg SDK or API.
+    aliases: [usage-based feature, quota feature]
+    tags: [Metering, Usage-Based Billing]
+
+  - term: Usage Report
+    definition: >-
+      A recorded measurement of a customer's consumption of a metered feature,
+      submitted via the Stigg API for billing aggregation.
+    tags: [Metering, Usage-Based Billing]
+
+  - term: Reset Period
+    definition: >-
+      The cadence at which metered feature usage counters are reset to zero.
+      Supported values: HOURLY, DAILY, WEEKLY, MONTHLY.
+    tags: [Metering, Billing]
+
+  - term: Usage Limit
+    definition: >-
+      The maximum number of metered units a customer may consume within a
+      reset period under their current plan. Null indicates unlimited usage.
+    tags: [Metering, Entitlements]
+
+  - term: Full Access Key
+    definition: >-
+      A server-side API credential from the Stigg dashboard (Integrations > API keys)
+      required to authenticate all backend API requests via the X-API-KEY header.
+    aliases: [API key, server-side key]
+    tags: [Authentication, Security]
+
+  - term: Add-On
+    definition: >-
+      An optional paid feature or capacity bundle that can be attached to a
+      base subscription to extend entitlements beyond the base plan limits.
+    tags: [Pricing, Billing]
+
+  - term: Sidecar SDK
+    definition: >-
+      A Stigg integration option that runs as a sidecar process using gRPC,
+      optimized for low-latency entitlement checks in high-throughput environments.
+    tags: [SDK, Integration, Performance]
+
+  - term: GraphQL Explorer
+    definition: >-
+      The browser-based IDE (Apollo Studio) provided by Stigg for interactively
+      composing and testing GraphQL queries against the Stigg API.
+    tags: [Developer Tools, GraphQL]
+
+  - term: Headless Pricing
+    definition: >-
+      An architectural pattern where pricing logic and entitlement enforcement
+      are fully decoupled from the frontend UI, allowing pricing changes without
+      frontend code deployments.
+    tags: [Architecture, Product Strategy]

@@ -1,0 +1,32 @@
+{
+  "title": "Stigg Entitlement Response Structure",
+  "description": "Document structure for entitlement check responses from the Stigg GraphQL API.",
+  "structure": {
+    "data": {
+      "type": "object",
+      "description": "GraphQL response data envelope.",
+      "fields": {
+        "customerEntitlement": {
+          "type": "object",
+          "description": "Entitlement state for the requested customer/feature pair.",
+          "fields": {
+            "featureId": { "type": "string", "description": "Feature identifier." },
+            "isGranted": { "type": "boolean", "description": "Access granted flag." },
+            "usageLimit": { "type": "integer", "description": "Maximum allowed usage (null = unlimited)." },
+            "currentUsage": { "type": "integer", "description": "Usage consumed in current period." },
+            "resetPeriod": { "type": "string", "description": "Reset cadence (MONTHLY, WEEKLY, DAILY, HOURLY)." }
+          }
+        }
+      }
+    },
+    "errors": {
+      "type": "array",
+      "description": "GraphQL errors array (present only if errors occurred).",
+      "items": {
+        "message": { "type": "string" },
+        "path": { "type": "array" },
+        "extensions": { "type": "object" }
+      }
+    }
+  }
+}

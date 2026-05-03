@@ -1,0 +1,71 @@
+extends: spectral:oas
+rules:
+  stigg-x-api-key-required:
+    description: >-
+      All Stigg API operations must require the X-API-KEY header for
+      authentication.
+    message: "Operations must declare X-API-KEY security scheme."
+    severity: error
+    given: "$.components.securitySchemes"
+    then:
+      field: ApiKey
+      function: defined
+
+  stigg-graphql-endpoint-post-only:
+    description: >-
+      The Stigg GraphQL endpoint (/graphql) must only accept POST requests,
+      following GraphQL convention.
+    message: "GraphQL endpoint must use POST method."
+    severity: error
+    given: "$.paths./graphql"
+    then:
+      field: post
+      function: defined
+
+  stigg-request-body-required-for-graphql:
+    description: All POST operations to the GraphQL endpoint must define a request body.
+    message: "GraphQL POST operation must define a requestBody."
+    severity: error
+    given: "$.paths./graphql.post"
+    then:
+      field: requestBody
+      function: defined
+
+  stigg-response-200-required:
+    description: All Stigg operations must define a 200 success response.
+    message: "Operation '{{operationId}}' is missing a 200 response."
+    severity: error
+    given: "$.paths[*][*]"
+    then:
+      field: responses.200
+      function: defined
+
+  stigg-operationid-camel-case:
+    description: OperationIds must use camelCase.
+    message: "OperationId '{{value}}' must be camelCase."
+    severity: warn
+    given: "$.paths[*][*].operationId"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[a-z][a-zA-Z0-9]*$"
+
+  stigg-tags-title-case:
+    description: All tags must use Title Case.
+    message: "Tag '{{value}}' must use Title Case."
+    severity: warn
+    given: "$.paths[*][*].tags[*]"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[A-Z][a-zA-Z0-9 &-]*$"
+
+  stigg-server-https:
+    description: The Stigg API server must use HTTPS.
+    message: "Server URL must use HTTPS."
+    severity: error
+    given: "$.servers[*].url"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^https://"

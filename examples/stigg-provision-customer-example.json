@@ -1,0 +1,46 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://api.stigg.io/graphql",
+    "headers": {
+      "X-API-KEY": "YOUR_STIGG_API_KEY",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "query": "mutation ProvisionCustomer($input: ProvisionCustomerInput!) { provisionCustomer(input: $input) { customer { id name email createdAt } subscription { id status plan { id name } } } }",
+      "variables": {
+        "input": {
+          "customerId": "customer-acme-corp",
+          "name": "Acme Corp",
+          "email": "admin@acme.com",
+          "initialSubscription": {
+            "planId": "plan-starter"
+          }
+        }
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "provisionCustomer": {
+          "customer": {
+            "id": "customer-acme-corp",
+            "name": "Acme Corp",
+            "email": "admin@acme.com",
+            "createdAt": "2026-05-02T10:00:00Z"
+          },
+          "subscription": {
+            "id": "subscription-acme-starter-001",
+            "status": "ACTIVE",
+            "plan": {
+              "id": "plan-starter",
+              "name": "Starter"
+            }
+          }
+        }
+      }
+    }
+  }
+}
