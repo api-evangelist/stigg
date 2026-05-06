@@ -4,7 +4,8 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Stigg
 providerId: stigg
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-05'
+reconciled: false
 tags:
   - FinOps
   - Pricing
@@ -13,103 +14,28 @@ tags:
   - Usage-Based Billing
   - SaaS
   - Rate Limiting
-  - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the Stigg API surface. Captures per-tier quotas,
-  burst behavior, response signaling, and recovery semantics. Defaults are scaffold values to be replaced
-  with published provider limits.
-headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
+description: Stigg documents that the GraphQL and REST APIs are rate limited per endpoint, but the published
+  rate-limits page references a separate per-endpoint table that was not directly accessible during reconciliation.
+  Limits are enforced per API key. This artifact captures the policy surface; specific per-endpoint numbers
+  should be sourced from the live docs.
+sources:
+  - https://docs.stigg.io/docs/rate-limits
 responseCodes:
   throttled: 429
-  quotaExceeded: 429
-  serviceUnavailable: 503
 limits:
-  - tier: free
-    name: Free Tier Default
+  - name: GraphQL and REST API Rate Limits
     scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
-    applies:
-      - Stigg GraphQL API
-      - Stigg REST API
-      - Stigg Node.js SDK
-      - Stigg Python SDK
-      - Stigg Go SDK
-      - Stigg React SDK
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - Stigg GraphQL API
-      - Stigg REST API
-      - Stigg Node.js SDK
-      - Stigg Python SDK
-      - Stigg Go SDK
-      - Stigg React SDK
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - Stigg GraphQL API
-      - Stigg REST API
-      - Stigg Node.js SDK
-      - Stigg Python SDK
-      - Stigg Go SDK
-      - Stigg React SDK
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - Stigg GraphQL API
-      - Stigg REST API
-      - Stigg Node.js SDK
-      - Stigg Python SDK
-      - Stigg Go SDK
-      - Stigg React SDK
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - Stigg GraphQL API
-      - Stigg REST API
-      - Stigg Node.js SDK
-      - Stigg Python SDK
-      - Stigg Go SDK
-      - Stigg React SDK
+    metric: varies
+    limit: see https://docs.stigg.io/docs/rate-limits for per-endpoint limits
+    notes: Stigg publishes per-endpoint rate limits referenced from the GraphQL rate-limits documentation.
+      Limits scope to the API key.
 policies:
+  - name: Per-Endpoint Limits
+    description: Stigg sets distinct rate limits per endpoint rather than a global account ceiling; consult
+      the per-endpoint table in the rate-limits documentation.
   - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
+    description: Clients receiving HTTP 429 should back off and retry; exponential backoff with jitter
+      is recommended.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

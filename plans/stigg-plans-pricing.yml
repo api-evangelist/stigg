@@ -4,7 +4,8 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Stigg
 providerId: stigg
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-05'
+reconciled: true
 tags:
   - FinOps
   - Pricing
@@ -12,146 +13,204 @@ tags:
   - Entitlements
   - Usage-Based Billing
   - SaaS
-description: Machine-readable plans and pricing scaffold for this API provider. Conforms to the API Commons
-  Plans schema. Tier limits and prices are scaffold defaults; replace with provider-published values.
+description: Stigg uses a tiered SaaS pricing model with a free Sandbox tier, a self-service Growth tier
+  starting at $448/month (annual billing, 20% discount), and a custom-quoted Scale tier. Seats and several
+  integrations are priced as add-ons. Subscription processing has per-subscription fees ($0.32 self-service,
+  $4.70 wire/ACH) and event metering is billed per GB processed.
+sources:
+  - https://www.stigg.io/pricing
 plans:
-  - id: stigg-free
-    name: Free
+  - id: stigg-sandbox
+    name: Sandbox
     type: freemium
-    description: Free entry tier for the Stigg API surface. Intended for evaluation, prototyping, and
-      low-volume integrations. Real limits and pricing must be reconciled with the provider's published
-      plan documentation.
+    description: Free non-production tier for evaluation and prototyping. Two non-production environments,
+      one product, basic community/email support, all SDKs, public API and webhooks, SOC 2 Type II and
+      ISO 27001 included.
     entries:
-      - label: API Requests
-        description: Monthly API request quota across all included endpoints
-        name: api_requests
+      - label: Production Environments
+        name: production_environments
         type: quota
-        metric: requests
-        limit: 1000
-        timeFrame: month
+        metric: environment
+        limit: 0
+        timeFrame: usage
         geo: global
-        domains: []
         unit: 1
-        price: '0.00'
+        price: '0'
         userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the free tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 10
-        timeFrame: minute
+      - label: Non-Production Environments
+        name: nonprod_environments
+        type: quota
+        metric: environment
+        limit: 2
+        timeFrame: usage
         geo: global
-        domains: []
         unit: 1
-        price: '0.00'
+        price: '0'
+        userMultiplied: false
+      - label: Products
+        name: products
+        type: quota
+        metric: product
+        limit: 1
+        timeFrame: usage
+        geo: global
+        unit: 1
+        price: '0'
         userMultiplied: false
     elements:
-      - name: Public Documentation
-      - name: Community Support
-      - name: Sandbox Access
-      - name: Stigg GraphQL API
-      - name: Stigg REST API
-      - name: Stigg Node.js SDK
-      - name: Stigg Python SDK
-      - name: Stigg Go SDK
-      - name: Stigg React SDK
-  - id: stigg-pro
-    name: Professional
-    type: paid
-    description: Production tier for Stigg. Provides higher quotas, priority support, and access to the
-      broader API portfolio. Pricing placeholder; align with the provider's pricing page.
+      - name: All Core Platform SDKs
+      - name: Public API & Webhooks
+      - name: Basic Support (Sun-Thu 8am-9pm IST)
+      - name: SOC 2 Type II
+      - name: ISO 27001
+  - id: stigg-growth
+    name: Growth
+    type: subscription
+    description: Self-service production tier starting at $448/month billed annually (20% discount) or
+      monthly. Credit card billing only. Unlimited non-production environments, one production environment,
+      unlimited products and entitlements. Slack support, Stripe/Zuora/HubSpot integrations, AWS Marketplace,
+      Snowflake/BigQuery sold as add-ons.
     entries:
-      - label: API Requests
-        description: Monthly API request quota
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: 100000
+      - label: Base Subscription
+        name: base_subscription
+        type: subscription
+        metric: month
+        limit: -1
         timeFrame: month
         geo: global
-        domains: []
         unit: 1
-        price: TBD
+        price: '$448/month (annual, 20% discount) or monthly equivalent'
         userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the professional tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 100
-        timeFrame: minute
+      - label: Seats
+        name: seats
+        type: subscription
+        metric: seat
+        limit: -1
+        timeFrame: month
         geo: global
-        domains: []
         unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: Overage
-        description: Per-request price after monthly quota is exceeded
-        name: overage
+        price: '$32/month per team member (annual billing)'
+        userMultiplied: true
+      - label: Self-Service Subscriptions
+        name: self_service_subscriptions
         type: metered
-        metric: requests
+        metric: subscription
         limit: -1
         timeFrame: month
         geo: global
-        domains: []
-        unit: 1000
-        price: TBD
+        unit: 1
+        price: '$0.32 each (20% annual discount)'
         userMultiplied: false
-    elements:
-      - name: All Production Endpoints
-      - name: Email Support
-      - name: SLA Targets
-      - name: Webhook Subscriptions
-      - name: Stigg GraphQL API
-      - name: Stigg REST API
-      - name: Stigg Node.js SDK
-      - name: Stigg Python SDK
-      - name: Stigg Go SDK
-      - name: Stigg React SDK
-  - id: stigg-enterprise
-    name: Enterprise
-    type: enterprise
-    description: Custom-negotiated tier for Stigg. Includes dedicated capacity, contractual SLAs, security
-      review, data residency options, and named technical account management.
-    entries:
-      - label: API Requests
-        description: Negotiated request volume; -1 indicates uncapped subject to fair use
-        name: api_requests
-        type: quota
-        metric: requests
+      - label: Custom Subscriptions (Wire/ACH)
+        name: custom_subscriptions
+        type: metered
+        metric: subscription
         limit: -1
         timeFrame: month
-        geo: configurable
-        domains: []
+        geo: global
         unit: 1
-        price: custom
+        price: '$4.70 each (20% annual discount)'
         userMultiplied: false
-      - label: Rate Limit
-        description: Negotiated burst and steady-state rate
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 1000
-        timeFrame: minute
-        geo: configurable
-        domains: []
+      - label: Advanced Event Metering
+        name: event_metering
+        type: metered
+        metric: gb
+        limit: -1
+        timeFrame: month
+        geo: global
         unit: 1
-        price: custom
+        price: '$0.55/GB per month (20% annual discount)'
+        userMultiplied: false
+      - label: Slack Support Add-On
+        name: slack_support_addon
+        type: subscription
+        metric: month
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '$200/month (annual)'
+        userMultiplied: false
+      - label: AWS Marketplace Add-On
+        name: aws_marketplace_addon
+        type: subscription
+        metric: month
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '$416/month'
+        userMultiplied: false
+      - label: Snowflake Add-On
+        name: snowflake_addon
+        type: subscription
+        metric: month
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '$300/month'
+        userMultiplied: false
+      - label: BigQuery Add-On
+        name: bigquery_addon
+        type: subscription
+        metric: month
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '$300/month'
+        userMultiplied: false
+      - label: Salesforce Native Integration Add-On
+        name: salesforce_addon
+        type: subscription
+        metric: month
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '$416/month'
         userMultiplied: false
     elements:
-      - name: Unlimited / Negotiated Volume
-      - name: 24/7 Dedicated Support
-      - name: Contractual SLA
-      - name: Security & Compliance Review
-      - name: Dedicated Account Manager
-      - name: Custom Data Residency
-      - name: Stigg GraphQL API
-      - name: Stigg REST API
-      - name: Stigg Node.js SDK
-      - name: Stigg Python SDK
-      - name: Stigg Go SDK
-      - name: Stigg React SDK
+      - name: Unlimited Non-Production Environments
+      - name: 1 Production Environment
+      - name: Unlimited Products, Entitlements, Plans, Add-ons
+      - name: Stripe Integration
+      - name: Zuora Integration
+      - name: HubSpot Integration
+      - name: Feature Inspector
+      - name: Experiments
+      - name: 99.95% SLA
+      - name: Optional Custom MSA
+  - id: stigg-scale
+    name: Scale
+    type: enterprise
+    description: Custom-priced enterprise tier with unlimited everything, 24/7/365 support, dedicated
+      Slack channel, dedicated onboarding engineer, named account rep, 99.99% SLA, SAML SSO, RBAC, audit
+      logs, all integrations, and self-hosted deployment option. Wire/ACH billing.
+    entries:
+      - label: Contract
+        name: contract
+        type: subscription
+        metric: varies
+        limit: -1
+        timeFrame: year
+        geo: global
+        unit: 1
+        price: contact sales
+        userMultiplied: false
+    elements:
+      - name: Unlimited Production Environments
+      - name: 24/7/365 Support
+      - name: Dedicated Slack Channel
+      - name: Dedicated Onboarding Engineer
+      - name: Named Account Representative
+      - name: 99.99% SLA
+      - name: SAML SSO & RBAC
+      - name: Audit Logs
+      - name: All Integrations Included
+      - name: Salesforce Native Integration Included
+      - name: Self-Hosted Deployment Option
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
