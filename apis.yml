@@ -119,6 +119,13 @@ common:
     url: https://github.com/stiggio
   - type: Sign Up
     url: https://app.stigg.io/
+  - type: Integrations
+    url: https://www.stigg.io/partners
+integrations:
+  - name: authO
+  - name: stripe
+  - name: aws
+  - name: 'Stigg''s'
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
