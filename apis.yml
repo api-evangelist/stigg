@@ -113,11 +113,11 @@ common:
     url: https://www.stigg.io/
   - type: Documentation
     url: https://docs.stigg.io/
-  - type: Getting Started
+  - type: GettingStarted
     url: https://docs.stigg.io/getting-started
-  - type: GitHub Organization
+  - type: GitHubOrganization
     url: https://github.com/stiggio
-  - type: Sign Up
+  - type: SignUp
     url: https://app.stigg.io/
   - type: Integrations
     url: https://www.stigg.io/partners
