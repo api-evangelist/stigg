@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Plan",
+  "title": "Plan",
+  "type": "object",
+  "description": "A Stigg pricing plan.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Plan identifier."
+    },
+    "name": {
+      "type": "string",
+      "description": "Plan display name."
+    },
+    "description": {
+      "type": "string",
+      "description": "Plan description."
+    }
+  }
+}

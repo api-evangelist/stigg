@@ -1,0 +1,48 @@
+{
+  "operationId": "executeGraphQL",
+  "method": "POST",
+  "path": "/graphql",
+  "summary": "Execute GraphQL Query or Mutation",
+  "requestExamples": [
+    {
+      "contentType": "application/json",
+      "name": "provisionCustomer",
+      "example": {
+        "query": "mutation ProvisionCustomer($input: ProvisionCustomerInput!) {\n  provisionCustomer(input: $input) {\n    customer { id name email }\n    subscription { id status plan { id name } }\n  }\n}\n",
+        "variables": {
+          "input": {
+            "customerId": "customer-123",
+            "name": "Acme Corp",
+            "email": "admin@acme.com"
+          }
+        }
+      }
+    },
+    {
+      "contentType": "application/json",
+      "name": "checkEntitlement",
+      "example": {
+        "query": "query GetCustomerEntitlement($customerId: String!, $featureId: String!) {\n  customerEntitlement(customerId: $customerId, featureId: $featureId) {\n    isGranted\n    usageLimit\n    currentUsage\n    resetPeriod\n  }\n}\n",
+        "variables": {
+          "customerId": "customer-123",
+          "featureId": "feature-api-calls"
+        }
+      }
+    },
+    {
+      "contentType": "application/json",
+      "name": "reportUsage",
+      "example": {
+        "query": "mutation ReportUsage($input: ReportUsageInput!) {\n  reportUsage(input: $input) { id }\n}\n",
+        "variables": {
+          "input": {
+            "customerId": "customer-123",
+            "featureId": "feature-api-calls",
+            "value": 100
+          }
+        }
+      }
+    }
+  ],
+  "responseExamples": []
+}

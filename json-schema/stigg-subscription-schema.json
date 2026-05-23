@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Subscription",
+  "title": "Subscription",
+  "type": "object",
+  "description": "A Stigg subscription linking a customer to a pricing plan.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique subscription identifier."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "ACTIVE",
+        "CANCELED",
+        "TRIAL",
+        "PAUSED"
+      ],
+      "description": "Subscription status."
+    },
+    "plan": {
+      "$ref": "#/components/schemas/Plan"
+    },
+    "startDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Subscription start date."
+    },
+    "endDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Subscription end date (if applicable)."
+    }
+  }
+}

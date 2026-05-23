@@ -1,0 +1,68 @@
+{
+  "provider": "Stigg",
+  "providerId": "stigg",
+  "kind": "json-structure",
+  "description": "Structural overview of the Stigg API surface; extracted from openapi/.",
+  "schemaCount": 7,
+  "operationCount": 1,
+  "schemas": [
+    {
+      "name": "GraphQLRequest",
+      "type": "object",
+      "propertyCount": 3,
+      "required": [
+        "query"
+      ]
+    },
+    {
+      "name": "GraphQLResponse",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    },
+    {
+      "name": "GraphQLError",
+      "type": "object",
+      "propertyCount": 4,
+      "required": []
+    },
+    {
+      "name": "Customer",
+      "type": "object",
+      "propertyCount": 5,
+      "required": []
+    },
+    {
+      "name": "Subscription",
+      "type": "object",
+      "propertyCount": 5,
+      "required": []
+    },
+    {
+      "name": "Plan",
+      "type": "object",
+      "propertyCount": 3,
+      "required": []
+    },
+    {
+      "name": "Entitlement",
+      "type": "object",
+      "propertyCount": 5,
+      "required": []
+    }
+  ],
+  "operations": [
+    {
+      "method": "POST",
+      "path": "/graphql",
+      "operationId": "executeGraphQL",
+      "summary": "Execute GraphQL Query or Mutation",
+      "tags": [
+        "Customers",
+        "Subscriptions",
+        "Entitlements",
+        "Usage"
+      ]
+    }
+  ]
+}
