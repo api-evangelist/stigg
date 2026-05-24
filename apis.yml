@@ -115,6 +115,8 @@ common:
   url: https://app.stigg.io/
 - type: Integrations
   url: https://www.stigg.io/partners
+- type: LLMsTxt
+  url: https://docs.stigg.io/llms.txt
 integrations:
 - name: authO
 - name: stripe
