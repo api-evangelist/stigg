@@ -61,6 +61,8 @@ apis:
   properties:
   - type: Documentation
     url: https://docs.stigg.io/api-and-sdks/integration/overview
+  - type: OpenAPI
+    url: https://raw.githubusercontent.com/api-evangelist/stigg/refs/heads/main/openapi/stigg-rest-openapi.yml
 - aid: stigg:stigg-node-sdk
   name: Stigg Node.js SDK
   description: >-

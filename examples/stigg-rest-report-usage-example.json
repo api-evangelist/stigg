@@ -1,0 +1,29 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://api.stigg.io/api/v1/usage",
+    "headers": {
+      "X-API-KEY": "YOUR_STIGG_API_KEY",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "customerId": "customer-acme-corp",
+      "featureId": "feature-api-calls",
+      "value": 100,
+      "updateBehavior": "DELTA",
+      "idempotencyKey": "usage-2026-06-13-batch-001"
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "data": {
+        "id": "usage-meas-abc123",
+        "customerId": "customer-acme-corp",
+        "featureId": "feature-api-calls",
+        "value": 100,
+        "timestamp": "2026-06-13T10:00:00.000Z"
+      }
+    }
+  }
+}

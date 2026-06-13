@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.stigg.io/schemas/coupon",
+  "title": "Coupon",
+  "description": "A Stigg coupon providing a percentage or fixed discount on a subscription or customer account.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique coupon identifier."
+    },
+    "name": {
+      "type": ["string", "null"],
+      "description": "Coupon display name."
+    },
+    "discountValue": {
+      "type": "number",
+      "description": "The discount amount or percentage value."
+    },
+    "discountType": {
+      "type": "string",
+      "enum": ["PERCENTAGE", "FIXED"],
+      "description": "Whether the discount is a percentage or fixed monetary amount."
+    },
+    "currency": {
+      "type": ["string", "null"],
+      "description": "Currency code for fixed-amount coupons (e.g., usd)."
+    },
+    "maxRedemptions": {
+      "type": ["integer", "null"],
+      "description": "Maximum number of times this coupon can be redeemed. Null means unlimited."
+    },
+    "redemptionsCount": {
+      "type": "integer",
+      "description": "Number of times this coupon has been redeemed."
+    },
+    "isArchived": {
+      "type": "boolean",
+      "description": "Whether this coupon is archived and no longer usable."
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp of when the coupon was created."
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp of when the coupon was last updated."
+    }
+  },
+  "required": ["id", "discountValue", "discountType", "redemptionsCount", "isArchived", "createdAt", "updatedAt"]
+}
