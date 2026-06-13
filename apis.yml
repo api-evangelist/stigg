@@ -1,9 +1,12 @@
 aid: stigg
 name: Stigg
-description: Stigg is a pricing and packaging platform providing feature management, entitlements, and usage-based billing
-  for SaaS and API products. It enables engineering teams to integrate once and allows product managers to iterate on pricing
-  without additional engineering effort. Stigg provides advanced metering, entitlement checks, and subscription management
-  via GraphQL and REST APIs with SDKs in multiple languages.
+description: >-
+  Stigg is a product-led growth monetization platform providing REST and GraphQL APIs for managing pricing
+  plans, entitlements, usage-based billing, feature flags, and subscription lifecycle. It serves as a
+  monetization control layer for SaaS and AI products, enabling engineering teams to implement flexible
+  pricing, granular access control, and real-time usage metering without rebuilding billing infrastructure
+  from scratch. Stigg is SOC 2 Type II and ISO 27001 certified and delivers 99.99% uptime SLA with
+  multi-region deployment.
 type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 tags:
@@ -12,17 +15,23 @@ tags:
 - Billing
 - Entitlements
 - Usage-Based Billing
+- Feature Flags
+- Product-Led Growth
+- Subscriptions
 - SaaS
+- GraphQL
+- REST
 url: https://raw.githubusercontent.com/api-evangelist/stigg/refs/heads/main/apis.yml
 created: '2026-03-27'
-modified: '2026-05-19'
+modified: '2026-06-13'
 specificationVersion: '0.19'
 apis:
 - aid: stigg:stigg-graphql
   name: Stigg GraphQL API
-  description: The Stigg GraphQL API provides full access to customer provisioning, subscription management, entitlement checking,
-    usage reporting, and pricing plan management. Authentication uses the X-API-KEY header with a Full access key from the
-    Stigg dashboard.
+  description: >-
+    The Stigg GraphQL API provides full access to customer provisioning, subscription management, entitlement
+    checking, usage reporting, and pricing plan management. Authentication uses the X-API-KEY header with a Full
+    access key from the Stigg dashboard.
   humanURL: https://docs.stigg.io/api-and-sdks/integration/backend/graphql
   tags:
   - GraphQL
@@ -36,17 +45,12 @@ apis:
     url: https://api.stigg.io/graphql
   - type: OpenAPI
     url: https://raw.githubusercontent.com/api-evangelist/stigg/refs/heads/main/openapi/stigg-openapi.yml
-  - type: NaftikoCapability
-    url: capabilities/stigg-customers.yaml
-  - type: NaftikoCapability
-    url: capabilities/stigg-entitlements.yaml
-  - type: NaftikoCapability
-    url: capabilities/stigg-subscriptions.yaml
-  - type: NaftikoCapability
-    url: capabilities/stigg-usage.yaml
+  - url: graphql/stigg-graphql.md
+    type: GraphQL
 - aid: stigg:stigg-rest
   name: Stigg REST API
-  description: The Stigg REST API (Beta) provides language-agnostic HTTP access to customer management, subscription operations,
+  description: >-
+    The Stigg REST API (Beta) provides language-agnostic HTTP access to customer management, subscription operations,
     entitlement checks, and usage reporting. Supports TypeScript, Python, Go, Ruby, C#, and Java SDKs.
   humanURL: https://docs.stigg.io/api-and-sdks/integration/overview
   tags:
@@ -59,8 +63,9 @@ apis:
     url: https://docs.stigg.io/api-and-sdks/integration/overview
 - aid: stigg:stigg-node-sdk
   name: Stigg Node.js SDK
-  description: Official Node.js / TypeScript SDK for integrating Stigg entitlements, feature flags, and usage-based billing
-    into backend services.
+  description: >-
+    Official Node.js / TypeScript SDK for integrating Stigg entitlements, feature flags, and usage-based billing into
+    backend services.
   humanURL: https://docs.stigg.io/api-and-sdks/integration/backend/nodejs
   tags:
   - Node.js
@@ -91,7 +96,9 @@ apis:
     url: https://docs.stigg.io/api-and-sdks/integration/backend/go
 - aid: stigg:stigg-react-sdk
   name: Stigg React SDK
-  description: Official React frontend SDK for rendering pricing tables, entitlement gates, and usage meters in React applications.
+  description: >-
+    Official React frontend SDK for rendering pricing tables, entitlement gates, and usage meters in React
+    applications.
   humanURL: https://docs.stigg.io/api-and-sdks/integration/frontend/react
   tags:
   - React
@@ -101,27 +108,36 @@ apis:
   - type: Documentation
     url: https://docs.stigg.io/api-and-sdks/integration/frontend/react
 common:
-- type: LinkedIn
-  url: https://www.linkedin.com/company/stigg
 - type: Website
   url: https://www.stigg.io/
 - type: Documentation
   url: https://docs.stigg.io/
 - type: GettingStarted
   url: https://docs.stigg.io/getting-started
-- type: GitHubOrganization
+- type: GitHubOrg
   url: https://github.com/stiggio
+- type: LinkedIn
+  url: https://www.linkedin.com/company/getstigg
+- type: Blog
+  url: https://www.stigg.io/blog
+- type: Pricing
+  url: https://www.stigg.io/pricing
+- type: StatusPage
+  url: https://status.stigg.io/
+- type: X
+  url: https://twitter.com/getstigg
 - type: SignUp
   url: https://app.stigg.io/
 - type: Integrations
   url: https://www.stigg.io/partners
 - type: LLMsTxt
   url: https://docs.stigg.io/llms.txt
-integrations:
-- name: authO
-- name: stripe
-- name: aws
-- name: Stigg's
+- type: Plans
+  url: plans/stigg-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/stigg-rate-limits.yml
+- type: FinOps
+  url: finops/stigg-finops.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

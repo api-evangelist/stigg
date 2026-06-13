@@ -4,8 +4,8 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Stigg
 providerId: stigg
 created: '2026-05-04'
-modified: '2026-05-05'
-reconciled: false
+modified: '2026-06-13'
+reconciled: true
 tags:
   - FinOps
   - Pricing
@@ -14,28 +14,75 @@ tags:
   - Usage-Based Billing
   - SaaS
   - Rate Limiting
-description: Stigg documents that the GraphQL and REST APIs are rate limited per endpoint, but the published
-  rate-limits page references a separate per-endpoint table that was not directly accessible during reconciliation.
-  Limits are enforced per API key. This artifact captures the policy surface; specific per-endpoint numbers
-  should be sourced from the live docs.
+description: Stigg enforces per-operation rate limits on its GraphQL API (and REST API). High-read operations
+  allow up to 6000 requests per minute, mid-tier read operations 3000 per minute, and mutations 250 per
+  minute. Event reporting uses a per-second window. Entity-level limits prevent concurrent mutation storms
+  at 30 calls per minute per entity identifier. Limits are enforced per API key.
 sources:
-  - https://docs.stigg.io/docs/rate-limits
+  - https://docs.stigg.io/faq/scale-and-high-availability/rate-limits
+  - https://docs.stigg.io/api-and-sdks/integration/graphql/rate-limits
 responseCodes:
   throttled: 429
 limits:
-  - name: GraphQL and REST API Rate Limits
+  - name: Edge / Public Read Operations
     scope: api-key
-    metric: varies
-    limit: see https://docs.stigg.io/docs/rate-limits for per-endpoint limits
-    notes: Stigg publishes per-endpoint rate limits referenced from the GraphQL rate-limits documentation.
-      Limits scope to the API key.
+    metric: requests
+    limit: 6000
+    timeWindow: minute
+    operations:
+      - getPaywall (public, Edge API)
+      - getEntitlements
+      - getActiveSubscriptionsList
+    notes: Highest-traffic read paths served via Edge CDN.
+  - name: In-App Read Operations
+    scope: api-key
+    metric: requests
+    limit: 3000
+    timeWindow: minute
+    operations:
+      - getPaywall (in-app)
+      - getSubscription
+      - previewSubscription
+      - estimateSubscription
+      - getCustomer
+  - name: Mutation Operations
+    scope: api-key
+    metric: requests
+    limit: 250
+    timeWindow: minute
+    operations:
+      - provisionSubscription
+      - applySubscription
+      - provisionCustomer
+      - cancelSubscription
+      - updateCustomer
+      - updateSubscription
+      - archiveCustomer
+      - grantCredits
+  - name: Event Reporting
+    scope: api-key
+    metric: bulk-requests
+    limit: 1000
+    timeWindow: second
+    notes: reportEvent uses a per-second window rather than per-minute. Limit is per bulk batch size.
+  - name: Per-Entity Mutation Limit
+    scope: entity
+    metric: requests
+    limit: 30
+    timeWindow: minute
+    notes: >-
+      Prevents repeated concurrent mutations on a single customer or subscription entity.
+      Applies to customerId, subscriptionId, and customerId:resourceId combinations.
 policies:
   - name: Per-Endpoint Limits
-    description: Stigg sets distinct rate limits per endpoint rather than a global account ceiling; consult
-      the per-endpoint table in the rate-limits documentation.
+    description: Stigg sets distinct rate limits per operation rather than a single global account ceiling.
+  - name: Per-Entity Limits
+    description: In addition to global per-endpoint limits, each entity (customer, subscription, resource)
+      has its own 30/min concurrent mutation cap to prevent stampede scenarios.
   - name: Backoff Strategy
-    description: Clients receiving HTTP 429 should back off and retry; exponential backoff with jitter
-      is recommended.
+    description: Clients receiving HTTP 429 should back off and retry; exponential backoff with jitter is recommended.
+  - name: Limit Escalation
+    description: Higher rate limits are available upon request by contacting support@stigg.io.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

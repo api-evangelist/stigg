@@ -1,8 +1,8 @@
-# Stigg
+# Stigg (stigg)
 
-Stigg is a pricing and packaging platform providing feature management, entitlements, and usage-based billing for SaaS and API products. It enables engineering teams to integrate once and allows product managers to iterate on pricing without additional engineering effort. Stigg provides advanced metering, entitlement checks, and subscription management via GraphQL and REST APIs with SDKs in multiple languages.
+Stigg is a product-led growth monetization platform providing REST and GraphQL APIs for managing pricing plans, entitlements, usage-based billing, feature flags, and subscription lifecycle. It serves as a monetization control layer for SaaS and AI products, enabling engineering teams to implement flexible pricing, granular access control, and real-time usage metering without rebuilding billing infrastructure from scratch. Stigg is SOC 2 Type II and ISO 27001 certified and delivers 99.99% uptime SLA with multi-region deployment.
 
-**URL:** [https://raw.githubusercontent.com/api-evangelist/stigg/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/stigg/refs/heads/main/apis.yml)
+**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/stigg/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/stigg/refs/heads/main/apis.yml)
 
 ## Scope
 
@@ -15,106 +15,103 @@ Stigg is a pricing and packaging platform providing feature management, entitlem
 - Billing
 - Entitlements
 - Usage-Based Billing
+- Feature Flags
+- Product-Led Growth
+- Subscriptions
 - SaaS
+- GraphQL
+- REST
 
 ## Timestamps
 
 - **Created:** 2026-03-27
-- **Modified:** 2026-05-02
+- **Modified:** 2026-06-13
 
 ## APIs
 
 ### Stigg GraphQL API
 
-The primary API using GraphQL at api.stigg.io/graphql for customer provisioning, subscription management, entitlement checking, and usage reporting. Authenticated via X-API-KEY header.
+The Stigg GraphQL API provides full access to customer provisioning, subscription management, entitlement checking, usage reporting, and pricing plan management. Authentication uses the X-API-KEY header with a Full access key from the Stigg dashboard. The single endpoint is `https://api.stigg.io/graphql`.
 
-**Human URL:** [https://docs.stigg.io/api-and-sdks/integration/backend/graphql](https://docs.stigg.io/api-and-sdks/integration/backend/graphql)
+- **Human URL:** [https://docs.stigg.io/api-and-sdks/integration/backend/graphql](https://docs.stigg.io/api-and-sdks/integration/backend/graphql)
+- **Base URL:** https://api.stigg.io/graphql
 
-### Stigg REST API (Beta)
+#### Tags
 
-Language-agnostic HTTP REST API with SDKs in TypeScript, Python, Go, Ruby, C#, and Java.
+- GraphQL
+- Entitlements
+- Subscriptions
+- Billing
 
-**Human URL:** [https://docs.stigg.io/api-and-sdks/integration/overview](https://docs.stigg.io/api-and-sdks/integration/overview)
+#### Properties
 
-### SDKs
+- [Documentation](https://docs.stigg.io/api-and-sdks/integration/backend/graphql)
+- [GraphQL Endpoint](https://api.stigg.io/graphql)
+- [OpenAPI](https://raw.githubusercontent.com/api-evangelist/stigg/refs/heads/main/openapi/stigg-openapi.yml)
 
-- **Node.js**: [docs.stigg.io/api-and-sdks/integration/backend/nodejs](https://docs.stigg.io/api-and-sdks/integration/backend/nodejs)
-- **Python**: [docs.stigg.io/api-and-sdks/integration/backend/python](https://docs.stigg.io/api-and-sdks/integration/backend/python)
-- **Go**: [docs.stigg.io/api-and-sdks/integration/backend/go](https://docs.stigg.io/api-and-sdks/integration/backend/go)
-- **React**: [docs.stigg.io/api-and-sdks/integration/frontend/react](https://docs.stigg.io/api-and-sdks/integration/frontend/react)
+### Stigg REST API
 
-## OpenAPI Specifications
+The Stigg REST API (recommended for new integrations) provides language-agnostic HTTP access to customer management, subscription operations, entitlement checks, and usage reporting. Backed by language-specific SDKs for TypeScript, Python, Go, Ruby, C#, and Java.
 
-| Spec | Description |
-|---|---|
-| [stigg-openapi.yml](openapi/stigg-openapi.yml) | Stigg API — GraphQL endpoint with customer, subscription, and entitlement schemas |
+- **Human URL:** [https://docs.stigg.io/api-and-sdks/integration/overview](https://docs.stigg.io/api-and-sdks/integration/overview)
 
-## Capabilities
+#### Tags
 
-### Workflow Capabilities
+- REST
+- Entitlements
+- Subscriptions
+- Billing
 
-| Capability | Tools | Description |
-|---|---|---|
-| [pricing-and-entitlements.yaml](capabilities/pricing-and-entitlements.yaml) | 7 | Unified pricing, subscription, and entitlement management workflow |
+#### Properties
 
-### Shared Definitions
+- [Documentation](https://docs.stigg.io/api-and-sdks/integration/overview)
 
-| Definition | Description |
-|---|---|
-| [shared/stigg.yaml](capabilities/shared/stigg.yaml) | Stigg GraphQL API consumed definition with 7 operations |
+### Stigg Node.js SDK
 
-## Rules
+Official Node.js / TypeScript SDK for integrating Stigg entitlements, feature flags, and usage-based billing into backend services.
 
-| Ruleset | Description |
-|---|---|
-| [stigg-rules.yml](rules/stigg-rules.yml) | Spectral ruleset enforcing Stigg API conventions |
+- **Human URL:** [https://docs.stigg.io/api-and-sdks/integration/backend/nodejs](https://docs.stigg.io/api-and-sdks/integration/backend/nodejs)
+- **GitHub:** [https://github.com/stiggio/stigg-typescript](https://github.com/stiggio/stigg-typescript)
 
-## JSON Schema
+### Stigg Python SDK
 
-| Schema | Description |
-|---|---|
-| [stigg-customer-schema.json](json-schema/stigg-customer-schema.json) | Customer entity schema |
-| [stigg-entitlement-schema.json](json-schema/stigg-entitlement-schema.json) | Feature entitlement schema with usage limits |
+Official Python SDK for integrating Stigg entitlements and usage-based billing into Python backend services.
 
-## JSON Structure
+- **Human URL:** [https://docs.stigg.io/api-and-sdks/integration/backend/python](https://docs.stigg.io/api-and-sdks/integration/backend/python)
+- **GitHub:** [https://github.com/stiggio/stigg-python](https://github.com/stiggio/stigg-python)
 
-| Structure | Description |
-|---|---|
-| [stigg-entitlement-structure.json](json-structure/stigg-entitlement-structure.json) | Entitlement check response structure |
+### Stigg Go SDK
 
-## JSON-LD
+Official Go SDK for integrating Stigg entitlements and usage-based billing into Go backend services.
 
-| Context | Description |
-|---|---|
-| [stigg-context.jsonld](json-ld/stigg-context.jsonld) | JSON-LD context mapping Stigg vocabulary to schema.org |
+- **Human URL:** [https://docs.stigg.io/api-and-sdks/integration/backend/go](https://docs.stigg.io/api-and-sdks/integration/backend/go)
+- **GitHub:** [https://github.com/stiggio/stigg-go](https://github.com/stiggio/stigg-go)
 
-## Examples
+### Stigg React SDK
 
-| Example | Description |
-|---|---|
-| [stigg-provision-customer-example.json](examples/stigg-provision-customer-example.json) | Provision a customer with initial plan enrollment |
-| [stigg-check-entitlement-example.json](examples/stigg-check-entitlement-example.json) | Check feature access for a customer |
+Official React frontend SDK for rendering pricing tables, entitlement gates, and usage meters in React applications.
 
-## Vocabulary
-
-| Vocabulary | Description |
-|---|---|
-| [stigg-vocabulary.yml](vocabulary/stigg-vocabulary.yml) | Domain vocabulary covering pricing, entitlements, and metering |
-
-## GitHub Organization
-
-- [github.com/stiggio](https://github.com/stiggio) — SDKs (Node.js, Python, Go, Ruby, Java, C#), CLI, Helm charts, and integration examples
+- **Human URL:** [https://docs.stigg.io/api-and-sdks/integration/frontend/react](https://docs.stigg.io/api-and-sdks/integration/frontend/react)
 
 ## Common Properties
 
 - [Website](https://www.stigg.io/)
 - [Documentation](https://docs.stigg.io/)
 - [Getting Started](https://docs.stigg.io/getting-started)
-- [Sign Up](https://app.stigg.io/)
 - [GitHub Organization](https://github.com/stiggio)
+- [LinkedIn](https://www.linkedin.com/company/getstigg)
+- [Blog](https://www.stigg.io/blog)
+- [Pricing](https://www.stigg.io/pricing)
+- [Status Page](https://status.stigg.io/)
+- [X / Twitter](https://twitter.com/getstigg)
+- [Sign Up](https://app.stigg.io/)
+- [Integrations](https://www.stigg.io/partners)
+- [LLMs.txt](https://docs.stigg.io/llms.txt)
+- [Plans](plans/stigg-plans-pricing.yml)
+- [Rate Limits](rate-limits/stigg-rate-limits.yml)
+- [FinOps](finops/stigg-finops.yml)
 
 ## Maintainers
 
 **FN:** Kin Lane
-
 **Email:** kin@apievangelist.com
