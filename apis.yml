@@ -128,11 +128,11 @@ common:
   url: https://status.stigg.io/
 - type: X
   url: https://twitter.com/getstigg
-- type: SignUp
+- type: Signup
   url: https://app.stigg.io/
 - type: Integrations
   url: https://www.stigg.io/partners
-- type: LLMsTxt
+- type: LlmsText
   url: https://docs.stigg.io/llms.txt
 - type: Plans
   url: plans/stigg-plans-pricing.yml
