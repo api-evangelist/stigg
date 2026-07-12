@@ -1,0 +1,17 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/stigg-openapi.yml, openapi/stigg-rest-openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+schemes:
+- name: ApiKey
+  type: apiKey
+  in: header
+  parameter: X-API-KEY
+  description: Full access key from the Stigg dashboard (Integrations > API keys).
+  sources:
+  - openapi/stigg-openapi.yml
+  - openapi/stigg-rest-openapi.yml
