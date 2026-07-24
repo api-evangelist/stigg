@@ -1,0 +1,122 @@
+openapi: 3.0.3
+info:
+  title: Stigg Coupons Entitlements API
+  description: Stigg is a pricing and packaging platform providing feature management, entitlements, and usage-based billing for SaaS and API products. The Stigg API exposes GraphQL and REST endpoints for customer provisioning, subscription management, entitlement checking, and usage reporting. Authentication requires a Full access key passed via the X-API-KEY header.
+  version: '1.0'
+  contact:
+    url: https://www.stigg.io/
+  termsOfService: https://www.stigg.io/terms
+servers:
+- url: https://api.stigg.io
+  description: Stigg Production API
+security:
+- ApiKey: []
+tags:
+- name: Entitlements
+  description: Feature access and entitlement checks.
+paths:
+  /graphql:
+    post:
+      operationId: executeGraphQL
+      summary: Execute GraphQL Query or Mutation
+      description: Execute any Stigg GraphQL query or mutation. Stigg uses GraphQL as its primary API. Send a JSON body with a query/mutation string and optional variables. Supports customer management, subscription operations, entitlement checks, and usage reporting.
+      tags:
+      - Entitlements
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GraphQLRequest'
+            examples:
+              provisionCustomer:
+                summary: Provision a Customer
+                value:
+                  query: "mutation ProvisionCustomer($input: ProvisionCustomerInput!) {\n  provisionCustomer(input: $input) {\n    customer { id name email }\n    subscription { id status plan { id name } }\n  }\n}\n"
+                  variables:
+                    input:
+                      customerId: customer-123
+                      name: Acme Corp
+                      email: admin@acme.com
+              checkEntitlement:
+                summary: Check Feature Entitlement
+                value:
+                  query: "query GetCustomerEntitlement($customerId: String!, $featureId: String!) {\n  customerEntitlement(customerId: $customerId, featureId: $featureId) {\n    isGranted\n    usageLimit\n    currentUsage\n    resetPeriod\n  }\n}\n"
+                  variables:
+                    customerId: customer-123
+                    featureId: feature-api-calls
+              reportUsage:
+                summary: Report Feature Usage
+                value:
+                  query: "mutation ReportUsage($input: ReportUsageInput!) {\n  reportUsage(input: $input) { id }\n}\n"
+                  variables:
+                    input:
+                      customerId: customer-123
+                      featureId: feature-api-calls
+                      value: 100
+      responses:
+        '200':
+          description: GraphQL response (may contain data or errors).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GraphQLResponse'
+        '401':
+          description: Invalid or missing X-API-KEY header.
+components:
+  schemas:
+    GraphQLRequest:
+      type: object
+      required:
+      - query
+      properties:
+        query:
+          type: string
+          description: GraphQL query or mutation string.
+        variables:
+          type: object
+          description: Variables for the GraphQL operation.
+          additionalProperties: true
+        operationName:
+          type: string
+          description: Named operation to execute when the document contains multiple.
+    GraphQLResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          description: Response data from the GraphQL operation.
+          additionalProperties: true
+        errors:
+          type: array
+          description: Array of GraphQL errors if any occurred.
+          items:
+            $ref: '#/components/schemas/GraphQLError'
+    GraphQLError:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Human-readable error message.
+        locations:
+          type: array
+          items:
+            type: object
+            properties:
+              line:
+                type: integer
+              column:
+                type: integer
+        path:
+          type: array
+          items:
+            type: string
+        extensions:
+          type: object
+          additionalProperties: true
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+      description: Full access key from the Stigg dashboard (Integrations > API keys).

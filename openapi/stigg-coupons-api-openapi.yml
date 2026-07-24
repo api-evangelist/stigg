@@ -1,0 +1,284 @@
+openapi: 3.0.3
+info:
+  title: Stigg Coupons API
+  description: Stigg is a pricing and packaging platform providing feature management, entitlements, and usage-based billing for SaaS and API products. The Stigg API exposes GraphQL and REST endpoints for customer provisioning, subscription management, entitlement checking, and usage reporting. Authentication requires a Full access key passed via the X-API-KEY header.
+  version: '1.0'
+  contact:
+    url: https://www.stigg.io/
+  termsOfService: https://www.stigg.io/terms
+servers:
+- url: https://api.stigg.io
+  description: Stigg Production API
+security:
+- ApiKey: []
+tags:
+- name: Coupons
+  description: Coupon retrieval.
+paths:
+  /api/v1/coupons:
+    get:
+      tags:
+      - Coupons
+      summary: List coupons
+      description: Retrieves a paginated list of coupons in the environment.
+      operationId: CouponsController_getCoupons
+      parameters:
+      - name: after
+        required: false
+        in: query
+        schema:
+          format: uuid
+          type: string
+      - name: before
+        required: false
+        in: query
+        schema:
+          format: uuid
+          type: string
+      - name: limit
+        required: false
+        in: query
+        schema:
+          minimum: 1
+          maximum: 100
+          default: 20
+          type: integer
+      - name: X-ACCOUNT-ID
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: X-ENVIRONMENT-ID
+        in: header
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A paginated list of coupon objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CouponListResponseDto'
+        '401':
+          description: User is not authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthenticatedErrorResponseDto'
+        '403':
+          description: User is not allowed to access this resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenErrorResponseDto'
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsErrorResponseDto'
+  /api/v1/coupons/{id}:
+    get:
+      tags:
+      - Coupons
+      summary: Get coupon by ID
+      description: Retrieves a coupon by its unique identifier.
+      operationId: CouponsController_getCoupon
+      parameters:
+      - name: id
+        required: true
+        in: path
+        description: The unique identifier of the coupon
+        schema:
+          minLength: 1
+          maxLength: 255
+          type: string
+      - name: X-ACCOUNT-ID
+        in: header
+        required: false
+        schema:
+          type: string
+      - name: X-ENVIRONMENT-ID
+        in: header
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The coupon object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CouponResponseDto'
+        '401':
+          description: User is not authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthenticatedErrorResponseDto'
+        '403':
+          description: User is not allowed to access this resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenErrorResponseDto'
+        '404':
+          description: Coupon not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundErrorResponseDto'
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsErrorResponseDto'
+components:
+  schemas:
+    CouponResponseDto:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/CouponDto'
+      required:
+      - data
+      description: Single coupon response.
+    NotFoundErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: string
+          nullable: true
+      required:
+      - message
+      - code
+      description: Resource not found error response.
+    TooManyRequestsErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: string
+          enum:
+          - RateLimitExceeded
+          nullable: true
+      required:
+      - message
+      - code
+      description: Rate limit exceeded error response.
+    CouponListResponseDto:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CouponDto'
+        pagination:
+          $ref: '#/components/schemas/PaginationDto'
+      required:
+      - data
+      - pagination
+      description: Paginated list of coupons.
+    ForbiddenErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: string
+          enum:
+          - IdentityForbidden
+          - AccessDeniedError
+          - NoFeatureEntitlementError
+          nullable: true
+      required:
+      - message
+      - code
+      description: Authorization error response.
+    UnauthenticatedErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: string
+          enum:
+          - Unauthenticated
+          nullable: true
+      required:
+      - message
+      - code
+      description: Authentication error response.
+    PaginationDto:
+      type: object
+      properties:
+        next:
+          type: string
+          format: uuid
+          description: Cursor for fetching the next page of results, or null if no additional pages exist.
+          nullable: true
+        prev:
+          type: string
+          format: uuid
+          description: Cursor for fetching the previous page of results, or null if at the beginning.
+          nullable: true
+      required:
+      - next
+      - prev
+      description: Pagination metadata including cursors for navigating through results.
+    CouponDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Coupon identifier.
+        name:
+          type: string
+          description: Coupon display name.
+        discountValue:
+          type: number
+          description: Discount amount or percentage value.
+        discountType:
+          type: string
+          enum:
+          - PERCENTAGE
+          - FIXED
+          description: Whether discount is a percentage or fixed amount.
+        currency:
+          type: string
+          description: Currency for fixed-amount coupons.
+          nullable: true
+        maxRedemptions:
+          type: integer
+          description: Maximum number of times this coupon can be redeemed.
+          nullable: true
+        redemptionsCount:
+          type: integer
+          description: Number of times this coupon has been redeemed.
+        isArchived:
+          type: boolean
+          description: Whether this coupon is archived.
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - discountValue
+      - discountType
+      - createdAt
+      - updatedAt
+      description: A discount coupon.
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+      description: Full access key from the Stigg dashboard (Integrations > API keys).
