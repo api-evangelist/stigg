@@ -1,0 +1,1596 @@
+openapi: 3.0.0
+info:
+  title: Stigg REST API
+  description: >-
+    The Stigg REST API (Public Beta) provides RESTful HTTP access to customer management,
+    subscription provisioning, entitlement enforcement, and usage metering. It supports
+    TypeScript, Python, Go, Ruby, C#, and Java SDKs and accepts API key authentication
+    via the X-API-KEY header. Base URL: https://api.stigg.io/api/v1
+  version: 7.10.0
+  contact:
+    url: https://www.stigg.io/
+  termsOfService: https://www.stigg.io/terms
+servers:
+  - url: https://api.stigg.io
+    description: Stigg Production API
+tags:
+  - name: Customers
+    description: Customer provisioning and management.
+  - name: Subscriptions
+    description: Subscription lifecycle management.
+  - name: Usage
+    description: Usage reporting and event-based metering.
+  - name: Coupons
+    description: Coupon retrieval.
+paths:
+  /api/v1/customers:
+    post:
+      tags:
+        - Customers
+      summary: Provision customer
+      description: >-
+        Creates a new customer and optionally provisions an initial subscription
+        in a single operation.
+      operationId: CustomerController_provisionCustomer
+      parameters:
+        - name: X-ACCOUNT-ID
+          in: header
+          description: >-
+            Account ID — optional when authenticating with a user JWT (Bearer
+            token); falls back to the user's first membership. Ignored for
+            API-key auth.
+          required: false
+          schema:
+            type: string
+        - name: X-ENVIRONMENT-ID
+          in: header
+          description: >-
+            Environment ID — required when authenticating with a user JWT
+            (Bearer token) on environment-scoped endpoints. Ignored for API-key
+            auth (env is intrinsic to the key).
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProvisionCustomerRequestDto'
+            examples:
+              basic:
+                summary: Provision a customer
+                value:
+                  id: customer-123
+                  name: Acme Corp
+                  email: billing@acme.com
+      responses:
+        '201':
+          description: The newly created customer object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponseDto'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadInputErrorResponseDto'
+        '401':
+          description: User is not authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthenticatedErrorResponseDto'
+        '403':
+          description: User is not allowed to access this resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenErrorResponseDto'
+        '409':
+          description: Customer conflict error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictErrorResponseDto'
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsErrorResponseDto'
+    get:
+      tags:
+        - Customers
+      summary: List customers
+      description: Retrieves a paginated list of customers in the environment.
+      operationId: CustomerController_getCustomers
+      parameters:
+        - name: after
+          required: false
+          in: query
+          description: Return items that come after this cursor
+          schema:
+            format: uuid
+            type: string
+        - name: before
+          required: false
+          in: query
+          description: Return items that come before this cursor
+          schema:
+            format: uuid
+            type: string
+        - name: limit
+          required: false
+          in: query
+          description: Maximum number of items to return
+          schema:
+            minimum: 1
+            maximum: 100
+            default: 20
+            type: integer
+        - name: email
+          required: false
+          in: query
+          description: Filter by exact customer email address
+          schema:
+            maxLength: 255
+            type: string
+        - name: name
+          required: false
+          in: query
+          description: Filter by exact customer name
+          schema:
+            maxLength: 255
+            type: string
+        - name: X-ACCOUNT-ID
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: X-ENVIRONMENT-ID
+          in: header
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A paginated list of customer objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerListResponseDto'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadInputErrorResponseDto'
+        '401':
+          description: User is not authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthenticatedErrorResponseDto'
+        '403':
+          description: User is not allowed to access this resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenErrorResponseDto'
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsErrorResponseDto'
+  /api/v1/customers/{id}:
+    patch:
+      tags:
+        - Customers
+      summary: Update a customer
+      description: >-
+        Updates an existing customer's properties such as name, email, and
+        billing information.
+      operationId: CustomerController_patchCustomer
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: The unique identifier of the customer
+          schema:
+            minLength: 1
+            maxLength: 255
+            type: string
+        - name: X-ACCOUNT-ID
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: X-ENVIRONMENT-ID
+          in: header
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCustomerRequestDto'
+      responses:
+        '200':
+          description: The updated customer object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponseDto'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadInputErrorResponseDto'
+        '401':
+          description: User is not authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthenticatedErrorResponseDto'
+        '403':
+          description: User is not allowed to access this resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenErrorResponseDto'
+        '404':
+          description: Customer not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundErrorResponseDto'
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsErrorResponseDto'
+  /api/v1/subscriptions:
+    post:
+      tags:
+        - Subscriptions
+      summary: Provision subscription
+      description: >-
+        Creates a new subscription for an existing customer. When payment is
+        required and no payment method exists, returns a checkout URL.
+      operationId: SubscriptionController_provisionSubscription
+      parameters:
+        - name: X-ACCOUNT-ID
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: X-ENVIRONMENT-ID
+          in: header
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProvisionSubscriptionRequestDto'
+            examples:
+              basic:
+                summary: Provision a subscription
+                value:
+                  customerId: customer-123
+                  planId: plan-pro
+      responses:
+        '201':
+          description: The newly created subscription object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionResponseDto'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadInputErrorResponseDto'
+        '401':
+          description: User is not authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthenticatedErrorResponseDto'
+        '403':
+          description: User is not allowed to access this resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenErrorResponseDto'
+        '409':
+          description: Subscription conflict error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictErrorResponseDto'
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsErrorResponseDto'
+    get:
+      tags:
+        - Subscriptions
+      summary: List subscriptions
+      description: >-
+        Retrieves a paginated list of subscriptions, with optional filters for
+        customer, status, and plan.
+      operationId: SubscriptionController_getSubscriptions
+      parameters:
+        - name: after
+          required: false
+          in: query
+          schema:
+            format: uuid
+            type: string
+        - name: before
+          required: false
+          in: query
+          schema:
+            format: uuid
+            type: string
+        - name: limit
+          required: false
+          in: query
+          schema:
+            minimum: 1
+            maximum: 100
+            default: 20
+            type: integer
+        - name: customerId
+          required: false
+          in: query
+          description: Filter by customer ID
+          schema:
+            type: string
+        - name: status
+          required: false
+          in: query
+          description: Filter by subscription status
+          schema:
+            type: string
+            enum: [active, canceled, trial, paused]
+        - name: X-ACCOUNT-ID
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: X-ENVIRONMENT-ID
+          in: header
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A paginated list of subscription objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionListResponseDto'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadInputErrorResponseDto'
+        '401':
+          description: User is not authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthenticatedErrorResponseDto'
+        '403':
+          description: User is not allowed to access this resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenErrorResponseDto'
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsErrorResponseDto'
+  /api/v1/subscriptions/{id}:
+    get:
+      tags:
+        - Subscriptions
+      summary: Get subscription by ID
+      description: >-
+        Retrieves a subscription by its unique identifier, including plan
+        details, billing period, status, and add-ons.
+      operationId: SubscriptionController_getSubscription
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: The unique identifier of the subscription
+          schema:
+            minLength: 1
+            maxLength: 255
+            type: string
+        - name: X-ACCOUNT-ID
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: X-ENVIRONMENT-ID
+          in: header
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The subscription object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionResponseDto'
+        '401':
+          description: User is not authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthenticatedErrorResponseDto'
+        '403':
+          description: User is not allowed to access this resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenErrorResponseDto'
+        '404':
+          description: Subscription not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundErrorResponseDto'
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsErrorResponseDto'
+  /api/v1/subscriptions/{id}/cancel:
+    post:
+      tags:
+        - Subscriptions
+      summary: Cancel subscription
+      description: >-
+        Cancels an active subscription, either immediately or at a specified
+        time such as end of billing period.
+      operationId: SubscriptionController_cancelSubscription
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: The unique identifier of the subscription
+          schema:
+            minLength: 1
+            maxLength: 255
+            type: string
+        - name: X-ACCOUNT-ID
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: X-ENVIRONMENT-ID
+          in: header
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelSubscriptionRequestDto'
+      responses:
+        '200':
+          description: The canceled subscription object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionResponseDto'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadInputErrorResponseDto'
+        '401':
+          description: User is not authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthenticatedErrorResponseDto'
+        '403':
+          description: User is not allowed to access this resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenErrorResponseDto'
+        '404':
+          description: Subscription not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundErrorResponseDto'
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsErrorResponseDto'
+  /api/v1/subscriptions/preview:
+    post:
+      tags:
+        - Subscriptions
+      summary: Preview subscription
+      description: >-
+        Previews the pricing impact of creating or updating a subscription
+        without making changes. Returns estimated costs, taxes, and proration
+        details.
+      operationId: SubscriptionController_previewSubscription
+      parameters:
+        - name: X-ACCOUNT-ID
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: X-ENVIRONMENT-ID
+          in: header
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PreviewSubscriptionRequestDto'
+      responses:
+        '200':
+          description: Subscription pricing preview.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreviewSubscriptionResponseDto'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadInputErrorResponseDto'
+        '401':
+          description: User is not authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthenticatedErrorResponseDto'
+        '403':
+          description: User is not allowed to access this resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenErrorResponseDto'
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsErrorResponseDto'
+  /api/v1/usage:
+    post:
+      tags:
+        - Usage
+      summary: Report usage measurements
+      description: >-
+        Reports usage measurements for metered features. The reported usage is
+        used to track, limit, and bill customer consumption.
+      operationId: UsageController_reportUsage
+      parameters:
+        - name: X-ACCOUNT-ID
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: X-ENVIRONMENT-ID
+          in: header
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportUsageRequestDto'
+            examples:
+              basic:
+                summary: Report API call usage
+                value:
+                  customerId: customer-123
+                  featureId: feature-api-calls
+                  value: 100
+      responses:
+        '201':
+          description: The recorded usage measurement objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageResponseDto'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadInputErrorResponseDto'
+        '401':
+          description: User is not authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthenticatedErrorResponseDto'
+        '403':
+          description: User is not allowed to access this resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenErrorResponseDto'
+        '409':
+          description: Usage conflict error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictErrorResponseDto'
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsErrorResponseDto'
+  /api/v1/events:
+    post:
+      tags:
+        - Usage
+      summary: Report usage events
+      description: >-
+        Reports raw usage events for event-based metering. Events are ingested
+        asynchronously and aggregated into usage totals.
+      operationId: EventsController_reportEvent
+      parameters:
+        - name: X-ACCOUNT-ID
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: X-ENVIRONMENT-ID
+          in: header
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportEventRequestDto'
+            examples:
+              basic:
+                summary: Report a usage event
+                value:
+                  customerId: customer-123
+                  featureId: feature-api-calls
+                  eventName: api_request
+                  idempotencyKey: evt-unique-001
+      responses:
+        '200':
+          description: Confirmation that events were accepted for processing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventResponseDto'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadInputErrorResponseDto'
+        '401':
+          description: User is not authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthenticatedErrorResponseDto'
+        '403':
+          description: User is not allowed to access this resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenErrorResponseDto'
+        '404':
+          description: Event not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundErrorResponseDto'
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsErrorResponseDto'
+  /api/v1/coupons:
+    get:
+      tags:
+        - Coupons
+      summary: List coupons
+      description: Retrieves a paginated list of coupons in the environment.
+      operationId: CouponsController_getCoupons
+      parameters:
+        - name: after
+          required: false
+          in: query
+          schema:
+            format: uuid
+            type: string
+        - name: before
+          required: false
+          in: query
+          schema:
+            format: uuid
+            type: string
+        - name: limit
+          required: false
+          in: query
+          schema:
+            minimum: 1
+            maximum: 100
+            default: 20
+            type: integer
+        - name: X-ACCOUNT-ID
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: X-ENVIRONMENT-ID
+          in: header
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A paginated list of coupon objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CouponListResponseDto'
+        '401':
+          description: User is not authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthenticatedErrorResponseDto'
+        '403':
+          description: User is not allowed to access this resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenErrorResponseDto'
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsErrorResponseDto'
+  /api/v1/coupons/{id}:
+    get:
+      tags:
+        - Coupons
+      summary: Get coupon by ID
+      description: Retrieves a coupon by its unique identifier.
+      operationId: CouponsController_getCoupon
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: The unique identifier of the coupon
+          schema:
+            minLength: 1
+            maxLength: 255
+            type: string
+        - name: X-ACCOUNT-ID
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: X-ENVIRONMENT-ID
+          in: header
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The coupon object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CouponResponseDto'
+        '401':
+          description: User is not authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthenticatedErrorResponseDto'
+        '403':
+          description: User is not allowed to access this resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenErrorResponseDto'
+        '404':
+          description: Coupon not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundErrorResponseDto'
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsErrorResponseDto'
+components:
+  schemas:
+    PaginationDto:
+      type: object
+      properties:
+        next:
+          type: string
+          format: uuid
+          description: Cursor for fetching the next page of results, or null if no additional pages exist.
+          nullable: true
+        prev:
+          type: string
+          format: uuid
+          description: Cursor for fetching the previous page of results, or null if at the beginning.
+          nullable: true
+      required:
+        - next
+        - prev
+      description: Pagination metadata including cursors for navigating through results.
+    PaymentMethodDto:
+      type: object
+      properties:
+        billingId:
+          type: string
+          maxLength: 255
+          description: The default payment method id.
+          nullable: true
+        type:
+          type: string
+          enum:
+            - CARD
+            - BANK
+            - CASH_APP
+          description: The default payment method type.
+        cardLast4Digits:
+          type: string
+          maxLength: 255
+          description: The last 4 digits of the default payment method.
+          nullable: true
+        cardExpiryMonth:
+          type: number
+          description: The expiration month of the default payment method.
+          nullable: true
+        cardExpiryYear:
+          type: number
+          description: The expiration year of the default payment method.
+          nullable: true
+      required:
+        - billingId
+        - type
+        - cardLast4Digits
+        - cardExpiryMonth
+        - cardExpiryYear
+      description: The default payment method details.
+    CustomerIntegrationDto:
+      type: object
+      properties:
+        vendorIdentifier:
+          type: string
+          enum:
+            - AUTH0
+            - ZUORA
+            - STRIPE
+            - HUBSPOT
+            - AWS_MARKETPLACE
+            - SNOWFLAKE
+            - SALESFORCE
+            - BIG_QUERY
+            - OPEN_FGA
+            - APP_STORE
+            - RECEIVED
+            - PREQUEL
+          description: The vendor identifier of integration.
+        syncedEntityId:
+          type: string
+          maxLength: 255
+          description: Synced entity id.
+          nullable: true
+        id:
+          type: string
+          maxLength: 255
+          description: Integration details.
+      required:
+        - vendorIdentifier
+        - syncedEntityId
+        - id
+      description: External billing or CRM integration link.
+    CustomerDto:
+      type: object
+      properties:
+        id:
+          type: string
+          maxLength: 255
+          minLength: 1
+          pattern: ^[a-zA-Z0-9][a-zA-Z0-9_|.@-]*$
+          description: Customer slug.
+        name:
+          type: string
+          maxLength: 255
+          description: The name of the customer.
+          nullable: true
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          description: The email of the customer.
+          nullable: true
+        billingId:
+          type: string
+          maxLength: 255
+          description: The unique identifier for the entity in the billing provider.
+          nullable: true
+        billingCurrency:
+          type: string
+          description: The billing currency of the customer.
+          nullable: true
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: Additional metadata.
+        integrations:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerIntegrationDto'
+          description: List of integrations.
+        defaultPaymentMethod:
+          $ref: '#/components/schemas/PaymentMethodDto'
+        couponId:
+          type: string
+          description: Customer level coupon.
+          nullable: true
+        timezone:
+          type: string
+          maxLength: 255
+          description: Timezone to use for this customer.
+          nullable: true
+        language:
+          type: string
+          maxLength: 255
+          description: Language to use for this customer.
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp of when the record was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp of when the record was last updated.
+        archivedAt:
+          type: string
+          format: date-time
+          description: Timestamp of when the record was archived.
+          nullable: true
+      required:
+        - id
+        - createdAt
+        - updatedAt
+        - archivedAt
+      description: A customer can be either an organization or an individual.
+    ProvisionCustomerRequestDto:
+      type: object
+      properties:
+        id:
+          type: string
+          maxLength: 255
+          minLength: 1
+          pattern: ^[a-zA-Z0-9][a-zA-Z0-9_|.@-]*$
+          description: Customer slug.
+        name:
+          type: string
+          maxLength: 255
+          description: The name of the customer.
+          nullable: true
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          description: The email of the customer.
+          nullable: true
+        billingId:
+          type: string
+          maxLength: 255
+          description: The unique identifier for the entity in the billing provider.
+          nullable: true
+        billingCurrency:
+          type: string
+          description: The billing currency of the customer.
+          nullable: true
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: Additional metadata.
+        integrations:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerIntegrationDto'
+        defaultPaymentMethod:
+          $ref: '#/components/schemas/PaymentMethodDto'
+        couponId:
+          type: string
+          description: Customer level coupon.
+          nullable: true
+        timezone:
+          type: string
+          maxLength: 255
+          description: Timezone to use for this customer.
+          nullable: true
+        language:
+          type: string
+          maxLength: 255
+          description: Language to use for this customer.
+          nullable: true
+      required:
+        - id
+      additionalProperties: false
+      description: Provisions a new customer with unique ID, optional name and email.
+    UpdateCustomerRequestDto:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 255
+          description: The name of the customer.
+          nullable: true
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          description: The email of the customer.
+          nullable: true
+        billingId:
+          type: string
+          maxLength: 255
+          description: The unique identifier for the entity in the billing provider.
+          nullable: true
+        billingCurrency:
+          type: string
+          description: The billing currency of the customer.
+          nullable: true
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: Additional metadata.
+        couponId:
+          type: string
+          description: Customer level coupon.
+          nullable: true
+        timezone:
+          type: string
+          maxLength: 255
+          description: Timezone to use for this customer.
+          nullable: true
+        language:
+          type: string
+          maxLength: 255
+          description: Language to use for this customer.
+          nullable: true
+      additionalProperties: false
+      description: Updates an existing customer's properties.
+    CustomerResponseDto:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/CustomerDto'
+      required:
+        - data
+      description: Single customer response.
+    CustomerListResponseDto:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerDto'
+        pagination:
+          $ref: '#/components/schemas/PaginationDto'
+      required:
+        - data
+        - pagination
+      description: Paginated list of customers.
+    AddonDto:
+      type: object
+      properties:
+        addonId:
+          type: string
+          description: The add-on identifier.
+        quantity:
+          type: integer
+          description: The quantity of the add-on.
+      description: An add-on attached to a subscription.
+    SubscriptionDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique subscription identifier.
+        customerId:
+          type: string
+          description: The customer this subscription belongs to.
+        planId:
+          type: string
+          description: The plan this subscription is for.
+        status:
+          type: string
+          enum: [ACTIVE, CANCELED, TRIAL, PAUSED, IN_TRIAL]
+          description: Subscription lifecycle status.
+        billingPeriod:
+          type: string
+          enum: [MONTHLY, ANNUALLY]
+          description: Billing recurrence period.
+        startDate:
+          type: string
+          format: date-time
+          description: Subscription start date.
+        endDate:
+          type: string
+          format: date-time
+          description: Subscription end date (if applicable).
+          nullable: true
+        trialEndDate:
+          type: string
+          format: date-time
+          description: Trial period end date.
+          nullable: true
+        addons:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddonDto'
+          description: Add-ons attached to this subscription.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: Additional metadata.
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - customerId
+        - planId
+        - status
+        - createdAt
+        - updatedAt
+      description: A subscription linking a customer to a pricing plan.
+    ProvisionSubscriptionRequestDto:
+      type: object
+      properties:
+        customerId:
+          type: string
+          description: The ID of the customer to provision the subscription for.
+        planId:
+          type: string
+          description: The ID of the plan to subscribe the customer to.
+        billingPeriod:
+          type: string
+          enum: [MONTHLY, ANNUALLY]
+          description: Billing recurrence period.
+        addons:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddonDto'
+          description: Add-ons to include in the subscription.
+        startDate:
+          type: string
+          format: date-time
+          description: When the subscription should start (defaults to now).
+          nullable: true
+        trialPeriodDays:
+          type: integer
+          description: Number of trial days before billing begins.
+          nullable: true
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: Additional metadata.
+      required:
+        - customerId
+        - planId
+      additionalProperties: false
+      description: Creates a new subscription for an existing customer.
+    CancelSubscriptionRequestDto:
+      type: object
+      properties:
+        endDate:
+          type: string
+          format: date-time
+          description: When to cancel the subscription (defaults to immediate cancellation).
+          nullable: true
+        cancelAt:
+          type: string
+          enum: [END_OF_BILLING_PERIOD, IMMEDIATE]
+          description: Cancellation timing strategy.
+          nullable: true
+      additionalProperties: false
+      description: Options for canceling a subscription.
+    PreviewSubscriptionRequestDto:
+      type: object
+      properties:
+        customerId:
+          type: string
+          description: The customer ID.
+        planId:
+          type: string
+          description: The plan ID.
+        billingPeriod:
+          type: string
+          enum: [MONTHLY, ANNUALLY]
+          description: Billing recurrence period.
+        addons:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddonDto'
+          description: Add-ons to include in the preview.
+      required:
+        - customerId
+        - planId
+      description: Parameters for previewing a subscription without creating it.
+    PreviewSubscriptionResponseDto:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            immediateInvoice:
+              type: object
+              properties:
+                total:
+                  type: number
+                  description: Total invoice amount.
+                subtotal:
+                  type: number
+                  description: Subtotal before tax.
+                tax:
+                  type: number
+                  description: Tax amount.
+                currency:
+                  type: string
+                  description: Invoice currency code.
+              description: Immediate invoice details.
+            nextInvoice:
+              type: object
+              properties:
+                total:
+                  type: number
+                subtotal:
+                  type: number
+                tax:
+                  type: number
+                currency:
+                  type: string
+              description: Next recurring invoice details.
+      description: Subscription pricing preview response.
+    SubscriptionResponseDto:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/SubscriptionDto'
+      required:
+        - data
+      description: Single subscription response.
+    SubscriptionListResponseDto:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionDto'
+        pagination:
+          $ref: '#/components/schemas/PaginationDto'
+      required:
+        - data
+        - pagination
+      description: Paginated list of subscriptions.
+    ReportUsageRequestDto:
+      type: object
+      properties:
+        customerId:
+          type: string
+          description: The customer ID for which usage is being reported.
+        featureId:
+          type: string
+          description: The feature ID for which usage is being reported.
+        value:
+          type: number
+          description: The usage value to report.
+        idempotencyKey:
+          type: string
+          description: Optional idempotency key to prevent duplicate usage reporting.
+          nullable: true
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp for the usage measurement (defaults to now).
+          nullable: true
+        updateBehavior:
+          type: string
+          enum: [DELTA, SET]
+          description: Whether the value is a delta to add or an absolute value to set.
+          nullable: true
+      required:
+        - customerId
+        - featureId
+        - value
+      additionalProperties: false
+      description: Reports usage measurements for metered features.
+    UsageResponseDto:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              description: Usage measurement ID.
+            customerId:
+              type: string
+              description: The customer ID.
+            featureId:
+              type: string
+              description: The feature ID.
+            value:
+              type: number
+              description: The reported usage value.
+            timestamp:
+              type: string
+              format: date-time
+              description: The timestamp of the usage measurement.
+      description: Usage measurement response.
+    ReportEventRequestDto:
+      type: object
+      properties:
+        customerId:
+          type: string
+          description: The customer ID.
+        featureId:
+          type: string
+          description: The feature ID.
+        eventName:
+          type: string
+          description: The name of the event.
+        idempotencyKey:
+          type: string
+          description: Idempotency key to prevent duplicate event ingestion.
+          nullable: true
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp for the event (defaults to now).
+          nullable: true
+        dimensions:
+          type: object
+          additionalProperties:
+            type: string
+          description: Additional event dimensions for aggregation.
+      required:
+        - customerId
+        - featureId
+        - eventName
+      additionalProperties: false
+      description: Reports raw usage events for event-based metering.
+    EventResponseDto:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            accepted:
+              type: boolean
+              description: Whether the event was accepted for processing.
+      description: Confirmation that events were accepted for processing.
+    CouponDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Coupon identifier.
+        name:
+          type: string
+          description: Coupon display name.
+        discountValue:
+          type: number
+          description: Discount amount or percentage value.
+        discountType:
+          type: string
+          enum: [PERCENTAGE, FIXED]
+          description: Whether discount is a percentage or fixed amount.
+        currency:
+          type: string
+          description: Currency for fixed-amount coupons.
+          nullable: true
+        maxRedemptions:
+          type: integer
+          description: Maximum number of times this coupon can be redeemed.
+          nullable: true
+        redemptionsCount:
+          type: integer
+          description: Number of times this coupon has been redeemed.
+        isArchived:
+          type: boolean
+          description: Whether this coupon is archived.
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - discountValue
+        - discountType
+        - createdAt
+        - updatedAt
+      description: A discount coupon.
+    CouponResponseDto:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/CouponDto'
+      required:
+        - data
+      description: Single coupon response.
+    CouponListResponseDto:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CouponDto'
+        pagination:
+          $ref: '#/components/schemas/PaginationDto'
+      required:
+        - data
+        - pagination
+      description: Paginated list of coupons.
+    BadInputErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Human-readable error message.
+        code:
+          type: string
+          description: Machine-readable error code.
+          nullable: true
+      required:
+        - message
+        - code
+      description: Bad request error response.
+    UnauthenticatedErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: string
+          enum:
+            - Unauthenticated
+          nullable: true
+      required:
+        - message
+        - code
+      description: Authentication error response.
+    ForbiddenErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: string
+          enum:
+            - IdentityForbidden
+            - AccessDeniedError
+            - NoFeatureEntitlementError
+          nullable: true
+      required:
+        - message
+        - code
+      description: Authorization error response.
+    NotFoundErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: string
+          nullable: true
+      required:
+        - message
+        - code
+      description: Resource not found error response.
+    ConflictErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: string
+          enum:
+            - DuplicatedEntityNotAllowed
+            - EntitlementBelongsToFeatureGroupError
+          nullable: true
+      required:
+        - message
+        - code
+      description: Conflict error response (e.g., duplicate resource).
+    TooManyRequestsErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: string
+          enum:
+            - RateLimitExceeded
+          nullable: true
+      required:
+        - message
+        - code
+      description: Rate limit exceeded error response.
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+      description: Full access key from the Stigg dashboard (Integrations > API Keys).
+security:
+  - ApiKeyAuth: []

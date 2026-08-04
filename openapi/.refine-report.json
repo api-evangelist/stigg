@@ -1,0 +1,22 @@
+{
+  "provider": "stigg",
+  "sources": [
+    "stigg-coupons-api-openapi.yml",
+    "stigg-customers-api-openapi.yml",
+    "stigg-entitlements-api-openapi.yml",
+    "stigg-subscriptions-api-openapi.yml",
+    "stigg-usage-api-openapi.yml"
+  ],
+  "outputs": [
+    "stigg-coupons-api-openapi.yml",
+    "stigg-customers-api-openapi.yml",
+    "stigg-entitlements-api-openapi.yml",
+    "stigg-subscriptions-api-openapi.yml",
+    "stigg-usage-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
