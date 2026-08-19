@@ -1,0 +1,1632 @@
+{
+  "item": [
+    {
+      "id": "d944180b-8636-47af-8db1-9b157665d9f8",
+      "name": "Customers",
+      "description": {
+        "content": "Customer provisioning and management.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "028fc480-741a-49b9-b160-f87171f70eca",
+          "name": "Execute GraphQL Query or Mutation",
+          "request": {
+            "name": "Execute GraphQL Query or Mutation",
+            "description": {
+              "content": "Execute any Stigg GraphQL query or mutation. Stigg uses GraphQL as its primary API. Send a JSON body with a query/mutation string and optional variables. Supports customer management, subscription operations, entitlement checks, and usage reporting.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "graphql"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"<string>\",\n  \"variables\": {\n    \"key_0\": 7723.37852871311,\n    \"key_1\": 1842.4964216267924,\n    \"key_2\": 2903\n  },\n  \"operationName\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a9cf6c20-88e4-48d5-a394-1b9a318d1b71",
+              "name": "GraphQL response (may contain data or errors).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "graphql"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": \"mutation ProvisionCustomer($input: ProvisionCustomerInput!) {\\n  provisionCustomer(input: $input) {\\n    customer { id name email }\\n    subscription { id status plan { id name } }\\n  }\\n}\\n\",\n  \"variables\": {\n    \"input\": {\n      \"customerId\": \"customer-123\",\n      \"name\": \"Acme Corp\",\n      \"email\": \"admin@acme.com\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"key_0\": 7938,\n    \"key_1\": \"string\",\n    \"key_2\": true,\n    \"key_3\": true\n  },\n  \"errors\": [\n    {\n      \"message\": \"string\",\n      \"locations\": [\n        {\n          \"line\": 8954,\n          \"column\": 6117\n        },\n        {\n          \"line\": 8069,\n          \"column\": 1932\n        }\n      ],\n      \"path\": [\n        \"string\",\n        \"string\"\n      ],\n      \"extensions\": {\n        \"key_0\": 7443.36204616849\n      }\n    },\n    {\n      \"message\": \"string\",\n      \"locations\": [\n        {\n          \"line\": 4997,\n          \"column\": 2163\n        },\n        {\n          \"line\": 4555,\n          \"column\": 4238\n        }\n      ],\n      \"path\": [\n        \"string\",\n        \"string\"\n      ],\n      \"extensions\": {\n        \"key_0\": 4234\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "14719020-b0a8-4604-b089-04e42ac1f631",
+              "name": "Invalid or missing X-API-KEY header.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "graphql"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": \"mutation ProvisionCustomer($input: ProvisionCustomerInput!) {\\n  provisionCustomer(input: $input) {\\n    customer { id name email }\\n    subscription { id status plan { id name } }\\n  }\\n}\\n\",\n  \"variables\": {\n    \"input\": {\n      \"customerId\": \"customer-123\",\n      \"name\": \"Acme Corp\",\n      \"email\": \"admin@acme.com\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a3c61494-5983-4c06-bdc5-a73174d67b8f",
+          "name": "Provision customer",
+          "request": {
+            "name": "Provision customer",
+            "description": {
+              "content": "Creates a new customer and optionally provisions an initial subscription in a single operation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "customers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Account ID — optional when authenticating with a user JWT (Bearer token); falls back to the user's first membership. Ignored for API-key auth.",
+                "key": "X-ACCOUNT-ID",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Environment ID — required when authenticating with a user JWT (Bearer token) on environment-scoped endpoints. Ignored for API-key auth (env is intrinsic to the key).",
+                "key": "X-ENVIRONMENT-ID",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"email\": \"<email>\",\n  \"billingId\": \"<string>\",\n  \"billingCurrency\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  },\n  \"integrations\": [\n    {\n      \"vendorIdentifier\": \"<string>\",\n      \"syncedEntityId\": \"<string>\",\n      \"id\": \"<string>\"\n    },\n    {\n      \"vendorIdentifier\": \"<string>\",\n      \"syncedEntityId\": \"<string>\",\n      \"id\": \"<string>\"\n    }\n  ],\n  \"defaultPaymentMethod\": {\n    \"billingId\": \"<string>\",\n    \"type\": \"<string>\",\n    \"cardLast4Digits\": \"<string>\",\n    \"cardExpiryMonth\": \"<number>\",\n    \"cardExpiryYear\": \"<number>\"\n  },\n  \"couponId\": \"<string>\",\n  \"timezone\": \"<string>\",\n  \"language\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c86f6065-0767-40a4-a307-3a5b88c4eb4f",
+              "name": "The newly created customer object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "customers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Account ID — optional when authenticating with a user JWT (Bearer token); falls back to the user's first membership. Ignored for API-key auth.",
+                    "key": "X-ACCOUNT-ID",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Environment ID — required when authenticating with a user JWT (Bearer token) on environment-scoped endpoints. Ignored for API-key auth (env is intrinsic to the key).",
+                    "key": "X-ENVIRONMENT-ID",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"customer-123\",\n  \"name\": \"Acme Corp\",\n  \"email\": \"billing@acme.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"20qJze\",\n    \"createdAt\": \"2017-05-13T05:00:19.801Z\",\n    \"updatedAt\": \"2024-06-02T07:06:55.346Z\",\n    \"archivedAt\": \"1967-04-24T10:55:08.455Z\",\n    \"name\": \"string\",\n    \"email\": \"pheiqaNHFhmST93@nTnyUySEd.fl\",\n    \"billingId\": \"string\",\n    \"billingCurrency\": \"string\",\n    \"metadata\": {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\",\n      \"key_2\": \"string\",\n      \"key_3\": \"string\"\n    },\n    \"integrations\": [\n      {\n        \"vendorIdentifier\": \"<string>\",\n        \"syncedEntityId\": \"<string>\",\n        \"id\": \"<string>\"\n      },\n      {\n        \"vendorIdentifier\": \"<string>\",\n        \"syncedEntityId\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    ],\n    \"defaultPaymentMethod\": {\n      \"billingId\": \"<string>\",\n      \"type\": \"<string>\",\n      \"cardLast4Digits\": \"<string>\",\n      \"cardExpiryMonth\": \"<number>\",\n      \"cardExpiryYear\": \"<number>\"\n    },\n    \"couponId\": \"string\",\n    \"timezone\": \"string\",\n    \"language\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "77b7ab3b-0b0c-4b71-9422-ef8255288156",
+              "name": "Bad request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "customers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Account ID — optional when authenticating with a user JWT (Bearer token); falls back to the user's first membership. Ignored for API-key auth.",
+                    "key": "X-ACCOUNT-ID",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Environment ID — required when authenticating with a user JWT (Bearer token) on environment-scoped endpoints. Ignored for API-key auth (env is intrinsic to the key).",
+                    "key": "X-ENVIRONMENT-ID",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"customer-123\",\n  \"name\": \"Acme Corp\",\n  \"email\": \"billing@acme.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"code\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7b2b819e-b10f-4c6f-953b-33a6745a3783",
+              "name": "User is not authenticated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "customers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Account ID — optional when authenticating with a user JWT (Bearer token); falls back to the user's first membership. Ignored for API-key auth.",
+                    "key": "X-ACCOUNT-ID",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Environment ID — required when authenticating with a user JWT (Bearer token) on environment-scoped endpoints. Ignored for API-key auth (env is intrinsic to the key).",
+                    "key": "X-ENVIRONMENT-ID",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"customer-123\",\n  \"name\": \"Acme Corp\",\n  \"email\": \"billing@acme.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"code\": \"Unauthenticated\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5b06f254-cf6c-4893-8bd5-8b1bd63a818d",
+              "name": "User is not allowed to access this resource.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "customers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Account ID — optional when authenticating with a user JWT (Bearer token); falls back to the user's first membership. Ignored for API-key auth.",
+                    "key": "X-ACCOUNT-ID",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Environment ID — required when authenticating with a user JWT (Bearer token) on environment-scoped endpoints. Ignored for API-key auth (env is intrinsic to the key).",
+                    "key": "X-ENVIRONMENT-ID",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"customer-123\",\n  \"name\": \"Acme Corp\",\n  \"email\": \"billing@acme.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"code\": \"IdentityForbidden\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2d2584e3-76cd-4422-bf89-a51821e8bec8",
+              "name": "Customer conflict error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "customers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Account ID — optional when authenticating with a user JWT (Bearer token); falls back to the user's first membership. Ignored for API-key auth.",
+                    "key": "X-ACCOUNT-ID",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Environment ID — required when authenticating with a user JWT (Bearer token) on environment-scoped endpoints. Ignored for API-key auth (env is intrinsic to the key).",
+                    "key": "X-ENVIRONMENT-ID",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"customer-123\",\n  \"name\": \"Acme Corp\",\n  \"email\": \"billing@acme.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"code\": \"EntitlementBelongsToFeatureGroupError\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "454b7dc6-f8e8-488a-bcb7-9843f326d70f",
+              "name": "Too many requests.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "customers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Account ID — optional when authenticating with a user JWT (Bearer token); falls back to the user's first membership. Ignored for API-key auth.",
+                    "key": "X-ACCOUNT-ID",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Environment ID — required when authenticating with a user JWT (Bearer token) on environment-scoped endpoints. Ignored for API-key auth (env is intrinsic to the key).",
+                    "key": "X-ENVIRONMENT-ID",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"customer-123\",\n  \"name\": \"Acme Corp\",\n  \"email\": \"billing@acme.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"code\": \"RateLimitExceeded\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7cfa0c84-1555-4b1f-a113-4d0ae59f1c5c",
+          "name": "List customers",
+          "request": {
+            "name": "List customers",
+            "description": {
+              "content": "Retrieves a paginated list of customers in the environment.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "customers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<uuid>",
+                  "description": "Return items that come after this cursor"
+                },
+                {
+                  "disabled": false,
+                  "key": "before",
+                  "value": "<uuid>",
+                  "description": "Return items that come before this cursor"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "20",
+                  "description": "Maximum number of items to return"
+                },
+                {
+                  "disabled": false,
+                  "key": "email",
+                  "value": "<string>",
+                  "description": "Filter by exact customer email address"
+                },
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "Filter by exact customer name"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "key": "X-ACCOUNT-ID",
+                "value": "<string>",
+                "description": ""
+              },
+              {
+                "disabled": false,
+                "key": "X-ENVIRONMENT-ID",
+                "value": "<string>",
+                "description": ""
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4a167994-f1aa-495b-98b8-b31ab186bd15",
+              "name": "A paginated list of customer objects.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "customers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "email",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-ACCOUNT-ID",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-ENVIRONMENT-ID",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"XW\",\n      \"createdAt\": \"1987-08-10T23:53:18.996Z\",\n      \"updatedAt\": \"1998-10-26T10:24:37.441Z\",\n      \"archivedAt\": \"1986-01-29T12:25:55.697Z\",\n      \"name\": \"string\",\n      \"email\": \"23VCWxVEAPIDnAY@oVLmCxqmxSlUYJVhLhzSvqCSkIqPCXwN.fjej\",\n      \"billingId\": \"string\",\n      \"billingCurrency\": \"string\",\n      \"metadata\": {\n        \"key_0\": \"string\"\n      },\n      \"integrations\": [\n        {\n          \"vendorIdentifier\": \"<string>\",\n          \"syncedEntityId\": \"<string>\",\n          \"id\": \"<string>\"\n        },\n        {\n          \"vendorIdentifier\": \"<string>\",\n          \"syncedEntityId\": \"<string>\",\n          \"id\": \"<string>\"\n        }\n      ],\n      \"defaultPaymentMethod\": {\n        \"billingId\": \"<string>\",\n        \"type\": \"<string>\",\n        \"cardLast4Digits\": \"<string>\",\n        \"cardExpiryMonth\": \"<number>\",\n        \"cardExpiryYear\": \"<number>\"\n      },\n      \"couponId\": \"string\",\n      \"timezone\": \"string\",\n      \"language\": \"string\"\n    },\n    {\n      \"id\": \"3oE@MUavh5\",\n      \"createdAt\": \"2003-01-17T07:08:04.356Z\",\n      \"updatedAt\": \"2010-09-08T14:44:05.997Z\",\n      \"archivedAt\": \"1992-05-10T00:53:50.304Z\",\n      \"name\": \"string\",\n      \"email\": \"EiuCEuBAkD@YGMTtYgwtveCWTORqQBRKLiN.kszl\",\n      \"billingId\": \"string\",\n      \"billingCurrency\": \"string\",\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"integrations\": [\n        {\n          \"vendorIdentifier\": \"<string>\",\n          \"syncedEntityId\": \"<string>\",\n          \"id\": \"<string>\"\n        },\n        {\n          \"vendorIdentifier\": \"<string>\",\n          \"syncedEntityId\": \"<string>\",\n          \"id\": \"<string>\"\n        }\n      ],\n      \"defaultPaymentMethod\": {\n        \"billingId\": \"<string>\",\n        \"type\": \"<string>\",\n        \"cardLast4Digits\": \"<string>\",\n        \"cardExpiryMonth\": \"<number>\",\n        \"cardExpiryYear\": \"<number>\"\n      },\n      \"couponId\": \"string\",\n      \"timezone\": \"string\",\n      \"language\": \"string\"\n    }\n  ],\n  \"pagination\": {\n    \"next\": \"59205af9-4723-05bd-4ecb-4681c7f640a6\",\n    \"prev\": \"5ff70fdc-4b43-e75a-90f7-751c04a03c04\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4ac0e293-fe27-49bf-8a1b-9b7437eb8369",
+              "name": "Bad request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "customers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "email",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-ACCOUNT-ID",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-ENVIRONMENT-ID",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"code\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b419cb8c-0a0e-4b58-9a7b-5e1250c2fe7d",
+              "name": "User is not authenticated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "customers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "email",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-ACCOUNT-ID",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-ENVIRONMENT-ID",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"code\": \"Unauthenticated\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1bf62ef3-e2ff-424f-911b-c46625414700",
+              "name": "User is not allowed to access this resource.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "customers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "email",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-ACCOUNT-ID",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-ENVIRONMENT-ID",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"code\": \"IdentityForbidden\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c2bf1bd4-ee56-4480-b64a-f08d957b3578",
+              "name": "Too many requests.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "customers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "email",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-ACCOUNT-ID",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-ENVIRONMENT-ID",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"code\": \"RateLimitExceeded\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5b223385-08d5-49bb-a012-ecf057840558",
+          "name": "Update a customer",
+          "request": {
+            "name": "Update a customer",
+            "description": {
+              "content": "Updates an existing customer's properties such as name, email, and billing information.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The unique identifier of the customer"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "key": "X-ACCOUNT-ID",
+                "value": "<string>",
+                "description": ""
+              },
+              {
+                "disabled": false,
+                "key": "X-ENVIRONMENT-ID",
+                "value": "<string>",
+                "description": ""
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"email\": \"<email>\",\n  \"billingId\": \"<string>\",\n  \"billingCurrency\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"<string>\"\n  },\n  \"couponId\": \"<string>\",\n  \"timezone\": \"<string>\",\n  \"language\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "28d107dd-488c-4e3c-8a86-8aa2358b212d",
+              "name": "The updated customer object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "customers",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the customer"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-ACCOUNT-ID",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-ENVIRONMENT-ID",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"email\": \"<email>\",\n  \"billingId\": \"<string>\",\n  \"billingCurrency\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  },\n  \"couponId\": \"<string>\",\n  \"timezone\": \"<string>\",\n  \"language\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"SC\",\n    \"createdAt\": \"1986-01-18T02:49:15.832Z\",\n    \"updatedAt\": \"2023-02-03T21:43:12.740Z\",\n    \"archivedAt\": \"1977-01-14T20:15:44.397Z\",\n    \"name\": \"string\",\n    \"email\": \"1olcO24-Fzn@vfUdGBWASobIsoz.rg\",\n    \"billingId\": \"string\",\n    \"billingCurrency\": \"string\",\n    \"metadata\": {\n      \"key_0\": \"string\"\n    },\n    \"integrations\": [\n      {\n        \"vendorIdentifier\": \"<string>\",\n        \"syncedEntityId\": \"<string>\",\n        \"id\": \"<string>\"\n      },\n      {\n        \"vendorIdentifier\": \"<string>\",\n        \"syncedEntityId\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    ],\n    \"defaultPaymentMethod\": {\n      \"billingId\": \"<string>\",\n      \"type\": \"<string>\",\n      \"cardLast4Digits\": \"<string>\",\n      \"cardExpiryMonth\": \"<number>\",\n      \"cardExpiryYear\": \"<number>\"\n    },\n    \"couponId\": \"string\",\n    \"timezone\": \"string\",\n    \"language\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7a588ce7-3d3f-4f65-9677-14ab80156acf",
+              "name": "Bad request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "customers",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the customer"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-ACCOUNT-ID",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-ENVIRONMENT-ID",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"email\": \"<email>\",\n  \"billingId\": \"<string>\",\n  \"billingCurrency\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  },\n  \"couponId\": \"<string>\",\n  \"timezone\": \"<string>\",\n  \"language\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"code\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "de812852-d64b-4415-904f-198edd1a3e59",
+              "name": "User is not authenticated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "customers",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the customer"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-ACCOUNT-ID",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-ENVIRONMENT-ID",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"email\": \"<email>\",\n  \"billingId\": \"<string>\",\n  \"billingCurrency\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  },\n  \"couponId\": \"<string>\",\n  \"timezone\": \"<string>\",\n  \"language\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"code\": \"Unauthenticated\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "86e41e2a-b2a2-4712-9858-46d4b3da3c5d",
+              "name": "User is not allowed to access this resource.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "customers",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the customer"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-ACCOUNT-ID",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-ENVIRONMENT-ID",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"email\": \"<email>\",\n  \"billingId\": \"<string>\",\n  \"billingCurrency\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  },\n  \"couponId\": \"<string>\",\n  \"timezone\": \"<string>\",\n  \"language\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"code\": \"IdentityForbidden\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bd638406-7b37-47de-8495-401c144b0e54",
+              "name": "Customer not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "customers",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the customer"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-ACCOUNT-ID",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-ENVIRONMENT-ID",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"email\": \"<email>\",\n  \"billingId\": \"<string>\",\n  \"billingCurrency\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  },\n  \"couponId\": \"<string>\",\n  \"timezone\": \"<string>\",\n  \"language\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"code\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e62f37cd-6218-431d-ae2f-ef9463174864",
+              "name": "Too many requests.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "customers",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the customer"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-ACCOUNT-ID",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "disabled": false,
+                    "key": "X-ENVIRONMENT-ID",
+                    "value": "<string>",
+                    "description": ""
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"email\": \"<email>\",\n  \"billingId\": \"<string>\",\n  \"billingCurrency\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  },\n  \"couponId\": \"<string>\",\n  \"timezone\": \"<string>\",\n  \"language\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"code\": \"RateLimitExceeded\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.stigg.io",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-API-KEY"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "6f02e3cb-2110-4db6-b074-02cff0631f0b",
+    "name": "Stigg Coupons Customers API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Stigg is a pricing and packaging platform providing feature management, entitlements, and usage-based billing for SaaS and API products. The Stigg API exposes GraphQL and REST endpoints for customer provisioning, subscription management, entitlement checking, and usage reporting. Authentication requires a Full access key passed via the X-API-KEY header.",
+      "type": "text/plain"
+    }
+  }
+}

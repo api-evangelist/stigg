@@ -1,0 +1,203 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Stigg Coupons Subscriptions API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-KEY",
+      "value": "{{X-API-KEY}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Subscriptions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Execute GraphQL Query or Mutation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.stigg.io/graphql",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Execute any Stigg GraphQL query or mutation. Stigg uses GraphQL as its primary API. Send a JSON body with a query/mutation string and optional variables. Supports customer management, subscription operations, entitlement checks, and usage reporting."
+        },
+        {
+          "info": {
+            "name": "List subscriptions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stigg.io/api/v1/subscriptions",
+            "headers": [
+              {
+                "name": "X-ACCOUNT-ID",
+                "value": ""
+              },
+              {
+                "name": "X-ENVIRONMENT-ID",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "after",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "customerId",
+                "value": "",
+                "type": "query",
+                "description": "Filter by customer ID"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by subscription status"
+              }
+            ]
+          },
+          "docs": "Retrieves a paginated list of subscriptions, with optional filters for customer, status, and plan."
+        },
+        {
+          "info": {
+            "name": "Provision subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.stigg.io/api/v1/subscriptions",
+            "headers": [
+              {
+                "name": "X-ACCOUNT-ID",
+                "value": ""
+              },
+              {
+                "name": "X-ENVIRONMENT-ID",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new subscription for an existing customer. When payment is required and no payment method exists, returns a checkout URL."
+        },
+        {
+          "info": {
+            "name": "Get subscription by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stigg.io/api/v1/subscriptions/:id",
+            "headers": [
+              {
+                "name": "X-ACCOUNT-ID",
+                "value": ""
+              },
+              {
+                "name": "X-ENVIRONMENT-ID",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the subscription"
+              }
+            ]
+          },
+          "docs": "Retrieves a subscription by its unique identifier, including plan details, billing period, status, and add-ons."
+        },
+        {
+          "info": {
+            "name": "Cancel subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.stigg.io/api/v1/subscriptions/:id/cancel",
+            "headers": [
+              {
+                "name": "X-ACCOUNT-ID",
+                "value": ""
+              },
+              {
+                "name": "X-ENVIRONMENT-ID",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the subscription"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Cancels an active subscription, either immediately or at a specified time such as end of billing period."
+        },
+        {
+          "info": {
+            "name": "Preview subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.stigg.io/api/v1/subscriptions/preview",
+            "headers": [
+              {
+                "name": "X-ACCOUNT-ID",
+                "value": ""
+              },
+              {
+                "name": "X-ENVIRONMENT-ID",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Previews the pricing impact of creating or updating a subscription without making changes. Returns estimated costs, taxes, and proration details."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

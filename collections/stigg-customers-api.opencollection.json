@@ -1,0 +1,152 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Stigg Coupons Customers API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-KEY",
+      "value": "{{X-API-KEY}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Customers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Execute GraphQL Query or Mutation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.stigg.io/graphql",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Execute any Stigg GraphQL query or mutation. Stigg uses GraphQL as its primary API. Send a JSON body with a query/mutation string and optional variables. Supports customer management, subscription operations, entitlement checks, and usage reporting."
+        },
+        {
+          "info": {
+            "name": "List customers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stigg.io/api/v1/customers",
+            "headers": [
+              {
+                "name": "X-ACCOUNT-ID",
+                "value": ""
+              },
+              {
+                "name": "X-ENVIRONMENT-ID",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "Return items that come after this cursor"
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query",
+                "description": "Return items that come before this cursor"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of items to return"
+              },
+              {
+                "name": "email",
+                "value": "",
+                "type": "query",
+                "description": "Filter by exact customer email address"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by exact customer name"
+              }
+            ]
+          },
+          "docs": "Retrieves a paginated list of customers in the environment."
+        },
+        {
+          "info": {
+            "name": "Provision customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.stigg.io/api/v1/customers",
+            "headers": [
+              {
+                "name": "X-ACCOUNT-ID",
+                "value": ""
+              },
+              {
+                "name": "X-ENVIRONMENT-ID",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new customer and optionally provisions an initial subscription in a single operation."
+        },
+        {
+          "info": {
+            "name": "Update a customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.stigg.io/api/v1/customers/:id",
+            "headers": [
+              {
+                "name": "X-ACCOUNT-ID",
+                "value": ""
+              },
+              {
+                "name": "X-ENVIRONMENT-ID",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the customer"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing customer's properties such as name, email, and billing information."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

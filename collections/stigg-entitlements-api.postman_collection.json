@@ -1,0 +1,195 @@
+{
+  "item": [
+    {
+      "id": "16394cc7-e9d3-45ab-8d9d-fcbdd5ad229b",
+      "name": "Entitlements",
+      "description": {
+        "content": "Feature access and entitlement checks.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a3af5cbf-bf0c-4453-941c-6fb4d7a05a5b",
+          "name": "Execute GraphQL Query or Mutation",
+          "request": {
+            "name": "Execute GraphQL Query or Mutation",
+            "description": {
+              "content": "Execute any Stigg GraphQL query or mutation. Stigg uses GraphQL as its primary API. Send a JSON body with a query/mutation string and optional variables. Supports customer management, subscription operations, entitlement checks, and usage reporting.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "graphql"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"<string>\",\n  \"variables\": {\n    \"key_0\": 8050.426164707423,\n    \"key_1\": 4663.763148479871\n  },\n  \"operationName\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2124bb34-2e95-4480-b6fc-fab8fe81d80c",
+              "name": "GraphQL response (may contain data or errors).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "graphql"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": \"mutation ProvisionCustomer($input: ProvisionCustomerInput!) {\\n  provisionCustomer(input: $input) {\\n    customer { id name email }\\n    subscription { id status plan { id name } }\\n  }\\n}\\n\",\n  \"variables\": {\n    \"input\": {\n      \"customerId\": \"customer-123\",\n      \"name\": \"Acme Corp\",\n      \"email\": \"admin@acme.com\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"key_0\": 3470.6011062370135\n  },\n  \"errors\": [\n    {\n      \"message\": \"string\",\n      \"locations\": [\n        {\n          \"line\": 723,\n          \"column\": 7680\n        },\n        {\n          \"line\": 1326,\n          \"column\": 9954\n        }\n      ],\n      \"path\": [\n        \"string\",\n        \"string\"\n      ],\n      \"extensions\": {\n        \"key_0\": true,\n        \"key_1\": 5972,\n        \"key_2\": 4727.088738073343\n      }\n    },\n    {\n      \"message\": \"string\",\n      \"locations\": [\n        {\n          \"line\": 6440,\n          \"column\": 680\n        },\n        {\n          \"line\": 7208,\n          \"column\": 9347\n        }\n      ],\n      \"path\": [\n        \"string\",\n        \"string\"\n      ],\n      \"extensions\": {\n        \"key_0\": 1830.509351068642\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c4b39972-1501-417f-b5c9-ddbbf5a49918",
+              "name": "Invalid or missing X-API-KEY header.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "graphql"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": \"mutation ProvisionCustomer($input: ProvisionCustomerInput!) {\\n  provisionCustomer(input: $input) {\\n    customer { id name email }\\n    subscription { id status plan { id name } }\\n  }\\n}\\n\",\n  \"variables\": {\n    \"input\": {\n      \"customerId\": \"customer-123\",\n      \"name\": \"Acme Corp\",\n      \"email\": \"admin@acme.com\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.stigg.io",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-API-KEY"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "50bc3f6c-88f0-473e-885d-9ff118e4a883",
+    "name": "Stigg Coupons Entitlements API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Stigg is a pricing and packaging platform providing feature management, entitlements, and usage-based billing for SaaS and API products. The Stigg API exposes GraphQL and REST endpoints for customer provisioning, subscription management, entitlement checking, and usage reporting. Authentication requires a Full access key passed via the X-API-KEY header.",
+      "type": "text/plain"
+    }
+  }
+}

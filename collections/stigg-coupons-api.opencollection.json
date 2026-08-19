@@ -1,0 +1,93 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Stigg Coupons API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-KEY",
+      "value": "{{X-API-KEY}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Coupons",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List coupons",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stigg.io/api/v1/coupons",
+            "headers": [
+              {
+                "name": "X-ACCOUNT-ID",
+                "value": ""
+              },
+              {
+                "name": "X-ENVIRONMENT-ID",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "after",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieves a paginated list of coupons in the environment."
+        },
+        {
+          "info": {
+            "name": "Get coupon by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.stigg.io/api/v1/coupons/:id",
+            "headers": [
+              {
+                "name": "X-ACCOUNT-ID",
+                "value": ""
+              },
+              {
+                "name": "X-ENVIRONMENT-ID",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the coupon"
+              }
+            ]
+          },
+          "docs": "Retrieves a coupon by its unique identifier."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

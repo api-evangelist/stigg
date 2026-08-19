@@ -1,0 +1,91 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Stigg Coupons Usage API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-KEY",
+      "value": "{{X-API-KEY}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Usage",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Execute GraphQL Query or Mutation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.stigg.io/graphql",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Execute any Stigg GraphQL query or mutation. Stigg uses GraphQL as its primary API. Send a JSON body with a query/mutation string and optional variables. Supports customer management, subscription operations, entitlement checks, and usage reporting."
+        },
+        {
+          "info": {
+            "name": "Report usage measurements",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.stigg.io/api/v1/usage",
+            "headers": [
+              {
+                "name": "X-ACCOUNT-ID",
+                "value": ""
+              },
+              {
+                "name": "X-ENVIRONMENT-ID",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Reports usage measurements for metered features. The reported usage is used to track, limit, and bill customer consumption."
+        },
+        {
+          "info": {
+            "name": "Report usage events",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.stigg.io/api/v1/events",
+            "headers": [
+              {
+                "name": "X-ACCOUNT-ID",
+                "value": ""
+              },
+              {
+                "name": "X-ENVIRONMENT-ID",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Reports raw usage events for event-based metering. Events are ingested asynchronously and aggregated into usage totals."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
