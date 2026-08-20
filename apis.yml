@@ -30,6 +30,18 @@ tags:
 - Usage-Based Billing
 - Feature Flags
 - Product-Led Growth
+- Subscription
+- Software-as-a-Service
+- GraphQL
+- REST
+tags_raw:
+- FinOps
+- Pricing
+- Billing
+- Entitlements
+- Usage-Based Billing
+- Feature Flags
+- Product-Led Growth
 - Subscriptions
 - SaaS
 - GraphQL
@@ -144,6 +156,8 @@ apis:
   description: Subscription lifecycle management.
   humanURL: https://docs.stigg.io/api-and-sdks/integration/backend/graphql
   tags:
+  - Subscription
+  tags_raw:
   - Subscriptions
   properties:
   - type: OpenAPI
