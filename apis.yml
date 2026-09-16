@@ -147,23 +147,6 @@ apis:
     url: graphql/stigg-graphql.md
   - type: Documentation
     url: https://docs.stigg.io/api-and-sdks/integration/overview
-- aid: stigg:stigg-entitlements-api
-  name: Stigg Entitlements API
-  description: Feature access and entitlement checks.
-  humanURL: https://docs.stigg.io/api-and-sdks/integration/backend/graphql
-  tags:
-  - Entitlements
-  properties:
-  - type: OpenAPI
-    url: openapi/stigg-entitlements-api-openapi.yml
-  - type: Documentation
-    url: https://docs.stigg.io/api-and-sdks/integration/backend/graphql
-  - type: GraphQL
-    url: https://api.stigg.io/graphql
-  - type: GraphQL
-    url: graphql/stigg-graphql.md
-  - type: Documentation
-    url: https://docs.stigg.io/api-and-sdks/integration/overview
 - aid: stigg:stigg-subscriptions-api
   name: Stigg Subscriptions API
   description: Subscription lifecycle management.
