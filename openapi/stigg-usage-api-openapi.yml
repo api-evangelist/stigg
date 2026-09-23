@@ -1,8 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Stigg Coupons Usage API
-  description: Stigg is a pricing and packaging platform providing feature management, entitlements, and usage-based billing for SaaS and API products. The Stigg API exposes GraphQL and REST endpoints for customer provisioning, subscription management, entitlement checking, and usage reporting. Authentication requires a Full access key passed via the X-API-KEY header.
-  version: '1.0'
+  title: Stigg REST Usage API
+  description: 'The Stigg REST API (Public Beta) provides RESTful HTTP access to customer management, subscription provisioning, entitlement enforcement, and usage metering. It supports TypeScript, Python, Go, Ruby, C#, and Java SDKs and accepts API key authentication via the X-API-KEY header. Base URL: https://api.stigg.io/api/v1'
+  version: 7.10.0
   contact:
     url: https://www.stigg.io/
   termsOfService: https://www.stigg.io/terms
@@ -10,59 +10,11 @@ servers:
 - url: https://api.stigg.io
   description: Stigg Production API
 security:
-- ApiKey: []
+- ApiKeyAuth: []
 tags:
 - name: Usage
-  description: Usage reporting and metering.
+  description: Usage reporting and event-based metering.
 paths:
-  /graphql:
-    post:
-      operationId: executeGraphQL
-      summary: Execute GraphQL Query or Mutation
-      description: Execute any Stigg GraphQL query or mutation. Stigg uses GraphQL as its primary API. Send a JSON body with a query/mutation string and optional variables. Supports customer management, subscription operations, entitlement checks, and usage reporting.
-      tags:
-      - Usage
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GraphQLRequest'
-            examples:
-              provisionCustomer:
-                summary: Provision a Customer
-                value:
-                  query: "mutation ProvisionCustomer($input: ProvisionCustomerInput!) {\n  provisionCustomer(input: $input) {\n    customer { id name email }\n    subscription { id status plan { id name } }\n  }\n}\n"
-                  variables:
-                    input:
-                      customerId: customer-123
-                      name: Acme Corp
-                      email: admin@acme.com
-              checkEntitlement:
-                summary: Check Feature Entitlement
-                value:
-                  query: "query GetCustomerEntitlement($customerId: String!, $featureId: String!) {\n  customerEntitlement(customerId: $customerId, featureId: $featureId) {\n    isGranted\n    usageLimit\n    currentUsage\n    resetPeriod\n  }\n}\n"
-                  variables:
-                    customerId: customer-123
-                    featureId: feature-api-calls
-              reportUsage:
-                summary: Report Feature Usage
-                value:
-                  query: "mutation ReportUsage($input: ReportUsageInput!) {\n  reportUsage(input: $input) { id }\n}\n"
-                  variables:
-                    input:
-                      customerId: customer-123
-                      featureId: feature-api-calls
-                      value: 100
-      responses:
-        '200':
-          description: GraphQL response (may contain data or errors).
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GraphQLResponse'
-        '401':
-          description: Invalid or missing X-API-KEY header.
   /api/v1/usage:
     post:
       tags:
@@ -202,28 +154,19 @@ paths:
                 $ref: '#/components/schemas/TooManyRequestsErrorResponseDto'
 components:
   schemas:
-    EventResponseDto:
+    NotFoundErrorResponseDto:
       type: object
       properties:
-        data:
-          type: object
-          properties:
-            accepted:
-              type: boolean
-              description: Whether the event was accepted for processing.
-      description: Confirmation that events were accepted for processing.
-    GraphQLResponse:
-      type: object
-      properties:
-        data:
-          type: object
-          description: Response data from the GraphQL operation.
-          additionalProperties: true
-        errors:
-          type: array
-          description: Array of GraphQL errors if any occurred.
-          items:
-            $ref: '#/components/schemas/GraphQLError'
+        message:
+          type: string
+        code:
+          type:
+          - string
+          - 'null'
+      required:
+      - message
+      - code
+      description: Resource not found error response.
     ReportEventRequestDto:
       type: object
       properties:
@@ -237,14 +180,16 @@ components:
           type: string
           description: The name of the event.
         idempotencyKey:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Idempotency key to prevent duplicate event ingestion.
-          nullable: true
         timestamp:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
           description: Timestamp for the event (defaults to now).
-          nullable: true
         dimensions:
           type: object
           additionalProperties:
@@ -256,103 +201,94 @@ components:
       - eventName
       additionalProperties: false
       description: Reports raw usage events for event-based metering.
-    NotFoundErrorResponseDto:
+    BadInputErrorResponseDto:
       type: object
       properties:
         message:
           type: string
+          description: Human-readable error message.
         code:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
+          description: Machine-readable error code.
       required:
       - message
       - code
-      description: Resource not found error response.
-    ReportUsageRequestDto:
-      type: object
-      properties:
-        customerId:
-          type: string
-          description: The customer ID for which usage is being reported.
-        featureId:
-          type: string
-          description: The feature ID for which usage is being reported.
-        value:
-          type: number
-          description: The usage value to report.
-        idempotencyKey:
-          type: string
-          description: Optional idempotency key to prevent duplicate usage reporting.
-          nullable: true
-        timestamp:
-          type: string
-          format: date-time
-          description: Timestamp for the usage measurement (defaults to now).
-          nullable: true
-        updateBehavior:
-          type: string
-          enum:
-          - DELTA
-          - SET
-          description: Whether the value is a delta to add or an absolute value to set.
-          nullable: true
-      required:
-      - customerId
-      - featureId
-      - value
-      additionalProperties: false
-      description: Reports usage measurements for metered features.
+      description: Bad request error response.
     TooManyRequestsErrorResponseDto:
       type: object
       properties:
         message:
           type: string
         code:
-          type: string
+          type:
+          - string
+          - 'null'
           enum:
           - RateLimitExceeded
-          nullable: true
       required:
       - message
       - code
       description: Rate limit exceeded error response.
-    GraphQLError:
+    ConflictErrorResponseDto:
       type: object
       properties:
         message:
           type: string
-          description: Human-readable error message.
-        locations:
-          type: array
-          items:
-            type: object
-            properties:
-              line:
-                type: integer
-              column:
-                type: integer
-        path:
-          type: array
-          items:
-            type: string
-        extensions:
-          type: object
-          additionalProperties: true
-    GraphQLRequest:
-      type: object
+        code:
+          type:
+          - string
+          - 'null'
+          enum:
+          - DuplicatedEntityNotAllowed
+          - EntitlementBelongsToFeatureGroupError
       required:
-      - query
+      - message
+      - code
+      description: Conflict error response (e.g., duplicate resource).
+    ForbiddenErrorResponseDto:
+      type: object
       properties:
-        query:
+        message:
           type: string
-          description: GraphQL query or mutation string.
-        variables:
+        code:
+          type:
+          - string
+          - 'null'
+          enum:
+          - IdentityForbidden
+          - AccessDeniedError
+          - NoFeatureEntitlementError
+      required:
+      - message
+      - code
+      description: Authorization error response.
+    EventResponseDto:
+      type: object
+      properties:
+        data:
           type: object
-          description: Variables for the GraphQL operation.
-          additionalProperties: true
-        operationName:
+          properties:
+            accepted:
+              type: boolean
+              description: Whether the event was accepted for processing.
+      description: Confirmation that events were accepted for processing.
+    UnauthenticatedErrorResponseDto:
+      type: object
+      properties:
+        message:
           type: string
-          description: Named operation to execute when the document contains multiple.
+        code:
+          type:
+          - string
+          - 'null'
+          enum:
+          - Unauthenticated
+      required:
+      - message
+      - code
+      description: Authentication error response.
     UsageResponseDto:
       type: object
       properties:
@@ -376,68 +312,46 @@ components:
               format: date-time
               description: The timestamp of the usage measurement.
       description: Usage measurement response.
-    UnauthenticatedErrorResponseDto:
+    ReportUsageRequestDto:
       type: object
       properties:
-        message:
+        customerId:
           type: string
-        code:
+          description: The customer ID for which usage is being reported.
+        featureId:
           type: string
+          description: The feature ID for which usage is being reported.
+        value:
+          type: number
+          description: The usage value to report.
+        idempotencyKey:
+          type:
+          - string
+          - 'null'
+          description: Optional idempotency key to prevent duplicate usage reporting.
+        timestamp:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Timestamp for the usage measurement (defaults to now).
+        updateBehavior:
+          type:
+          - string
+          - 'null'
           enum:
-          - Unauthenticated
-          nullable: true
+          - DELTA
+          - SET
+          description: Whether the value is a delta to add or an absolute value to set.
       required:
-      - message
-      - code
-      description: Authentication error response.
-    ForbiddenErrorResponseDto:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
-          type: string
-          enum:
-          - IdentityForbidden
-          - AccessDeniedError
-          - NoFeatureEntitlementError
-          nullable: true
-      required:
-      - message
-      - code
-      description: Authorization error response.
-    BadInputErrorResponseDto:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Human-readable error message.
-        code:
-          type: string
-          description: Machine-readable error code.
-          nullable: true
-      required:
-      - message
-      - code
-      description: Bad request error response.
-    ConflictErrorResponseDto:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
-          type: string
-          enum:
-          - DuplicatedEntityNotAllowed
-          - EntitlementBelongsToFeatureGroupError
-          nullable: true
-      required:
-      - message
-      - code
-      description: Conflict error response (e.g., duplicate resource).
+      - customerId
+      - featureId
+      - value
+      additionalProperties: false
+      description: Reports usage measurements for metered features.
   securitySchemes:
-    ApiKey:
+    ApiKeyAuth:
       type: apiKey
       in: header
       name: X-API-KEY
-      description: Full access key from the Stigg dashboard (Integrations > API keys).
+      description: Full access key from the Stigg dashboard (Integrations > API Keys).

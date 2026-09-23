@@ -1,8 +1,8 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Stigg Coupons API
-  description: Stigg is a pricing and packaging platform providing feature management, entitlements, and usage-based billing for SaaS and API products. The Stigg API exposes GraphQL and REST endpoints for customer provisioning, subscription management, entitlement checking, and usage reporting. Authentication requires a Full access key passed via the X-API-KEY header.
-  version: '1.0'
+  title: Stigg REST Coupons API
+  description: 'The Stigg REST API (Public Beta) provides RESTful HTTP access to customer management, subscription provisioning, entitlement enforcement, and usage metering. It supports TypeScript, Python, Go, Ruby, C#, and Java SDKs and accepts API key authentication via the X-API-KEY header. Base URL: https://api.stigg.io/api/v1'
+  version: 7.10.0
   contact:
     url: https://www.stigg.io/
   termsOfService: https://www.stigg.io/terms
@@ -10,7 +10,7 @@ servers:
 - url: https://api.stigg.io
   description: Stigg Production API
 security:
-- ApiKey: []
+- ApiKeyAuth: []
 tags:
 - name: Coupons
   description: Coupon retrieval.
@@ -137,6 +137,19 @@ paths:
                 $ref: '#/components/schemas/TooManyRequestsErrorResponseDto'
 components:
   schemas:
+    NotFoundErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type:
+          - string
+          - 'null'
+      required:
+      - message
+      - code
+      description: Resource not found error response.
     CouponResponseDto:
       type: object
       properties:
@@ -145,92 +158,72 @@ components:
       required:
       - data
       description: Single coupon response.
-    NotFoundErrorResponseDto:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
-          type: string
-          nullable: true
-      required:
-      - message
-      - code
-      description: Resource not found error response.
     TooManyRequestsErrorResponseDto:
       type: object
       properties:
         message:
           type: string
         code:
-          type: string
+          type:
+          - string
+          - 'null'
           enum:
           - RateLimitExceeded
-          nullable: true
       required:
       - message
       - code
       description: Rate limit exceeded error response.
-    CouponListResponseDto:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/CouponDto'
-        pagination:
-          $ref: '#/components/schemas/PaginationDto'
-      required:
-      - data
-      - pagination
-      description: Paginated list of coupons.
     ForbiddenErrorResponseDto:
       type: object
       properties:
         message:
           type: string
         code:
-          type: string
+          type:
+          - string
+          - 'null'
           enum:
           - IdentityForbidden
           - AccessDeniedError
           - NoFeatureEntitlementError
-          nullable: true
       required:
       - message
       - code
       description: Authorization error response.
+    PaginationDto:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: Cursor for fetching the next page of results, or null if no additional pages exist.
+        prev:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: Cursor for fetching the previous page of results, or null if at the beginning.
+      required:
+      - next
+      - prev
+      description: Pagination metadata including cursors for navigating through results.
     UnauthenticatedErrorResponseDto:
       type: object
       properties:
         message:
           type: string
         code:
-          type: string
+          type:
+          - string
+          - 'null'
           enum:
           - Unauthenticated
-          nullable: true
       required:
       - message
       - code
       description: Authentication error response.
-    PaginationDto:
-      type: object
-      properties:
-        next:
-          type: string
-          format: uuid
-          description: Cursor for fetching the next page of results, or null if no additional pages exist.
-          nullable: true
-        prev:
-          type: string
-          format: uuid
-          description: Cursor for fetching the previous page of results, or null if at the beginning.
-          nullable: true
-      required:
-      - next
-      - prev
-      description: Pagination metadata including cursors for navigating through results.
     CouponDto:
       type: object
       properties:
@@ -250,13 +243,15 @@ components:
           - FIXED
           description: Whether discount is a percentage or fixed amount.
         currency:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Currency for fixed-amount coupons.
-          nullable: true
         maxRedemptions:
-          type: integer
+          type:
+          - integer
+          - 'null'
           description: Maximum number of times this coupon can be redeemed.
-          nullable: true
         redemptionsCount:
           type: integer
           description: Number of times this coupon has been redeemed.
@@ -276,9 +271,22 @@ components:
       - createdAt
       - updatedAt
       description: A discount coupon.
+    CouponListResponseDto:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CouponDto'
+        pagination:
+          $ref: '#/components/schemas/PaginationDto'
+      required:
+      - data
+      - pagination
+      description: Paginated list of coupons.
   securitySchemes:
-    ApiKey:
+    ApiKeyAuth:
       type: apiKey
       in: header
       name: X-API-KEY
-      description: Full access key from the Stigg dashboard (Integrations > API keys).
+      description: Full access key from the Stigg dashboard (Integrations > API Keys).

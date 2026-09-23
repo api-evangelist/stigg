@@ -1,0 +1,27 @@
+# Front Door AI Index — stigg — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: stigg
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.stigg.io
+  final_host: www.stigg.io
+  ownership: own
+  owner: stigg
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 13
+  host_score: 13
+  density: 19.4
+  words: 670
+  tiers:
+    agentic: 1
+    core: 12
+    model: 0
+  ambiguous: 6
+  top_terms:
+    AI: 12
+    agent: 6
+    inference: 1
