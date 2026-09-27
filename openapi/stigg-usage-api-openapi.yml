@@ -154,53 +154,6 @@ paths:
                 $ref: '#/components/schemas/TooManyRequestsErrorResponseDto'
 components:
   schemas:
-    NotFoundErrorResponseDto:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
-          type:
-          - string
-          - 'null'
-      required:
-      - message
-      - code
-      description: Resource not found error response.
-    ReportEventRequestDto:
-      type: object
-      properties:
-        customerId:
-          type: string
-          description: The customer ID.
-        featureId:
-          type: string
-          description: The feature ID.
-        eventName:
-          type: string
-          description: The name of the event.
-        idempotencyKey:
-          type:
-          - string
-          - 'null'
-          description: Idempotency key to prevent duplicate event ingestion.
-        timestamp:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Timestamp for the event (defaults to now).
-        dimensions:
-          type: object
-          additionalProperties:
-            type: string
-          description: Additional event dimensions for aggregation.
-      required:
-      - customerId
-      - featureId
-      - eventName
-      additionalProperties: false
-      description: Reports raw usage events for event-based metering.
     BadInputErrorResponseDto:
       type: object
       properties:
@@ -216,7 +169,7 @@ components:
       - message
       - code
       description: Bad request error response.
-    TooManyRequestsErrorResponseDto:
+    NotFoundErrorResponseDto:
       type: object
       properties:
         message:
@@ -225,12 +178,10 @@ components:
           type:
           - string
           - 'null'
-          enum:
-          - RateLimitExceeded
       required:
       - message
       - code
-      description: Rate limit exceeded error response.
+      description: Resource not found error response.
     ConflictErrorResponseDto:
       type: object
       properties:
@@ -247,33 +198,6 @@ components:
       - message
       - code
       description: Conflict error response (e.g., duplicate resource).
-    ForbiddenErrorResponseDto:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
-          type:
-          - string
-          - 'null'
-          enum:
-          - IdentityForbidden
-          - AccessDeniedError
-          - NoFeatureEntitlementError
-      required:
-      - message
-      - code
-      description: Authorization error response.
-    EventResponseDto:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            accepted:
-              type: boolean
-              description: Whether the event was accepted for processing.
-      description: Confirmation that events were accepted for processing.
     UnauthenticatedErrorResponseDto:
       type: object
       properties:
@@ -349,6 +273,82 @@ components:
       - value
       additionalProperties: false
       description: Reports usage measurements for metered features.
+    EventResponseDto:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            accepted:
+              type: boolean
+              description: Whether the event was accepted for processing.
+      description: Confirmation that events were accepted for processing.
+    ReportEventRequestDto:
+      type: object
+      properties:
+        customerId:
+          type: string
+          description: The customer ID.
+        featureId:
+          type: string
+          description: The feature ID.
+        eventName:
+          type: string
+          description: The name of the event.
+        idempotencyKey:
+          type:
+          - string
+          - 'null'
+          description: Idempotency key to prevent duplicate event ingestion.
+        timestamp:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Timestamp for the event (defaults to now).
+        dimensions:
+          type: object
+          additionalProperties:
+            type: string
+          description: Additional event dimensions for aggregation.
+      required:
+      - customerId
+      - featureId
+      - eventName
+      additionalProperties: false
+      description: Reports raw usage events for event-based metering.
+    TooManyRequestsErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type:
+          - string
+          - 'null'
+          enum:
+          - RateLimitExceeded
+      required:
+      - message
+      - code
+      description: Rate limit exceeded error response.
+    ForbiddenErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type:
+          - string
+          - 'null'
+          enum:
+          - IdentityForbidden
+          - AccessDeniedError
+          - NoFeatureEntitlementError
+      required:
+      - message
+      - code
+      description: Authorization error response.
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

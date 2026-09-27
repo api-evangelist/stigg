@@ -326,18 +326,6 @@ components:
         extensions:
           type: object
           additionalProperties: true
-    GraphQLResponse:
-      type: object
-      properties:
-        data:
-          type: object
-          description: Response data from the GraphQL operation.
-          additionalProperties: true
-        errors:
-          type: array
-          description: Array of GraphQL errors if any occurred.
-          items:
-            $ref: '#/components/schemas/GraphQLError'
     GraphQLRequest:
       type: object
       required:
@@ -353,6 +341,33 @@ components:
         operationName:
           type: string
           description: Named operation to execute when the document contains multiple.
+    GraphQLResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          description: Response data from the GraphQL operation.
+          additionalProperties: true
+        errors:
+          type: array
+          description: Array of GraphQL errors if any occurred.
+          items:
+            $ref: '#/components/schemas/GraphQLError'
+    BadInputErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Human-readable error message.
+        code:
+          type:
+          - string
+          - 'null'
+          description: Machine-readable error code.
+      required:
+      - message
+      - code
+      description: Bad request error response.
     UpdateCustomerRequestDto:
       type: object
       properties:
@@ -404,19 +419,6 @@ components:
           description: Language to use for this customer.
       additionalProperties: false
       description: Updates an existing customer's properties.
-    NotFoundErrorResponseDto:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
-          type:
-          - string
-          - 'null'
-      required:
-      - message
-      - code
-      description: Resource not found error response.
     CustomerListResponseDto:
       type: object
       properties:
@@ -430,37 +432,54 @@ components:
       - data
       - pagination
       description: Paginated list of customers.
-    BadInputErrorResponseDto:
+    CustomerResponseDto:
       type: object
       properties:
-        message:
-          type: string
-          description: Human-readable error message.
-        code:
-          type:
-          - string
-          - 'null'
-          description: Machine-readable error code.
+        data:
+          $ref: '#/components/schemas/CustomerDto'
       required:
-      - message
-      - code
-      description: Bad request error response.
-    TooManyRequestsErrorResponseDto:
+      - data
+      description: Single customer response.
+    PaymentMethodDto:
       type: object
       properties:
-        message:
-          type: string
-        code:
+        billingId:
           type:
           - string
           - 'null'
+          maxLength: 255
+          description: The default payment method id.
+        type:
+          type: string
           enum:
-          - RateLimitExceeded
+          - CARD
+          - BANK
+          - CASH_APP
+          description: The default payment method type.
+        cardLast4Digits:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: The last 4 digits of the default payment method.
+        cardExpiryMonth:
+          type:
+          - number
+          - 'null'
+          description: The expiration month of the default payment method.
+        cardExpiryYear:
+          type:
+          - number
+          - 'null'
+          description: The expiration year of the default payment method.
       required:
-      - message
-      - code
-      description: Rate limit exceeded error response.
-    ConflictErrorResponseDto:
+      - billingId
+      - type
+      - cardLast4Digits
+      - cardExpiryMonth
+      - cardExpiryYear
+      description: The default payment method details.
+    NotFoundErrorResponseDto:
       type: object
       properties:
         message:
@@ -469,13 +488,10 @@ components:
           type:
           - string
           - 'null'
-          enum:
-          - DuplicatedEntityNotAllowed
-          - EntitlementBelongsToFeatureGroupError
       required:
       - message
       - code
-      description: Conflict error response (e.g., duplicate resource).
+      description: Resource not found error response.
     CustomerIntegrationDto:
       type: object
       properties:
@@ -510,7 +526,26 @@ components:
       - syncedEntityId
       - id
       description: External billing or CRM integration link.
-    ForbiddenErrorResponseDto:
+    PaginationDto:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: Cursor for fetching the next page of results, or null if no additional pages exist.
+        prev:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: Cursor for fetching the previous page of results, or null if at the beginning.
+      required:
+      - next
+      - prev
+      description: Pagination metadata including cursors for navigating through results.
+    ConflictErrorResponseDto:
       type: object
       properties:
         message:
@@ -520,13 +555,27 @@ components:
           - string
           - 'null'
           enum:
-          - IdentityForbidden
-          - AccessDeniedError
-          - NoFeatureEntitlementError
+          - DuplicatedEntityNotAllowed
+          - EntitlementBelongsToFeatureGroupError
       required:
       - message
       - code
-      description: Authorization error response.
+      description: Conflict error response (e.g., duplicate resource).
+    UnauthenticatedErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type:
+          - string
+          - 'null'
+          enum:
+          - Unauthenticated
+      required:
+      - message
+      - code
+      description: Authentication error response.
     CustomerDto:
       type: object
       properties:
@@ -674,7 +723,7 @@ components:
       - id
       additionalProperties: false
       description: Provisions a new customer with unique ID, optional name and email.
-    UnauthenticatedErrorResponseDto:
+    TooManyRequestsErrorResponseDto:
       type: object
       properties:
         message:
@@ -684,77 +733,28 @@ components:
           - string
           - 'null'
           enum:
-          - Unauthenticated
+          - RateLimitExceeded
       required:
       - message
       - code
-      description: Authentication error response.
-    PaginationDto:
+      description: Rate limit exceeded error response.
+    ForbiddenErrorResponseDto:
       type: object
       properties:
-        next:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: Cursor for fetching the next page of results, or null if no additional pages exist.
-        prev:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: Cursor for fetching the previous page of results, or null if at the beginning.
-      required:
-      - next
-      - prev
-      description: Pagination metadata including cursors for navigating through results.
-    CustomerResponseDto:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/CustomerDto'
-      required:
-      - data
-      description: Single customer response.
-    PaymentMethodDto:
-      type: object
-      properties:
-        billingId:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-          description: The default payment method id.
-        type:
+        message:
           type: string
-          enum:
-          - CARD
-          - BANK
-          - CASH_APP
-          description: The default payment method type.
-        cardLast4Digits:
+        code:
           type:
           - string
           - 'null'
-          maxLength: 255
-          description: The last 4 digits of the default payment method.
-        cardExpiryMonth:
-          type:
-          - number
-          - 'null'
-          description: The expiration month of the default payment method.
-        cardExpiryYear:
-          type:
-          - number
-          - 'null'
-          description: The expiration year of the default payment method.
+          enum:
+          - IdentityForbidden
+          - AccessDeniedError
+          - NoFeatureEntitlementError
       required:
-      - billingId
-      - type
-      - cardLast4Digits
-      - cardExpiryMonth
-      - cardExpiryYear
-      description: The default payment method details.
+      - message
+      - code
+      description: Authorization error response.
   securitySchemes:
     ApiKey:
       type: apiKey
