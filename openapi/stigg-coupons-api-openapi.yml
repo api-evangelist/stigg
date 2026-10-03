@@ -137,7 +137,20 @@ paths:
                 $ref: '#/components/schemas/TooManyRequestsErrorResponseDto'
 components:
   schemas:
-    NotFoundErrorResponseDto:
+    CouponListResponseDto:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CouponDto'
+        pagination:
+          $ref: '#/components/schemas/PaginationDto'
+      required:
+      - data
+      - pagination
+      description: Paginated list of coupons.
+    ForbiddenErrorResponseDto:
       type: object
       properties:
         message:
@@ -146,10 +159,37 @@ components:
           type:
           - string
           - 'null'
+          enum:
+          - IdentityForbidden
+          - AccessDeniedError
+          - NoFeatureEntitlementError
       required:
       - message
       - code
-      description: Resource not found error response.
+      description: Authorization error response.
+    TooManyRequestsErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type:
+          - string
+          - 'null'
+          enum:
+          - RateLimitExceeded
+      required:
+      - message
+      - code
+      description: Rate limit exceeded error response.
+    CouponResponseDto:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/CouponDto'
+      required:
+      - data
+      description: Single coupon response.
     CouponDto:
       type: object
       properties:
@@ -197,19 +237,34 @@ components:
       - createdAt
       - updatedAt
       description: A discount coupon.
-    CouponListResponseDto:
+    NotFoundErrorResponseDto:
       type: object
       properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/CouponDto'
-        pagination:
-          $ref: '#/components/schemas/PaginationDto'
+        message:
+          type: string
+        code:
+          type:
+          - string
+          - 'null'
       required:
-      - data
-      - pagination
-      description: Paginated list of coupons.
+      - message
+      - code
+      description: Resource not found error response.
+    UnauthenticatedErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type:
+          - string
+          - 'null'
+          enum:
+          - Unauthenticated
+      required:
+      - message
+      - code
+      description: Authentication error response.
     PaginationDto:
       type: object
       properties:
@@ -229,61 +284,6 @@ components:
       - next
       - prev
       description: Pagination metadata including cursors for navigating through results.
-    CouponResponseDto:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/CouponDto'
-      required:
-      - data
-      description: Single coupon response.
-    UnauthenticatedErrorResponseDto:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
-          type:
-          - string
-          - 'null'
-          enum:
-          - Unauthenticated
-      required:
-      - message
-      - code
-      description: Authentication error response.
-    TooManyRequestsErrorResponseDto:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
-          type:
-          - string
-          - 'null'
-          enum:
-          - RateLimitExceeded
-      required:
-      - message
-      - code
-      description: Rate limit exceeded error response.
-    ForbiddenErrorResponseDto:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
-          type:
-          - string
-          - 'null'
-          enum:
-          - IdentityForbidden
-          - AccessDeniedError
-          - NoFeatureEntitlementError
-      required:
-      - message
-      - code
-      description: Authorization error response.
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

@@ -304,6 +304,21 @@ paths:
       description: Stigg Production API
 components:
   schemas:
+    GraphQLRequest:
+      type: object
+      required:
+      - query
+      properties:
+        query:
+          type: string
+          description: GraphQL query or mutation string.
+        variables:
+          type: object
+          description: Variables for the GraphQL operation.
+          additionalProperties: true
+        operationName:
+          type: string
+          description: Named operation to execute when the document contains multiple.
     GraphQLError:
       type: object
       properties:
@@ -326,21 +341,6 @@ components:
         extensions:
           type: object
           additionalProperties: true
-    GraphQLRequest:
-      type: object
-      required:
-      - query
-      properties:
-        query:
-          type: string
-          description: GraphQL query or mutation string.
-        variables:
-          type: object
-          description: Variables for the GraphQL operation.
-          additionalProperties: true
-        operationName:
-          type: string
-          description: Named operation to execute when the document contains multiple.
     GraphQLResponse:
       type: object
       properties:
@@ -353,24 +353,15 @@ components:
           description: Array of GraphQL errors if any occurred.
           items:
             $ref: '#/components/schemas/GraphQLError'
-    BadInputErrorResponseDto:
+    ProvisionCustomerRequestDto:
       type: object
       properties:
-        message:
+        id:
           type: string
-          description: Human-readable error message.
-        code:
-          type:
-          - string
-          - 'null'
-          description: Machine-readable error code.
-      required:
-      - message
-      - code
-      description: Bad request error response.
-    UpdateCustomerRequestDto:
-      type: object
-      properties:
+          maxLength: 255
+          minLength: 1
+          pattern: ^[a-zA-Z0-9][a-zA-Z0-9_|.@-]*$
+          description: Customer slug.
         name:
           type:
           - string
@@ -400,6 +391,12 @@ components:
           additionalProperties:
             type: string
           description: Additional metadata.
+        integrations:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerIntegrationDto'
+        defaultPaymentMethod:
+          $ref: '#/components/schemas/PaymentMethodDto'
         couponId:
           type:
           - string
@@ -417,29 +414,10 @@ components:
           - 'null'
           maxLength: 255
           description: Language to use for this customer.
+      required:
+      - id
       additionalProperties: false
-      description: Updates an existing customer's properties.
-    CustomerListResponseDto:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomerDto'
-        pagination:
-          $ref: '#/components/schemas/PaginationDto'
-      required:
-      - data
-      - pagination
-      description: Paginated list of customers.
-    CustomerResponseDto:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/CustomerDto'
-      required:
-      - data
-      description: Single customer response.
+      description: Provisions a new customer with unique ID, optional name and email.
     PaymentMethodDto:
       type: object
       properties:
@@ -479,7 +457,7 @@ components:
       - cardExpiryMonth
       - cardExpiryYear
       description: The default payment method details.
-    NotFoundErrorResponseDto:
+    ForbiddenErrorResponseDto:
       type: object
       properties:
         message:
@@ -488,10 +466,29 @@ components:
           type:
           - string
           - 'null'
+          enum:
+          - IdentityForbidden
+          - AccessDeniedError
+          - NoFeatureEntitlementError
       required:
       - message
       - code
-      description: Resource not found error response.
+      description: Authorization error response.
+    TooManyRequestsErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type:
+          - string
+          - 'null'
+          enum:
+          - RateLimitExceeded
+      required:
+      - message
+      - code
+      description: Rate limit exceeded error response.
     CustomerIntegrationDto:
       type: object
       properties:
@@ -526,25 +523,6 @@ components:
       - syncedEntityId
       - id
       description: External billing or CRM integration link.
-    PaginationDto:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: Cursor for fetching the next page of results, or null if no additional pages exist.
-        prev:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: Cursor for fetching the previous page of results, or null if at the beginning.
-      required:
-      - next
-      - prev
-      description: Pagination metadata including cursors for navigating through results.
     ConflictErrorResponseDto:
       type: object
       properties:
@@ -561,21 +539,6 @@ components:
       - message
       - code
       description: Conflict error response (e.g., duplicate resource).
-    UnauthenticatedErrorResponseDto:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
-          type:
-          - string
-          - 'null'
-          enum:
-          - Unauthenticated
-      required:
-      - message
-      - code
-      description: Authentication error response.
     CustomerDto:
       type: object
       properties:
@@ -658,15 +621,92 @@ components:
       - updatedAt
       - archivedAt
       description: A customer can be either an organization or an individual.
-    ProvisionCustomerRequestDto:
+    BadInputErrorResponseDto:
       type: object
       properties:
-        id:
+        message:
           type: string
-          maxLength: 255
-          minLength: 1
-          pattern: ^[a-zA-Z0-9][a-zA-Z0-9_|.@-]*$
-          description: Customer slug.
+          description: Human-readable error message.
+        code:
+          type:
+          - string
+          - 'null'
+          description: Machine-readable error code.
+      required:
+      - message
+      - code
+      description: Bad request error response.
+    PaginationDto:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: Cursor for fetching the next page of results, or null if no additional pages exist.
+        prev:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: Cursor for fetching the previous page of results, or null if at the beginning.
+      required:
+      - next
+      - prev
+      description: Pagination metadata including cursors for navigating through results.
+    NotFoundErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type:
+          - string
+          - 'null'
+      required:
+      - message
+      - code
+      description: Resource not found error response.
+    CustomerListResponseDto:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerDto'
+        pagination:
+          $ref: '#/components/schemas/PaginationDto'
+      required:
+      - data
+      - pagination
+      description: Paginated list of customers.
+    CustomerResponseDto:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/CustomerDto'
+      required:
+      - data
+      description: Single customer response.
+    UnauthenticatedErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type:
+          - string
+          - 'null'
+          enum:
+          - Unauthenticated
+      required:
+      - message
+      - code
+      description: Authentication error response.
+    UpdateCustomerRequestDto:
+      type: object
+      properties:
         name:
           type:
           - string
@@ -696,12 +736,6 @@ components:
           additionalProperties:
             type: string
           description: Additional metadata.
-        integrations:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomerIntegrationDto'
-        defaultPaymentMethod:
-          $ref: '#/components/schemas/PaymentMethodDto'
         couponId:
           type:
           - string
@@ -719,42 +753,8 @@ components:
           - 'null'
           maxLength: 255
           description: Language to use for this customer.
-      required:
-      - id
       additionalProperties: false
-      description: Provisions a new customer with unique ID, optional name and email.
-    TooManyRequestsErrorResponseDto:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
-          type:
-          - string
-          - 'null'
-          enum:
-          - RateLimitExceeded
-      required:
-      - message
-      - code
-      description: Rate limit exceeded error response.
-    ForbiddenErrorResponseDto:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
-          type:
-          - string
-          - 'null'
-          enum:
-          - IdentityForbidden
-          - AccessDeniedError
-          - NoFeatureEntitlementError
-      required:
-      - message
-      - code
-      description: Authorization error response.
+      description: Updates an existing customer's properties.
   securitySchemes:
     ApiKey:
       type: apiKey

@@ -154,35 +154,7 @@ paths:
                 $ref: '#/components/schemas/TooManyRequestsErrorResponseDto'
 components:
   schemas:
-    BadInputErrorResponseDto:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Human-readable error message.
-        code:
-          type:
-          - string
-          - 'null'
-          description: Machine-readable error code.
-      required:
-      - message
-      - code
-      description: Bad request error response.
-    NotFoundErrorResponseDto:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
-          type:
-          - string
-          - 'null'
-      required:
-      - message
-      - code
-      description: Resource not found error response.
-    ConflictErrorResponseDto:
+    ForbiddenErrorResponseDto:
       type: object
       properties:
         message:
@@ -192,27 +164,13 @@ components:
           - string
           - 'null'
           enum:
-          - DuplicatedEntityNotAllowed
-          - EntitlementBelongsToFeatureGroupError
+          - IdentityForbidden
+          - AccessDeniedError
+          - NoFeatureEntitlementError
       required:
       - message
       - code
-      description: Conflict error response (e.g., duplicate resource).
-    UnauthenticatedErrorResponseDto:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
-          type:
-          - string
-          - 'null'
-          enum:
-          - Unauthenticated
-      required:
-      - message
-      - code
-      description: Authentication error response.
+      description: Authorization error response.
     UsageResponseDto:
       type: object
       properties:
@@ -236,6 +194,21 @@ components:
               format: date-time
               description: The timestamp of the usage measurement.
       description: Usage measurement response.
+    TooManyRequestsErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type:
+          - string
+          - 'null'
+          enum:
+          - RateLimitExceeded
+      required:
+      - message
+      - code
+      description: Rate limit exceeded error response.
     ReportUsageRequestDto:
       type: object
       properties:
@@ -283,6 +256,50 @@ components:
               type: boolean
               description: Whether the event was accepted for processing.
       description: Confirmation that events were accepted for processing.
+    ConflictErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type:
+          - string
+          - 'null'
+          enum:
+          - DuplicatedEntityNotAllowed
+          - EntitlementBelongsToFeatureGroupError
+      required:
+      - message
+      - code
+      description: Conflict error response (e.g., duplicate resource).
+    BadInputErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Human-readable error message.
+        code:
+          type:
+          - string
+          - 'null'
+          description: Machine-readable error code.
+      required:
+      - message
+      - code
+      description: Bad request error response.
+    NotFoundErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type:
+          - string
+          - 'null'
+      required:
+      - message
+      - code
+      description: Resource not found error response.
     ReportEventRequestDto:
       type: object
       properties:
@@ -317,7 +334,7 @@ components:
       - eventName
       additionalProperties: false
       description: Reports raw usage events for event-based metering.
-    TooManyRequestsErrorResponseDto:
+    UnauthenticatedErrorResponseDto:
       type: object
       properties:
         message:
@@ -327,28 +344,11 @@ components:
           - string
           - 'null'
           enum:
-          - RateLimitExceeded
+          - Unauthenticated
       required:
       - message
       - code
-      description: Rate limit exceeded error response.
-    ForbiddenErrorResponseDto:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
-          type:
-          - string
-          - 'null'
-          enum:
-          - IdentityForbidden
-          - AccessDeniedError
-          - NoFeatureEntitlementError
-      required:
-      - message
-      - code
-      description: Authorization error response.
+      description: Authentication error response.
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
