@@ -1,0 +1,35 @@
+slug: stigg
+provider: Stigg
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 2
+edges:
+- tag: Subscriptions
+  spec_file: stigg-subscriptions-api-openapi.yml
+  capability_id: BC-4240
+  capability_id_l1: BC-4240
+  capability_name: Subscription Lifecycle Management
+  confidence: 0.92
+  evidence: POST /api/v1/subscriptions  Provision subscription; POST /api/v1/subscriptions/{id}/cancel  Cancel
+    subscription; POST /api/v1/subscriptions/preview
+  reason: Operations provision, preview and cancel SaaS subscriptions — plainly subscription lifecycle
+    management. Evidence spans provisioning and cancellation, so no single L2 is named exclusively.
+- tag: Usage
+  spec_file: stigg-usage-api-openapi.yml
+  capability_id: BC-4250.10
+  capability_id_l1: BC-4250
+  capability_name: Usage Metering
+  confidence: 0.92
+  evidence: POST /api/v1/usage  UsageController_reportUsage  Report usage measurements; POST /api/v1/events  Report
+    usage events
+  reason: Ingestion of usage measurements and events feeding usage-based billing is exactly usage metering
+    within subscription billing.
