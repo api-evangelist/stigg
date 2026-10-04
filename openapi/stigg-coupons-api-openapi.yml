@@ -167,6 +167,21 @@ components:
       - message
       - code
       description: Authorization error response.
+    UnauthenticatedErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type:
+          - string
+          - 'null'
+          enum:
+          - Unauthenticated
+      required:
+      - message
+      - code
+      description: Authentication error response.
     TooManyRequestsErrorResponseDto:
       type: object
       properties:
@@ -182,14 +197,25 @@ components:
       - message
       - code
       description: Rate limit exceeded error response.
-    CouponResponseDto:
+    PaginationDto:
       type: object
       properties:
-        data:
-          $ref: '#/components/schemas/CouponDto'
+        next:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: Cursor for fetching the next page of results, or null if no additional pages exist.
+        prev:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: Cursor for fetching the previous page of results, or null if at the beginning.
       required:
-      - data
-      description: Single coupon response.
+      - next
+      - prev
+      description: Pagination metadata including cursors for navigating through results.
     CouponDto:
       type: object
       properties:
@@ -237,6 +263,14 @@ components:
       - createdAt
       - updatedAt
       description: A discount coupon.
+    CouponResponseDto:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/CouponDto'
+      required:
+      - data
+      description: Single coupon response.
     NotFoundErrorResponseDto:
       type: object
       properties:
@@ -250,40 +284,6 @@ components:
       - message
       - code
       description: Resource not found error response.
-    UnauthenticatedErrorResponseDto:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
-          type:
-          - string
-          - 'null'
-          enum:
-          - Unauthenticated
-      required:
-      - message
-      - code
-      description: Authentication error response.
-    PaginationDto:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: Cursor for fetching the next page of results, or null if no additional pages exist.
-        prev:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: Cursor for fetching the previous page of results, or null if at the beginning.
-      required:
-      - next
-      - prev
-      description: Pagination metadata including cursors for navigating through results.
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

@@ -304,21 +304,6 @@ paths:
       description: Stigg Production API
 components:
   schemas:
-    GraphQLRequest:
-      type: object
-      required:
-      - query
-      properties:
-        query:
-          type: string
-          description: GraphQL query or mutation string.
-        variables:
-          type: object
-          description: Variables for the GraphQL operation.
-          additionalProperties: true
-        operationName:
-          type: string
-          description: Named operation to execute when the document contains multiple.
     GraphQLError:
       type: object
       properties:
@@ -353,71 +338,21 @@ components:
           description: Array of GraphQL errors if any occurred.
           items:
             $ref: '#/components/schemas/GraphQLError'
-    ProvisionCustomerRequestDto:
+    GraphQLRequest:
       type: object
-      properties:
-        id:
-          type: string
-          maxLength: 255
-          minLength: 1
-          pattern: ^[a-zA-Z0-9][a-zA-Z0-9_|.@-]*$
-          description: Customer slug.
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-          description: The name of the customer.
-        email:
-          type:
-          - string
-          - 'null'
-          format: email
-          maxLength: 255
-          description: The email of the customer.
-        billingId:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-          description: The unique identifier for the entity in the billing provider.
-        billingCurrency:
-          type:
-          - string
-          - 'null'
-          description: The billing currency of the customer.
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          description: Additional metadata.
-        integrations:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomerIntegrationDto'
-        defaultPaymentMethod:
-          $ref: '#/components/schemas/PaymentMethodDto'
-        couponId:
-          type:
-          - string
-          - 'null'
-          description: Customer level coupon.
-        timezone:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-          description: Timezone to use for this customer.
-        language:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-          description: Language to use for this customer.
       required:
-      - id
-      additionalProperties: false
-      description: Provisions a new customer with unique ID, optional name and email.
+      - query
+      properties:
+        query:
+          type: string
+          description: GraphQL query or mutation string.
+        variables:
+          type: object
+          description: Variables for the GraphQL operation.
+          additionalProperties: true
+        operationName:
+          type: string
+          description: Named operation to execute when the document contains multiple.
     PaymentMethodDto:
       type: object
       properties:
@@ -457,88 +392,6 @@ components:
       - cardExpiryMonth
       - cardExpiryYear
       description: The default payment method details.
-    ForbiddenErrorResponseDto:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
-          type:
-          - string
-          - 'null'
-          enum:
-          - IdentityForbidden
-          - AccessDeniedError
-          - NoFeatureEntitlementError
-      required:
-      - message
-      - code
-      description: Authorization error response.
-    TooManyRequestsErrorResponseDto:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
-          type:
-          - string
-          - 'null'
-          enum:
-          - RateLimitExceeded
-      required:
-      - message
-      - code
-      description: Rate limit exceeded error response.
-    CustomerIntegrationDto:
-      type: object
-      properties:
-        vendorIdentifier:
-          type: string
-          enum:
-          - AUTH0
-          - ZUORA
-          - STRIPE
-          - HUBSPOT
-          - AWS_MARKETPLACE
-          - SNOWFLAKE
-          - SALESFORCE
-          - BIG_QUERY
-          - OPEN_FGA
-          - APP_STORE
-          - RECEIVED
-          - PREQUEL
-          description: The vendor identifier of integration.
-        syncedEntityId:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-          description: Synced entity id.
-        id:
-          type: string
-          maxLength: 255
-          description: Integration details.
-      required:
-      - vendorIdentifier
-      - syncedEntityId
-      - id
-      description: External billing or CRM integration link.
-    ConflictErrorResponseDto:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
-          type:
-          - string
-          - 'null'
-          enum:
-          - DuplicatedEntityNotAllowed
-          - EntitlementBelongsToFeatureGroupError
-      required:
-      - message
-      - code
-      description: Conflict error response (e.g., duplicate resource).
     CustomerDto:
       type: object
       properties:
@@ -621,6 +474,64 @@ components:
       - updatedAt
       - archivedAt
       description: A customer can be either an organization or an individual.
+    ConflictErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type:
+          - string
+          - 'null'
+          enum:
+          - DuplicatedEntityNotAllowed
+          - EntitlementBelongsToFeatureGroupError
+      required:
+      - message
+      - code
+      description: Conflict error response (e.g., duplicate resource).
+    CustomerResponseDto:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/CustomerDto'
+      required:
+      - data
+      description: Single customer response.
+    CustomerIntegrationDto:
+      type: object
+      properties:
+        vendorIdentifier:
+          type: string
+          enum:
+          - AUTH0
+          - ZUORA
+          - STRIPE
+          - HUBSPOT
+          - AWS_MARKETPLACE
+          - SNOWFLAKE
+          - SALESFORCE
+          - BIG_QUERY
+          - OPEN_FGA
+          - APP_STORE
+          - RECEIVED
+          - PREQUEL
+          description: The vendor identifier of integration.
+        syncedEntityId:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: Synced entity id.
+        id:
+          type: string
+          maxLength: 255
+          description: Integration details.
+      required:
+      - vendorIdentifier
+      - syncedEntityId
+      - id
+      description: External billing or CRM integration link.
     BadInputErrorResponseDto:
       type: object
       properties:
@@ -636,6 +547,131 @@ components:
       - message
       - code
       description: Bad request error response.
+    ForbiddenErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type:
+          - string
+          - 'null'
+          enum:
+          - IdentityForbidden
+          - AccessDeniedError
+          - NoFeatureEntitlementError
+      required:
+      - message
+      - code
+      description: Authorization error response.
+    CustomerListResponseDto:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerDto'
+        pagination:
+          $ref: '#/components/schemas/PaginationDto'
+      required:
+      - data
+      - pagination
+      description: Paginated list of customers.
+    ProvisionCustomerRequestDto:
+      type: object
+      properties:
+        id:
+          type: string
+          maxLength: 255
+          minLength: 1
+          pattern: ^[a-zA-Z0-9][a-zA-Z0-9_|.@-]*$
+          description: Customer slug.
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: The name of the customer.
+        email:
+          type:
+          - string
+          - 'null'
+          format: email
+          maxLength: 255
+          description: The email of the customer.
+        billingId:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: The unique identifier for the entity in the billing provider.
+        billingCurrency:
+          type:
+          - string
+          - 'null'
+          description: The billing currency of the customer.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: Additional metadata.
+        integrations:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerIntegrationDto'
+        defaultPaymentMethod:
+          $ref: '#/components/schemas/PaymentMethodDto'
+        couponId:
+          type:
+          - string
+          - 'null'
+          description: Customer level coupon.
+        timezone:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: Timezone to use for this customer.
+        language:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: Language to use for this customer.
+      required:
+      - id
+      additionalProperties: false
+      description: Provisions a new customer with unique ID, optional name and email.
+    TooManyRequestsErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type:
+          - string
+          - 'null'
+          enum:
+          - RateLimitExceeded
+      required:
+      - message
+      - code
+      description: Rate limit exceeded error response.
+    UnauthenticatedErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type:
+          - string
+          - 'null'
+          enum:
+          - Unauthenticated
+      required:
+      - message
+      - code
+      description: Authentication error response.
     PaginationDto:
       type: object
       properties:
@@ -655,55 +691,6 @@ components:
       - next
       - prev
       description: Pagination metadata including cursors for navigating through results.
-    NotFoundErrorResponseDto:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
-          type:
-          - string
-          - 'null'
-      required:
-      - message
-      - code
-      description: Resource not found error response.
-    CustomerListResponseDto:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomerDto'
-        pagination:
-          $ref: '#/components/schemas/PaginationDto'
-      required:
-      - data
-      - pagination
-      description: Paginated list of customers.
-    CustomerResponseDto:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/CustomerDto'
-      required:
-      - data
-      description: Single customer response.
-    UnauthenticatedErrorResponseDto:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
-          type:
-          - string
-          - 'null'
-          enum:
-          - Unauthenticated
-      required:
-      - message
-      - code
-      description: Authentication error response.
     UpdateCustomerRequestDto:
       type: object
       properties:
@@ -755,6 +742,19 @@ components:
           description: Language to use for this customer.
       additionalProperties: false
       description: Updates an existing customer's properties.
+    NotFoundErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type:
+          - string
+          - 'null'
+      required:
+      - message
+      - code
+      description: Resource not found error response.
   securitySchemes:
     ApiKey:
       type: apiKey
