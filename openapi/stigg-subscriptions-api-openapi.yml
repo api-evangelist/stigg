@@ -350,19 +350,6 @@ paths:
                 $ref: '#/components/schemas/TooManyRequestsErrorResponseDto'
 components:
   schemas:
-    SubscriptionListResponseDto:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubscriptionDto'
-        pagination:
-          $ref: '#/components/schemas/PaginationDto'
-      required:
-      - data
-      - pagination
-      description: Paginated list of subscriptions.
     PreviewSubscriptionResponseDto:
       type: object
       properties:
@@ -414,15 +401,33 @@ components:
       - message
       - code
       description: Conflict error response (e.g., duplicate resource).
-    ProvisionSubscriptionRequestDto:
+    SubscriptionResponseDto:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/SubscriptionDto'
+      required:
+      - data
+      description: Single subscription response.
+    AddonDto:
+      type: object
+      properties:
+        addonId:
+          type: string
+          description: The add-on identifier.
+        quantity:
+          type: integer
+          description: The quantity of the add-on.
+      description: An add-on attached to a subscription.
+    PreviewSubscriptionRequestDto:
       type: object
       properties:
         customerId:
           type: string
-          description: The ID of the customer to provision the subscription for.
+          description: The customer ID.
         planId:
           type: string
-          description: The ID of the plan to subscribe the customer to.
+          description: The plan ID.
         billingPeriod:
           type: string
           enum:
@@ -433,63 +438,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AddonDto'
-          description: Add-ons to include in the subscription.
-        startDate:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: When the subscription should start (defaults to now).
-        trialPeriodDays:
-          type:
-          - integer
-          - 'null'
-          description: Number of trial days before billing begins.
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          description: Additional metadata.
+          description: Add-ons to include in the preview.
       required:
       - customerId
       - planId
-      additionalProperties: false
-      description: Creates a new subscription for an existing customer.
-    CancelSubscriptionRequestDto:
-      type: object
-      properties:
-        endDate:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: When to cancel the subscription (defaults to immediate cancellation).
-        cancelAt:
-          type:
-          - string
-          - 'null'
-          enum:
-          - END_OF_BILLING_PERIOD
-          - IMMEDIATE
-          description: Cancellation timing strategy.
-      additionalProperties: false
-      description: Options for canceling a subscription.
-    BadInputErrorResponseDto:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Human-readable error message.
-        code:
-          type:
-          - string
-          - 'null'
-          description: Machine-readable error code.
-      required:
-      - message
-      - code
-      description: Bad request error response.
-    ForbiddenErrorResponseDto:
+      description: Parameters for previewing a subscription without creating it.
+    TooManyRequestsErrorResponseDto:
       type: object
       properties:
         message:
@@ -499,14 +453,12 @@ components:
           - string
           - 'null'
           enum:
-          - IdentityForbidden
-          - AccessDeniedError
-          - NoFeatureEntitlementError
+          - RateLimitExceeded
       required:
       - message
       - code
-      description: Authorization error response.
-    UnauthenticatedErrorResponseDto:
+      description: Rate limit exceeded error response.
+    NotFoundErrorResponseDto:
       type: object
       properties:
         message:
@@ -515,31 +467,10 @@ components:
           type:
           - string
           - 'null'
-          enum:
-          - Unauthenticated
       required:
       - message
       - code
-      description: Authentication error response.
-    PaginationDto:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: Cursor for fetching the next page of results, or null if no additional pages exist.
-        prev:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: Cursor for fetching the previous page of results, or null if at the beginning.
-      required:
-      - next
-      - prev
-      description: Pagination metadata including cursors for navigating through results.
+      description: Resource not found error response.
     SubscriptionDto:
       type: object
       properties:
@@ -607,36 +538,15 @@ components:
       - createdAt
       - updatedAt
       description: A subscription linking a customer to a pricing plan.
-    NotFoundErrorResponseDto:
-      type: object
-      properties:
-        message:
-          type: string
-        code:
-          type:
-          - string
-          - 'null'
-      required:
-      - message
-      - code
-      description: Resource not found error response.
-    SubscriptionResponseDto:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/SubscriptionDto'
-      required:
-      - data
-      description: Single subscription response.
-    PreviewSubscriptionRequestDto:
+    ProvisionSubscriptionRequestDto:
       type: object
       properties:
         customerId:
           type: string
-          description: The customer ID.
+          description: The ID of the customer to provision the subscription for.
         planId:
           type: string
-          description: The plan ID.
+          description: The ID of the plan to subscribe the customer to.
         billingPeriod:
           type: string
           enum:
@@ -647,12 +557,48 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AddonDto'
-          description: Add-ons to include in the preview.
+          description: Add-ons to include in the subscription.
+        startDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the subscription should start (defaults to now).
+        trialPeriodDays:
+          type:
+          - integer
+          - 'null'
+          description: Number of trial days before billing begins.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: Additional metadata.
       required:
       - customerId
       - planId
-      description: Parameters for previewing a subscription without creating it.
-    TooManyRequestsErrorResponseDto:
+      additionalProperties: false
+      description: Creates a new subscription for an existing customer.
+    CancelSubscriptionRequestDto:
+      type: object
+      properties:
+        endDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When to cancel the subscription (defaults to immediate cancellation).
+        cancelAt:
+          type:
+          - string
+          - 'null'
+          enum:
+          - END_OF_BILLING_PERIOD
+          - IMMEDIATE
+          description: Cancellation timing strategy.
+      additionalProperties: false
+      description: Options for canceling a subscription.
+    ForbiddenErrorResponseDto:
       type: object
       properties:
         message:
@@ -662,21 +608,75 @@ components:
           - string
           - 'null'
           enum:
-          - RateLimitExceeded
+          - IdentityForbidden
+          - AccessDeniedError
+          - NoFeatureEntitlementError
       required:
       - message
       - code
-      description: Rate limit exceeded error response.
-    AddonDto:
+      description: Authorization error response.
+    SubscriptionListResponseDto:
       type: object
       properties:
-        addonId:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionDto'
+        pagination:
+          $ref: '#/components/schemas/PaginationDto'
+      required:
+      - data
+      - pagination
+      description: Paginated list of subscriptions.
+    BadInputErrorResponseDto:
+      type: object
+      properties:
+        message:
           type: string
-          description: The add-on identifier.
-        quantity:
-          type: integer
-          description: The quantity of the add-on.
-      description: An add-on attached to a subscription.
+          description: Human-readable error message.
+        code:
+          type:
+          - string
+          - 'null'
+          description: Machine-readable error code.
+      required:
+      - message
+      - code
+      description: Bad request error response.
+    PaginationDto:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: Cursor for fetching the next page of results, or null if no additional pages exist.
+        prev:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: Cursor for fetching the previous page of results, or null if at the beginning.
+      required:
+      - next
+      - prev
+      description: Pagination metadata including cursors for navigating through results.
+    UnauthenticatedErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type:
+          - string
+          - 'null'
+          enum:
+          - Unauthenticated
+      required:
+      - message
+      - code
+      description: Authentication error response.
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
