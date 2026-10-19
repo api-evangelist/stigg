@@ -46,3 +46,34 @@
     builder: unknown (community connector; contributor not in the record)
   status: not-a-workflow
   arazzo: null
+- slug: stigg-stripe-partner-ecosystem
+  label: Stripe Partner Ecosystem
+  partner: stripe
+  partner_name: Stripe Partner Ecosystem
+  category: billing / subscription partner of Stripe
+  type: register
+  channel: standard-directory
+  evidence: https://stripe.partners/directory/stigg
+  source: edge
+  relationship: standard-participant
+  contract_reference:
+    register: Stripe Partner Ecosystem directory (stripe.partners, PartnerPage SSR __NUXT_DATA__)
+    standard: Stripe Partner Ecosystem
+    spec_file: null
+    role: stripe-partner
+    registered_name: Stigg
+    register_id: stigg
+    partner_tier: null
+    matched_domain: stigg.io
+    matched_by: domain
+    identity_source: the directory's own website field for the partner (no lookup)
+    signal_note: listing = participation; Stripe Certified Professional Developers certify PEOPLE at the firm (context,
+      never certified_products); partner_tier, callouts and products are never counted
+    context:
+      callouts:
+      - Automation
+      location: New York City, NY
+    detected_by: sweep-billing-subscriptions.py
+    detected: '2026-10-19'
+  status: not-a-workflow
+  arazzo: null
