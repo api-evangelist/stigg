@@ -5,26 +5,10 @@ checked:
 - https://connectors.airbyte.com/files/registries/v0/oss_registry.json
 - https://stripe.partners/sitemap.xml
 - stripe/integrations/stripe-integration-edges.yml
+- artifact-hub/integrations/artifact-hub-integration-edges.yml
 source:
 - stripe/integrations/stripe-integration-edges.yml
 edges:
-- partner_name: Stripe (own)
-  partner: stripe
-  partner_match: mirror
-  mirror_match: domain
-  type: marketplace
-  relationship: platform-app
-  direction: third-party
-  channel: partner-built
-  marketplace: own
-  evidence: https://marketplace.stripe.com/apps/stigg
-  mirror_of: stripe/integrations/stripe-integration-edges.yml
-  apps:
-  - Stigg
-  listing_count: 1
-  detected: '2026-10-15'
-  detected_by: mirror-platform-listings.py
-  category: billing
 - partner_name: Stripe Partner Ecosystem
   partner: stripe
   partner_match: register
@@ -85,3 +69,39 @@ edges:
     builder: unknown (community connector; contributor not in the record)
   detected_by: sweep-data-integration.py
   first_seen: '2026-10-18'
+- partner_name: Stripe (own)
+  partner: stripe
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://marketplace.stripe.com/apps/stigg
+  mirror_of: stripe/integrations/stripe-integration-edges.yml
+  apps:
+  - Stigg
+  listing_count: 1
+  detected: '2026-10-15'
+  detected_by: mirror-platform-listings.py
+  category: billing
+- partner_name: Artifact Hub (artifact-hub)
+  partner: artifact-hub
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: artifact-hub
+  evidence: https://artifacthub.io/packages/search?repo=stigg-helm-charts
+  mirror_of: artifact-hub/integrations/artifact-hub-integration-edges.yml
+  apps:
+  - stigg-chart
+  listing_count: 1
+  detected: '2026-10-22'
+  detected_by: mirror-platform-listings.py
+  category: Artifact Hub listing (Helm chart)
+  badges:
+  - 'Verified publisher (Artifact Hub verified publisher: repository ownership proven)'
