@@ -184,6 +184,8 @@ apis:
   - type: Documentation
     url: https://docs.stigg.io/api-and-sdks/integration/overview
 common:
+- type: PostmanWorkspace
+  url: https://www.postman.com/kinlaneapi/stigg/overview
 - type: CapabilityMap
   url: capabilities/stigg-capability-edges.yml
   name: Stigg Business Capability Map
