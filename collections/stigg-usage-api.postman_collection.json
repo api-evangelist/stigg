@@ -1,1073 +1,952 @@
 {
+  "info": {
+    "_postman_id": "c90f41cf-c3a6-4df0-934f-b1a4b3f68497",
+    "name": "Stigg REST Usage API",
+    "description": "The Stigg REST API (Public Beta) provides RESTful HTTP access to customer management, subscription provisioning, entitlement enforcement, and usage metering. It supports TypeScript, Python, Go, Ruby, C#, and Java SDKs and accepts API key authentication via the X-API-KEY header. Base URL: https://api.stigg.io/api/v1",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-10-21T20:05:47.000Z",
+    "updatedAt": "2026-10-21T20:05:48.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-c90f41cf-c3a6-4df0-934f-b1a4b3f68497"
+  },
   "item": [
     {
-      "id": "2f946394-afee-469a-a1fc-f22cf875395a",
-      "name": "Usage",
-      "description": {
-        "content": "Usage reporting and metering.",
-        "type": "text/plain"
-      },
+      "name": "api",
       "item": [
         {
-          "id": "768a4ddf-ed22-49db-8726-728709eca2a4",
-          "name": "Execute GraphQL Query or Mutation",
-          "request": {
-            "name": "Execute GraphQL Query or Mutation",
-            "description": {
-              "content": "Execute any Stigg GraphQL query or mutation. Stigg uses GraphQL as its primary API. Send a JSON body with a query/mutation string and optional variables. Supports customer management, subscription operations, entitlement checks, and usage reporting.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "graphql"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "POST",
-            "auth": null,
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"query\": \"<string>\",\n  \"variables\": {\n    \"key_0\": 9169,\n    \"key_1\": 3784.7763428049875\n  },\n  \"operationName\": \"<string>\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          },
-          "response": [
+          "name": "v1",
+          "item": [
             {
-              "id": "12b31abe-96d7-40ae-a649-6eda40ed1840",
-              "name": "GraphQL response (may contain data or errors).",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "graphql"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "X-API-KEY",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"query\": \"mutation ProvisionCustomer($input: ProvisionCustomerInput!) {\\n  provisionCustomer(input: $input) {\\n    customer { id name email }\\n    subscription { id status plan { id name } }\\n  }\\n}\\n\",\n  \"variables\": {\n    \"input\": {\n      \"customerId\": \"customer-123\",\n      \"name\": \"Acme Corp\",\n      \"email\": \"admin@acme.com\"\n    }\n  }\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
+              "name": "usage",
+              "item": [
                 {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"data\": {\n    \"key_0\": \"string\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"string\",\n      \"locations\": [\n        {\n          \"line\": 5297,\n          \"column\": 9231\n        },\n        {\n          \"line\": 8544,\n          \"column\": 7351\n        }\n      ],\n      \"path\": [\n        \"string\",\n        \"string\"\n      ],\n      \"extensions\": {\n        \"key_0\": true,\n        \"key_1\": 3970\n      }\n    },\n    {\n      \"message\": \"string\",\n      \"locations\": [\n        {\n          \"line\": 4170,\n          \"column\": 5907\n        },\n        {\n          \"line\": 4292,\n          \"column\": 5419\n        }\n      ],\n      \"path\": [\n        \"string\",\n        \"string\"\n      ],\n      \"extensions\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      }\n    }\n  ]\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "8826c57a-334f-4613-adc7-a098de9b8d4f",
-              "name": "Invalid or missing X-API-KEY header.",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "graphql"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
+                  "name": "Report usage measurements",
+                  "id": "a03f1414-1f1d-4f5a-a649-3b48333a5646",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-ACCOUNT-ID",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-ENVIRONMENT-ID",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"customerId\": \"<string>\",\n  \"featureId\": \"<string>\",\n  \"value\": \"<number>\",\n  \"idempotencyKey\": \"<string,null>\",\n  \"timestamp\": \"<string,null-date-time>\",\n  \"updateBehavior\": \"DELTA\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
                     },
-                    "key": "X-API-KEY",
-                    "value": "<API Key>"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"query\": \"mutation ProvisionCustomer($input: ProvisionCustomerInput!) {\\n  provisionCustomer(input: $input) {\\n    customer { id name email }\\n    subscription { id status plan { id name } }\\n  }\\n}\\n\",\n  \"variables\": {\n    \"input\": {\n      \"customerId\": \"customer-123\",\n      \"name\": \"Acme Corp\",\n      \"email\": \"admin@acme.com\"\n    }\n  }\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "status": "Unauthorized",
-              "code": 401,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "body": "",
-              "cookie": [],
-              "_postman_previewlanguage": "text"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "7c6bc3a1-6abe-4a95-8770-13c9b62ac18c",
-          "name": "Report usage measurements",
-          "request": {
-            "name": "Report usage measurements",
-            "description": {
-              "content": "Reports usage measurements for metered features. The reported usage is used to track, limit, and bill customer consumption.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "api",
-                "v1",
-                "usage"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "header": [
-              {
-                "disabled": false,
-                "key": "X-ACCOUNT-ID",
-                "value": "<string>",
-                "description": ""
-              },
-              {
-                "disabled": false,
-                "key": "X-ENVIRONMENT-ID",
-                "value": "<string>",
-                "description": ""
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "POST",
-            "auth": null,
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"customerId\": \"<string>\",\n  \"featureId\": \"<string>\",\n  \"value\": \"<number>\",\n  \"idempotencyKey\": \"<string>\",\n  \"timestamp\": \"<dateTime>\",\n  \"updateBehavior\": \"<string>\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          },
-          "response": [
-            {
-              "id": "65e5e228-4842-4fe1-8491-6e58ebb7d88d",
-              "name": "The recorded usage measurement objects.",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "api",
-                    "v1",
-                    "usage"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
+                    "url": {
+                      "raw": "{{baseUrl}}/api/v1/usage",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "usage"
+                      ]
                     },
-                    "key": "X-API-KEY",
-                    "value": "<API Key>"
+                    "description": "Reports usage measurements for metered features. The reported usage is used to track, limit, and bill customer consumption."
                   },
-                  {
-                    "disabled": false,
-                    "key": "X-ACCOUNT-ID",
-                    "value": "<string>",
-                    "description": ""
-                  },
-                  {
-                    "disabled": false,
-                    "key": "X-ENVIRONMENT-ID",
-                    "value": "<string>",
-                    "description": ""
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"customerId\": \"customer-123\",\n  \"featureId\": \"feature-api-calls\",\n  \"value\": 100\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "status": "Created",
-              "code": 201,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"data\": {\n    \"id\": \"string\",\n    \"customerId\": \"string\",\n    \"featureId\": \"string\",\n    \"value\": 6939.893691227366,\n    \"timestamp\": \"1960-11-17T18:25:28.530Z\"\n  }\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "68dc5981-b264-424b-8a47-381aabaf97a3",
-              "name": "Bad request.",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "api",
-                    "v1",
-                    "usage"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
+                  "response": [
+                    {
+                      "id": "1eb75f6f-3083-41e7-ab64-8a0c9599e095",
+                      "name": "The recorded usage measurement objects.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "X-ACCOUNT-ID",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-ENVIRONMENT-ID",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-API-KEY",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"customerId\": \"<string>\",\n  \"featureId\": \"<string>\",\n  \"value\": \"<number>\",\n  \"idempotencyKey\": \"<string,null>\",\n  \"timestamp\": \"<string,null-date-time>\",\n  \"updateBehavior\": \"DELTA\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/usage",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "usage"
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"data\": {\n    \"id\": \"<string>\",\n    \"customerId\": \"<string>\",\n    \"featureId\": \"<string>\",\n    \"value\": \"<number>\",\n    \"timestamp\": \"<dateTime>\"\n  }\n}",
+                      "createdAt": "2026-10-21T20:05:48.000Z",
+                      "updatedAt": "2026-10-21T20:05:48.000Z",
+                      "uid": "35240-1eb75f6f-3083-41e7-ab64-8a0c9599e095"
                     },
-                    "key": "X-API-KEY",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "key": "X-ACCOUNT-ID",
-                    "value": "<string>",
-                    "description": ""
-                  },
-                  {
-                    "disabled": false,
-                    "key": "X-ENVIRONMENT-ID",
-                    "value": "<string>",
-                    "description": ""
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"customerId\": \"customer-123\",\n  \"featureId\": \"feature-api-calls\",\n  \"value\": 100\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"message\": \"string\",\n  \"code\": \"string\"\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "079183a0-660f-4346-8776-7ac96f807cde",
-              "name": "User is not authenticated.",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "api",
-                    "v1",
-                    "usage"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
+                    {
+                      "id": "902e28fd-c7d3-4a59-931f-6c5de5f130df",
+                      "name": "Bad request.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "X-ACCOUNT-ID",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-ENVIRONMENT-ID",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-API-KEY",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"customerId\": \"<string>\",\n  \"featureId\": \"<string>\",\n  \"value\": \"<number>\",\n  \"idempotencyKey\": \"<string,null>\",\n  \"timestamp\": \"<string,null-date-time>\",\n  \"updateBehavior\": \"DELTA\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/usage",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "usage"
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string,null>\"\n}",
+                      "createdAt": "2026-10-21T20:05:48.000Z",
+                      "updatedAt": "2026-10-21T20:05:48.000Z",
+                      "uid": "35240-902e28fd-c7d3-4a59-931f-6c5de5f130df"
                     },
-                    "key": "X-API-KEY",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "key": "X-ACCOUNT-ID",
-                    "value": "<string>",
-                    "description": ""
-                  },
-                  {
-                    "disabled": false,
-                    "key": "X-ENVIRONMENT-ID",
-                    "value": "<string>",
-                    "description": ""
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"customerId\": \"customer-123\",\n  \"featureId\": \"feature-api-calls\",\n  \"value\": 100\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "status": "Unauthorized",
-              "code": 401,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"message\": \"string\",\n  \"code\": \"Unauthenticated\"\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "f9688db4-2e79-46c3-a1c0-455fa60cf4a3",
-              "name": "User is not allowed to access this resource.",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "api",
-                    "v1",
-                    "usage"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
+                    {
+                      "id": "f9f862a3-5a82-480d-a595-6feca3dfc933",
+                      "name": "User is not authenticated.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "X-ACCOUNT-ID",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-ENVIRONMENT-ID",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-API-KEY",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"customerId\": \"<string>\",\n  \"featureId\": \"<string>\",\n  \"value\": \"<number>\",\n  \"idempotencyKey\": \"<string,null>\",\n  \"timestamp\": \"<string,null-date-time>\",\n  \"updateBehavior\": \"DELTA\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/usage",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "usage"
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"Unauthenticated\"\n}",
+                      "createdAt": "2026-10-21T20:05:48.000Z",
+                      "updatedAt": "2026-10-21T20:05:48.000Z",
+                      "uid": "35240-f9f862a3-5a82-480d-a595-6feca3dfc933"
                     },
-                    "key": "X-API-KEY",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "key": "X-ACCOUNT-ID",
-                    "value": "<string>",
-                    "description": ""
-                  },
-                  {
-                    "disabled": false,
-                    "key": "X-ENVIRONMENT-ID",
-                    "value": "<string>",
-                    "description": ""
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"customerId\": \"customer-123\",\n  \"featureId\": \"feature-api-calls\",\n  \"value\": 100\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "status": "Forbidden",
-              "code": 403,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"message\": \"string\",\n  \"code\": \"AccessDeniedError\"\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "ae6fccbb-fb95-4abf-8f82-d88b487b6003",
-              "name": "Usage conflict error.",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "api",
-                    "v1",
-                    "usage"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
+                    {
+                      "id": "2c41fa56-14d4-4f9c-bcb9-b01ff30412e2",
+                      "name": "User is not allowed to access this resource.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "X-ACCOUNT-ID",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-ENVIRONMENT-ID",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-API-KEY",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"customerId\": \"<string>\",\n  \"featureId\": \"<string>\",\n  \"value\": \"<number>\",\n  \"idempotencyKey\": \"<string,null>\",\n  \"timestamp\": \"<string,null-date-time>\",\n  \"updateBehavior\": \"DELTA\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/usage",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "usage"
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"NoFeatureEntitlementError\"\n}",
+                      "createdAt": "2026-10-21T20:05:48.000Z",
+                      "updatedAt": "2026-10-21T20:05:48.000Z",
+                      "uid": "35240-2c41fa56-14d4-4f9c-bcb9-b01ff30412e2"
                     },
-                    "key": "X-API-KEY",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "key": "X-ACCOUNT-ID",
-                    "value": "<string>",
-                    "description": ""
-                  },
-                  {
-                    "disabled": false,
-                    "key": "X-ENVIRONMENT-ID",
-                    "value": "<string>",
-                    "description": ""
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"customerId\": \"customer-123\",\n  \"featureId\": \"feature-api-calls\",\n  \"value\": 100\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
+                    {
+                      "id": "fc172eb4-2a61-427d-835c-e16f40d72588",
+                      "name": "Usage conflict error.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "X-ACCOUNT-ID",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-ENVIRONMENT-ID",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-API-KEY",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"customerId\": \"<string>\",\n  \"featureId\": \"<string>\",\n  \"value\": \"<number>\",\n  \"idempotencyKey\": \"<string,null>\",\n  \"timestamp\": \"<string,null-date-time>\",\n  \"updateBehavior\": \"DELTA\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/usage",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "usage"
+                          ]
+                        }
+                      },
+                      "status": "Conflict",
+                      "code": 409,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"DuplicatedEntityNotAllowed\"\n}",
+                      "createdAt": "2026-10-21T20:05:48.000Z",
+                      "updatedAt": "2026-10-21T20:05:48.000Z",
+                      "uid": "35240-fc172eb4-2a61-427d-835c-e16f40d72588"
+                    },
+                    {
+                      "id": "b292e276-66f9-47a5-a607-05601fdf6cfc",
+                      "name": "Too many requests.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "X-ACCOUNT-ID",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-ENVIRONMENT-ID",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-API-KEY",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"customerId\": \"<string>\",\n  \"featureId\": \"<string>\",\n  \"value\": \"<number>\",\n  \"idempotencyKey\": \"<string,null>\",\n  \"timestamp\": \"<string,null-date-time>\",\n  \"updateBehavior\": \"DELTA\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/usage",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "usage"
+                          ]
+                        }
+                      },
+                      "status": "Too Many Requests",
+                      "code": 429,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"RateLimitExceeded\"\n}",
+                      "createdAt": "2026-10-21T20:05:48.000Z",
+                      "updatedAt": "2026-10-21T20:05:48.000Z",
+                      "uid": "35240-b292e276-66f9-47a5-a607-05601fdf6cfc"
                     }
-                  }
-                }
-              },
-              "status": "Conflict",
-              "code": 409,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
+                  ],
+                  "createdAt": "2026-10-21T20:05:48.000Z",
+                  "updatedAt": "2026-10-21T20:05:48.000Z",
+                  "uid": "35240-a03f1414-1f1d-4f5a-a649-3b48333a5646"
                 }
               ],
-              "body": "{\n  \"message\": \"string\",\n  \"code\": \"DuplicatedEntityNotAllowed\"\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
+              "id": "70552332-9fad-4f1e-ac79-58781ea49e58",
+              "createdAt": "2026-10-21T20:05:48.000Z",
+              "updatedAt": "2026-10-21T20:05:48.000Z",
+              "uid": "35240-70552332-9fad-4f1e-ac79-58781ea49e58"
             },
             {
-              "id": "6450c6ae-7df8-40ad-909f-5a35ef8c2d63",
-              "name": "Too many requests.",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "api",
-                    "v1",
-                    "usage"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
-                    },
-                    "key": "X-API-KEY",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "key": "X-ACCOUNT-ID",
-                    "value": "<string>",
-                    "description": ""
-                  },
-                  {
-                    "disabled": false,
-                    "key": "X-ENVIRONMENT-ID",
-                    "value": "<string>",
-                    "description": ""
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"customerId\": \"customer-123\",\n  \"featureId\": \"feature-api-calls\",\n  \"value\": 100\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "status": "Too Many Requests",
-              "code": 429,
-              "header": [
+              "name": "events",
+              "item": [
                 {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"message\": \"string\",\n  \"code\": \"RateLimitExceeded\"\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            }
-          ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
-        },
-        {
-          "id": "3a3fc37e-c6da-4b99-94e2-abe6dc891d1d",
-          "name": "Report usage events",
-          "request": {
-            "name": "Report usage events",
-            "description": {
-              "content": "Reports raw usage events for event-based metering. Events are ingested asynchronously and aggregated into usage totals.",
-              "type": "text/plain"
-            },
-            "url": {
-              "path": [
-                "api",
-                "v1",
-                "events"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "header": [
-              {
-                "disabled": false,
-                "key": "X-ACCOUNT-ID",
-                "value": "<string>",
-                "description": ""
-              },
-              {
-                "disabled": false,
-                "key": "X-ENVIRONMENT-ID",
-                "value": "<string>",
-                "description": ""
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "method": "POST",
-            "auth": null,
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"customerId\": \"<string>\",\n  \"featureId\": \"<string>\",\n  \"eventName\": \"<string>\",\n  \"idempotencyKey\": \"<string>\",\n  \"timestamp\": \"<dateTime>\",\n  \"dimensions\": {\n    \"key_0\": \"<string>\"\n  }\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          },
-          "response": [
-            {
-              "id": "8adcdec2-4ec9-4dad-8acf-7b972d1d8471",
-              "name": "Confirmation that events were accepted for processing.",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "api",
-                    "v1",
-                    "events"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
+                  "name": "Report usage events",
+                  "id": "21b82957-ff61-4096-a5fd-337d31105816",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-ACCOUNT-ID",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-ENVIRONMENT-ID",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"customerId\": \"<string>\",\n  \"featureId\": \"<string>\",\n  \"eventName\": \"<string>\",\n  \"idempotencyKey\": \"<string,null>\",\n  \"timestamp\": \"<string,null-date-time>\",\n  \"dimensions\": {\n    \"etd2\": \"<string>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
                     },
-                    "key": "X-API-KEY",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "key": "X-ACCOUNT-ID",
-                    "value": "<string>",
-                    "description": ""
-                  },
-                  {
-                    "disabled": false,
-                    "key": "X-ENVIRONMENT-ID",
-                    "value": "<string>",
-                    "description": ""
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"customerId\": \"customer-123\",\n  \"featureId\": \"feature-api-calls\",\n  \"eventName\": \"api_request\",\n  \"idempotencyKey\": \"evt-unique-001\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"data\": {\n    \"accepted\": false\n  }\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "9ddf6e09-2373-4ced-a14b-e63f6daf1eb9",
-              "name": "Bad request.",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "api",
-                    "v1",
-                    "events"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
+                    "url": {
+                      "raw": "{{baseUrl}}/api/v1/events",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "v1",
+                        "events"
+                      ]
                     },
-                    "key": "X-API-KEY",
-                    "value": "<API Key>"
+                    "description": "Reports raw usage events for event-based metering. Events are ingested asynchronously and aggregated into usage totals."
                   },
-                  {
-                    "disabled": false,
-                    "key": "X-ACCOUNT-ID",
-                    "value": "<string>",
-                    "description": ""
-                  },
-                  {
-                    "disabled": false,
-                    "key": "X-ENVIRONMENT-ID",
-                    "value": "<string>",
-                    "description": ""
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"customerId\": \"customer-123\",\n  \"featureId\": \"feature-api-calls\",\n  \"eventName\": \"api_request\",\n  \"idempotencyKey\": \"evt-unique-001\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"message\": \"string\",\n  \"code\": \"string\"\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "b04f3cdd-90e7-4feb-8133-ed18ef18e7e8",
-              "name": "User is not authenticated.",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "api",
-                    "v1",
-                    "events"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
+                  "response": [
+                    {
+                      "id": "2d4309a4-8092-454e-9ae8-44126e520fac",
+                      "name": "Confirmation that events were accepted for processing.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "X-ACCOUNT-ID",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-ENVIRONMENT-ID",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-API-KEY",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"customerId\": \"<string>\",\n  \"featureId\": \"<string>\",\n  \"eventName\": \"<string>\",\n  \"idempotencyKey\": \"<string,null>\",\n  \"timestamp\": \"<string,null-date-time>\",\n  \"dimensions\": {\n    \"etd2\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/events",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "events"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"data\": {\n    \"accepted\": \"<boolean>\"\n  }\n}",
+                      "createdAt": "2026-10-21T20:05:48.000Z",
+                      "updatedAt": "2026-10-21T20:05:48.000Z",
+                      "uid": "35240-2d4309a4-8092-454e-9ae8-44126e520fac"
                     },
-                    "key": "X-API-KEY",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "key": "X-ACCOUNT-ID",
-                    "value": "<string>",
-                    "description": ""
-                  },
-                  {
-                    "disabled": false,
-                    "key": "X-ENVIRONMENT-ID",
-                    "value": "<string>",
-                    "description": ""
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"customerId\": \"customer-123\",\n  \"featureId\": \"feature-api-calls\",\n  \"eventName\": \"api_request\",\n  \"idempotencyKey\": \"evt-unique-001\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "status": "Unauthorized",
-              "code": 401,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"message\": \"string\",\n  \"code\": \"Unauthenticated\"\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "9ea1e38b-c777-47c1-9e8a-80a8e8278ec5",
-              "name": "User is not allowed to access this resource.",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "api",
-                    "v1",
-                    "events"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
+                    {
+                      "id": "eea54230-aaa4-4c42-85e9-4d06aab56330",
+                      "name": "Bad request.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "X-ACCOUNT-ID",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-ENVIRONMENT-ID",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-API-KEY",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"customerId\": \"<string>\",\n  \"featureId\": \"<string>\",\n  \"eventName\": \"<string>\",\n  \"idempotencyKey\": \"<string,null>\",\n  \"timestamp\": \"<string,null-date-time>\",\n  \"dimensions\": {\n    \"etd2\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/events",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "events"
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string,null>\"\n}",
+                      "createdAt": "2026-10-21T20:05:48.000Z",
+                      "updatedAt": "2026-10-21T20:05:48.000Z",
+                      "uid": "35240-eea54230-aaa4-4c42-85e9-4d06aab56330"
                     },
-                    "key": "X-API-KEY",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "key": "X-ACCOUNT-ID",
-                    "value": "<string>",
-                    "description": ""
-                  },
-                  {
-                    "disabled": false,
-                    "key": "X-ENVIRONMENT-ID",
-                    "value": "<string>",
-                    "description": ""
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"customerId\": \"customer-123\",\n  \"featureId\": \"feature-api-calls\",\n  \"eventName\": \"api_request\",\n  \"idempotencyKey\": \"evt-unique-001\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "status": "Forbidden",
-              "code": 403,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"message\": \"string\",\n  \"code\": \"AccessDeniedError\"\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "fef481f7-2820-404e-a7fb-6a6bd7dd19dd",
-              "name": "Event not found.",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "api",
-                    "v1",
-                    "events"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
+                    {
+                      "id": "db6d3d10-d98b-4d64-8a54-ab4e79b17012",
+                      "name": "User is not authenticated.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "X-ACCOUNT-ID",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-ENVIRONMENT-ID",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-API-KEY",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"customerId\": \"<string>\",\n  \"featureId\": \"<string>\",\n  \"eventName\": \"<string>\",\n  \"idempotencyKey\": \"<string,null>\",\n  \"timestamp\": \"<string,null-date-time>\",\n  \"dimensions\": {\n    \"etd2\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/events",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "events"
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"Unauthenticated\"\n}",
+                      "createdAt": "2026-10-21T20:05:48.000Z",
+                      "updatedAt": "2026-10-21T20:05:48.000Z",
+                      "uid": "35240-db6d3d10-d98b-4d64-8a54-ab4e79b17012"
                     },
-                    "key": "X-API-KEY",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "key": "X-ACCOUNT-ID",
-                    "value": "<string>",
-                    "description": ""
-                  },
-                  {
-                    "disabled": false,
-                    "key": "X-ENVIRONMENT-ID",
-                    "value": "<string>",
-                    "description": ""
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"customerId\": \"customer-123\",\n  \"featureId\": \"feature-api-calls\",\n  \"eventName\": \"api_request\",\n  \"idempotencyKey\": \"evt-unique-001\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "status": "Not Found",
-              "code": 404,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"message\": \"string\",\n  \"code\": \"string\"\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
-            },
-            {
-              "id": "6e294dc7-3158-432f-bf40-0093dab8558a",
-              "name": "Too many requests.",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "api",
-                    "v1",
-                    "events"
-                  ],
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "description": {
-                      "content": "Added as a part of security scheme: apikey",
-                      "type": "text/plain"
+                    {
+                      "id": "8737c470-3c52-4985-9e39-badc617e6d85",
+                      "name": "User is not allowed to access this resource.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "X-ACCOUNT-ID",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-ENVIRONMENT-ID",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-API-KEY",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"customerId\": \"<string>\",\n  \"featureId\": \"<string>\",\n  \"eventName\": \"<string>\",\n  \"idempotencyKey\": \"<string,null>\",\n  \"timestamp\": \"<string,null-date-time>\",\n  \"dimensions\": {\n    \"etd2\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/events",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "events"
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"NoFeatureEntitlementError\"\n}",
+                      "createdAt": "2026-10-21T20:05:48.000Z",
+                      "updatedAt": "2026-10-21T20:05:48.000Z",
+                      "uid": "35240-8737c470-3c52-4985-9e39-badc617e6d85"
                     },
-                    "key": "X-API-KEY",
-                    "value": "<API Key>"
-                  },
-                  {
-                    "disabled": false,
-                    "key": "X-ACCOUNT-ID",
-                    "value": "<string>",
-                    "description": ""
-                  },
-                  {
-                    "disabled": false,
-                    "key": "X-ENVIRONMENT-ID",
-                    "value": "<string>",
-                    "description": ""
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"customerId\": \"customer-123\",\n  \"featureId\": \"feature-api-calls\",\n  \"eventName\": \"api_request\",\n  \"idempotencyKey\": \"evt-unique-001\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
+                    {
+                      "id": "4a021451-1e89-4217-bc13-8808e8fb1fe9",
+                      "name": "Event not found.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "X-ACCOUNT-ID",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-ENVIRONMENT-ID",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-API-KEY",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"customerId\": \"<string>\",\n  \"featureId\": \"<string>\",\n  \"eventName\": \"<string>\",\n  \"idempotencyKey\": \"<string,null>\",\n  \"timestamp\": \"<string,null-date-time>\",\n  \"dimensions\": {\n    \"etd2\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/events",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "events"
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string,null>\"\n}",
+                      "createdAt": "2026-10-21T20:05:48.000Z",
+                      "updatedAt": "2026-10-21T20:05:48.000Z",
+                      "uid": "35240-4a021451-1e89-4217-bc13-8808e8fb1fe9"
+                    },
+                    {
+                      "id": "0c3342dd-8dcb-4326-bfad-c08fdbb097eb",
+                      "name": "Too many requests.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "X-ACCOUNT-ID",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-ENVIRONMENT-ID",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "X-API-KEY",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"customerId\": \"<string>\",\n  \"featureId\": \"<string>\",\n  \"eventName\": \"<string>\",\n  \"idempotencyKey\": \"<string,null>\",\n  \"timestamp\": \"<string,null-date-time>\",\n  \"dimensions\": {\n    \"etd2\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/v1/events",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "v1",
+                            "events"
+                          ]
+                        }
+                      },
+                      "status": "Too Many Requests",
+                      "code": 429,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"RateLimitExceeded\"\n}",
+                      "createdAt": "2026-10-21T20:05:48.000Z",
+                      "updatedAt": "2026-10-21T20:05:48.000Z",
+                      "uid": "35240-0c3342dd-8dcb-4326-bfad-c08fdbb097eb"
                     }
-                  }
-                }
-              },
-              "status": "Too Many Requests",
-              "code": 429,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
+                  ],
+                  "createdAt": "2026-10-21T20:05:48.000Z",
+                  "updatedAt": "2026-10-21T20:05:48.000Z",
+                  "uid": "35240-21b82957-ff61-4096-a5fd-337d31105816"
                 }
               ],
-              "body": "{\n  \"message\": \"string\",\n  \"code\": \"RateLimitExceeded\"\n}",
-              "cookie": [],
-              "_postman_previewlanguage": "json"
+              "id": "dc8d0296-86a1-4f0a-b629-30c382b75a64",
+              "createdAt": "2026-10-21T20:05:48.000Z",
+              "updatedAt": "2026-10-21T20:05:48.000Z",
+              "uid": "35240-dc8d0296-86a1-4f0a-b629-30c382b75a64"
             }
           ],
-          "event": [],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          }
+          "id": "7fdb7838-8dd6-497a-8f0b-511da528a27a",
+          "createdAt": "2026-10-21T20:05:48.000Z",
+          "updatedAt": "2026-10-21T20:05:48.000Z",
+          "uid": "35240-7fdb7838-8dd6-497a-8f0b-511da528a27a"
         }
       ],
-      "event": []
-    }
-  ],
-  "event": [],
-  "variable": [
-    {
-      "type": "string",
-      "value": "https://api.stigg.io",
-      "key": "baseUrl"
+      "id": "7b413923-b74b-4689-97cb-a0e8745c71a1",
+      "createdAt": "2026-10-21T20:05:48.000Z",
+      "updatedAt": "2026-10-21T20:05:48.000Z",
+      "uid": "35240-7b413923-b74b-4689-97cb-a0e8745c71a1"
     }
   ],
   "auth": {
@@ -1075,25 +954,25 @@
     "apikey": [
       {
         "key": "key",
-        "value": "X-API-KEY"
+        "value": "X-API-KEY",
+        "type": "string"
       },
       {
         "key": "value",
-        "value": "{{apiKey}}"
+        "value": "{{apiKey}}",
+        "type": "string"
       },
       {
         "key": "in",
-        "value": "header"
+        "value": "header",
+        "type": "string"
       }
     ]
   },
-  "info": {
-    "_postman_id": "56405077-f23c-4c5e-a7df-a4800659124c",
-    "name": "Stigg Coupons Usage API",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": {
-      "content": "Stigg is a pricing and packaging platform providing feature management, entitlements, and usage-based billing for SaaS and API products. The Stigg API exposes GraphQL and REST endpoints for customer provisioning, subscription management, entitlement checking, and usage reporting. Authentication requires a Full access key passed via the X-API-KEY header.",
-      "type": "text/plain"
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.stigg.io"
     }
-  }
+  ]
 }
