@@ -1,4 +1,4 @@
-# Stigg (stigg)
+# Stigg
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,116 +66,211 @@
 
 Stigg is a product-led growth monetization platform providing REST and GraphQL APIs for managing pricing plans, entitlements, usage-based billing, feature flags, and subscription lifecycle. It serves as a monetization control layer for SaaS and AI products, enabling engineering teams to implement flexible pricing, granular access control, and real-time usage metering without rebuilding billing infrastructure from scratch. Stigg is SOC 2 Type II and ISO 27001 certified and delivers 99.99% uptime SLA with multi-region deployment.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/stigg/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/stigg/refs/heads/main/apis.yml)
+**Areas:** FinOps · Pricing · Billing · Entitlements · Usage-Based Billing · Feature Flags · Product-Led Growth · Subscription · Software-as-a-Service · GraphQL · REST
 
-## Scope
+## Stigg on APIs.io
 
-- **Type:** Index
+Everything profiled for Stigg is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/stigg/](https://apis.io/providers/stigg/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (8)
 
-- FinOps
-- Pricing
-- Billing
-- Entitlements
-- Usage-Based Billing
-- Feature Flags
-- Product-Led Growth
-- Subscriptions
-- SaaS
-- GraphQL
-- REST
+- [Stigg Node.js SDK](https://apis.io/apis/stigg/stigg-node-sdk/) — Official Node.js / TypeScript SDK for integrating Stigg entitlements, feature flags, and usage-based billing into backend services.
+- [Stigg Python SDK](https://apis.io/apis/stigg/stigg-python-sdk/) — Official Python SDK for integrating Stigg entitlements and usage-based billing into Python backend services.
+- [Stigg Go SDK](https://apis.io/apis/stigg/stigg-go-sdk/) — Official Go SDK for integrating Stigg entitlements and usage-based billing into Go backend services.
+- [Stigg React SDK](https://apis.io/apis/stigg/stigg-react-sdk/) — Official React frontend SDK for rendering pricing tables, entitlement gates, and usage meters in React applications.
+- [Stigg Coupons API](https://apis.io/apis/stigg/stigg-coupons-api/) — Coupon retrieval.
+- [Stigg Customers API](https://apis.io/apis/stigg/stigg-customers-api/) — Customer provisioning and management.
+- [Stigg Subscriptions API](https://apis.io/apis/stigg/stigg-subscriptions-api/) — Subscription lifecycle management.
+- [Stigg Usage API](https://apis.io/apis/stigg/stigg-usage-api/) — Usage reporting and metering.
 
-## Timestamps
+### Published properties
 
-- **Created:** 2026-03-27
-- **Modified:** 2026-06-13
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### GraphQL (1)
 
-### Stigg GraphQL API
+GraphQL schemas.
 
-The Stigg GraphQL API provides full access to customer provisioning, subscription management, entitlement checking, usage reporting, and pricing plan management. Authentication uses the X-API-KEY header with a Full access key from the Stigg dashboard. The single endpoint is `https://api.stigg.io/graphql`.
+- [Stigg GraphQL API](https://apis.io/graphqls/stigg/stigg-graphql/)
 
-- **Human URL:** [https://docs.stigg.io/api-and-sdks/integration/backend/graphql](https://docs.stigg.io/api-and-sdks/integration/backend/graphql)
-- **Base URL:** https://api.stigg.io/graphql
+#### MCP servers (1)
 
-#### Tags
+Model Context Protocol servers that expose the API to agents.
 
-- GraphQL
-- Entitlements
-- Subscriptions
-- Billing
+- [stigg](https://apis.io/servers/stigg/stigg/)
 
-#### Properties
+#### Agent skills (11)
 
-- [Documentation](https://docs.stigg.io/api-and-sdks/integration/backend/graphql)
-- [GraphQL Endpoint](https://api.stigg.io/graphql)
-- [OpenAPI](https://raw.githubusercontent.com/api-evangelist/stigg/refs/heads/main/openapi/stigg-openapi.yml)
+Agent skills built on the API.
 
-### Stigg REST API
+- [stigg](https://apis.io/agent-skills/stigg/stigg/)
+- [stigg-api](https://apis.io/agent-skills/stigg/stigg-api/)
+- [stigg-credits](https://apis.io/agent-skills/stigg/stigg-credits/)
+- [stigg-entitlements](https://apis.io/agent-skills/stigg/stigg-entitlements/)
+- [stigg-mcp](https://apis.io/agent-skills/stigg/stigg-mcp/)
+- [stigg-pricing-expert](https://apis.io/agent-skills/stigg/stigg-pricing-expert/)
+- [stigg-pricing-modeling](https://apis.io/agent-skills/stigg/stigg-pricing-modeling/)
+- [stigg-recipes](https://apis.io/agent-skills/stigg/stigg-recipes/)
+- [stigg-subscriptions](https://apis.io/agent-skills/stigg/stigg-subscriptions/)
+- [stigg-webhooks](https://apis.io/agent-skills/stigg/stigg-webhooks/)
+- [stigg-widgets](https://apis.io/agent-skills/stigg/stigg-widgets/)
 
-The Stigg REST API (recommended for new integrations) provides language-agnostic HTTP access to customer management, subscription operations, entitlement checks, and usage reporting. Backed by language-specific SDKs for TypeScript, Python, Go, Ruby, C#, and Java.
+#### Agentic access (1)
 
-- **Human URL:** [https://docs.stigg.io/api-and-sdks/integration/overview](https://docs.stigg.io/api-and-sdks/integration/overview)
+Which operations an agent can call, which act, and which need a human in the loop.
 
-#### Tags
+- [Stigg Agentic Access](https://apis.io/agentic-access/stigg/stigg-agentic-access/)
 
-- REST
-- Entitlements
-- Subscriptions
-- Billing
+#### JSON Schema (9)
 
-#### Properties
+The data models the API reads and writes.
 
-- [Documentation](https://docs.stigg.io/api-and-sdks/integration/overview)
+- [Coupon](https://apis.io/schemas/stigg/stigg-coupon/)
+- [Stigg Customer](https://apis.io/schemas/stigg/stigg-customer/)
+- [Stigg Entitlement](https://apis.io/schemas/stigg/stigg-entitlement/)
+- [GraphQLError](https://apis.io/schemas/stigg/stigg-graphqlerror/)
+- [GraphQLRequest](https://apis.io/schemas/stigg/stigg-graphqlrequest/)
+- [GraphQLResponse](https://apis.io/schemas/stigg/stigg-graphqlresponse/)
+- [Plan](https://apis.io/schemas/stigg/stigg-plan/)
+- [Subscription](https://apis.io/schemas/stigg/stigg-subscription/)
+- [UsageMeasurement](https://apis.io/schemas/stigg/stigg-usage-measurement/)
 
-### Stigg Node.js SDK
+#### JSON Structure (2)
 
-Official Node.js / TypeScript SDK for integrating Stigg entitlements, feature flags, and usage-based billing into backend services.
+Data models expressed in JSON Structure.
 
-- **Human URL:** [https://docs.stigg.io/api-and-sdks/integration/backend/nodejs](https://docs.stigg.io/api-and-sdks/integration/backend/nodejs)
-- **GitHub:** [https://github.com/stiggio/stigg-typescript](https://github.com/stiggio/stigg-typescript)
+- [Stigg Entitlement Structure](https://apis.io/json-structure/stigg/stigg-entitlement-structure/)
+- [Stigg Structure](https://apis.io/json-structure/stigg/stigg-structure/)
 
-### Stigg Python SDK
+#### JSON-LD (1)
 
-Official Python SDK for integrating Stigg entitlements and usage-based billing into Python backend services.
+Linked-data contexts for the provider's vocabulary.
 
-- **Human URL:** [https://docs.stigg.io/api-and-sdks/integration/backend/python](https://docs.stigg.io/api-and-sdks/integration/backend/python)
-- **GitHub:** [https://github.com/stiggio/stigg-python](https://github.com/stiggio/stigg-python)
+- [Stigg Context](https://apis.io/jsonld/stigg/stigg-context/)
 
-### Stigg Go SDK
+#### Vocabulary (1)
 
-Official Go SDK for integrating Stigg entitlements and usage-based billing into Go backend services.
+The provider's domain terms, defined.
 
-- **Human URL:** [https://docs.stigg.io/api-and-sdks/integration/backend/go](https://docs.stigg.io/api-and-sdks/integration/backend/go)
-- **GitHub:** [https://github.com/stiggio/stigg-go](https://github.com/stiggio/stigg-go)
+- [Stigg Vocabulary](https://apis.io/vocabularies/stigg/stigg-vocabulary/)
 
-### Stigg React SDK
+#### Examples (6)
 
-Official React frontend SDK for rendering pricing tables, entitlement gates, and usage meters in React applications.
+Example requests and responses.
 
-- **Human URL:** [https://docs.stigg.io/api-and-sdks/integration/frontend/react](https://docs.stigg.io/api-and-sdks/integration/frontend/react)
+- [Stigg Check Entitlement Example](https://apis.io/examples/stigg/stigg-check-entitlement-example/)
+- [Stigg Executegraphql Example](https://apis.io/examples/stigg/stigg-executegraphql-example/)
+- [Stigg Provision Customer Example](https://apis.io/examples/stigg/stigg-provision-customer-example/)
+- [Stigg Rest Provision Customer Example](https://apis.io/examples/stigg/stigg-rest-provision-customer-example/)
+- [Stigg Rest Provision Subscription Example](https://apis.io/examples/stigg/stigg-rest-provision-subscription-example/)
+- [Stigg Rest Report Usage Example](https://apis.io/examples/stigg/stigg-rest-report-usage-example/)
 
-## Common Properties
+#### Collections (6)
+
+Postman and Open Collection request collections.
+
+- [Stigg API](https://apis.io/collections/stigg/open-stigg/)
+- [Stigg Coupons API](https://apis.io/collections/stigg/open-stigg-coupons-api/)
+- [Stigg Coupons Customers API](https://apis.io/collections/stigg/open-stigg-customers-api/)
+- [Stigg Coupons Entitlements API](https://apis.io/collections/stigg/open-stigg-entitlements-api/)
+- [Stigg Coupons Subscriptions API](https://apis.io/collections/stigg/open-stigg-subscriptions-api/)
+- [Stigg Coupons Usage API](https://apis.io/collections/stigg/open-stigg-usage-api/)
+
+#### Governance rules (2)
+
+Spectral rulesets for the provider's contracts.
+
+- [Stigg — jsonschema rules](https://apis.io/rules/stigg/stigg-jsonschema-spectral-rules/)
+- [Stigg API Rules](https://apis.io/rules/stigg/stigg-rules/)
+
+#### Security (3)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Stigg Authentication](https://apis.io/security/stigg/stigg-authentication/)
+- [Stigg Domain Security](https://apis.io/security/stigg/stigg-domain-security/)
+- [Stigg Trust Center](https://apis.io/security/stigg/stigg-trust-center/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Stigg Plans Pricing](https://apis.io/plans/stigg/stigg-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Stigg Rate Limits](https://apis.io/rate-limits/stigg/stigg-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Stigg Finops](https://apis.io/finops/stigg/stigg-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Website](https://www.stigg.io/)
 - [Documentation](https://docs.stigg.io/)
-- [Getting Started](https://docs.stigg.io/getting-started)
-- [GitHub Organization](https://github.com/stiggio)
-- [LinkedIn](https://www.linkedin.com/company/getstigg)
-- [Blog](https://www.stigg.io/blog)
+- [Getting started](https://docs.stigg.io/getting-started)
 - [Pricing](https://www.stigg.io/pricing)
-- [Status Page](https://status.stigg.io/)
-- [X / Twitter](https://twitter.com/getstigg)
-- [Sign Up](https://app.stigg.io/)
-- [Integrations](https://www.stigg.io/partners)
-- [LLMs.txt](https://docs.stigg.io/llms.txt)
-- [Plans](plans/stigg-plans-pricing.yml)
-- [Rate Limits](rate-limits/stigg-rate-limits.yml)
-- [FinOps](finops/stigg-finops.yml)
+- [Blog](https://www.stigg.io/blog)
+- [Status](https://status.stigg.io/)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 40.9** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.7 |
+| Contract quality | 58.5 |
+| Contract governance | 13.6 |
+| Operational transparency | 28.9 |
+| Developer ergonomics | 30.2 |
+| Access clarity | 39.5 |
+
+**Agent readiness 43.0** — agent-native
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | platform (partial credit) |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | verified |
+| Error Semantics | verified |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | unknown |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | paginated |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 21.6** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/stigg/](https://apis.io/providers/stigg/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Stigg: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/stigg/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
